@@ -1149,4 +1149,185 @@ function calcPension(){
   if(opt==='rop'){rate-=1.5;nom='Full purchase price returned to nominee on death';}
   else if(opt==='joint'){rate-=0.8;nom='Pension continues to spouse till either is alive';}
   else if(opt==='g10'){rate-=0.5;nom='Nominee gets income 10 yrs if early death, then lifelong';}
-  else if(opt==='g20'){rate-=1.2;nom='Nominee gets income
+  else if(opt==='g20'){rate-=1.2;nom='Nominee gets income 20 yrs if early death, then lifelong';}
+  else{nom='Nothing to nominee after death (pure life annuity)';}
+  if(rate<4) rate=4;
+  var yr=Math.round(inv*rate/100);
+  showRes('p_res',{p_yr:fmt(yr)+' / year',p_mon:fmt(Math.round(yr/12))+' / month',p_rate:rate.toFixed(1)+'% annuity rate',p_nom:nom});
+}
+var ACE_GI={5:0.10,7:0.12,10:0.14,12:0.15};
+var DEF_MULT={2:1.08,5:1.20,10:1.40,15:1.65};
+var ACE_GMB={5:1.30,7:1.48,10:1.72,12:1.92};
+function calcASISO(){
+  var p=parseFloat(val('as_p'))||0,ppt=parseInt(val('as_ppt'))||10,t=val('as_t')||'level';
+  if(!p){alert('Premium enter karein.');return;}
+  var gi=Math.round(p*(ACE_GI[ppt]||0.14));
+  if(t==='inc') gi=Math.round(gi*0.85);
+  var cb=Math.round(p*ppt*0.04);
+  showRes('as_res',{as_gi:fmt(gi)+' / year (Guaranteed)',as_cb:fmt(cb)+' / year (NOT guaranteed)',as_tot:fmt(gi+cb)+' / year (est.)',as_mon:fmt(Math.round(gi/12))+' / month (GI only)'});
+}
+function calcASIDO(){
+  var p=parseFloat(val('ad_p'))||0,ppt=parseInt(val('ad_ppt'))||10,def=parseInt(val('ad_def'))||5;
+  if(!p){alert('Premium enter karein.');return;}
+  var gi=Math.round(p*(ACE_GI[ppt]||0.14)*(DEF_MULT[def]||1.20)),cb=Math.round(p*ppt*0.05);
+  showRes('ad_res',{ad_st:(ppt+def)+' years from start',ad_gi:fmt(gi)+' / year (Guaranteed)',ad_cb:fmt(cb)+' / year (NOT guaranteed)',ad_tot:fmt(gi+cb)+' / year (est.)'});
+}
+function calcALS(){
+  var p=parseFloat(val('al_p'))||0,ppt=parseInt(val('al_ppt'))||10,pt=parseInt(val('al_pt'))||20;
+  if(!p){alert('Premium enter karein.');return;}
+  var paid=p*ppt,gmb=Math.round(paid*(ACE_GMB[ppt]||1.72)),bon=Math.round(p*ppt*10*0.04*pt*0.55);
+  showRes('al_res',{al_paid:fmt(paid),al_gmb:fmt(gmb)+' (Guaranteed)',al_bon:fmt(bon)+' (NOT guaranteed)',al_tot:fmt(gmb+bon)+' estimated'});
+}
+
+/* SMART PROFILER */
+function runSmartProfiler(){
+  var age=parseInt(document.getElementById('sp_age').value)||0;
+  var income=document.getElementById('sp_income').value;
+  var profile=document.getElementById('sp_profile').value;
+  var resBox=document.getElementById('sp_result');
+  if(!age||!income||!profile){alert('Please fill Age, Income, and Life Stage.');return;}
+  var recTitle='',recDesc='';
+  if(profile==='single_parent'){
+    recTitle='Smart Protect Goal + AWG Wealth Creation';
+    recDesc='As a single parent, securing your child\'s future is #1. Get a Term Plan for immediate protection, plus AWG Wealth Creation to guarantee their education fund.';
+  } else if(profile==='retired'||age>=50){
+    recTitle='Guaranteed Pension Goal II & AWG Lifelong';
+    recDesc='Capital preservation and regular income are crucial. Pension plan gives immediate ~9% lifetime yield. AWG Lifelong for legacy planning.';
+  } else if(profile==='married_kids'){
+    recTitle='AWG Second Income + Term Insurance';
+    recDesc='You need dual protection. Term plan for family security + AWG Second Income to combat inflation with a tax-free secondary salary.';
+  } else if(profile==='single'&&age<30){
+    recTitle='Smart Wealth Goal V (ULIP)';
+    recDesc='You have time on your side! ULIPs with Zero Allocation charges let the market grow your money over 15–20 years.';
+  } else if(income==='high'){
+    recTitle='Bajaj Life ACE (Modular) & AWG Platinum';
+    recDesc='High income needs heavy tax-saving. ACE lets you design cash flows exactly when needed. AWG Platinum gives payouts even while paying premiums.';
+  } else {
+    recTitle='AWG Second Income';
+    recDesc='The safest, most reliable income builder. 100% Guaranteed returns, zero market risk, 110% ROP. Perfect for building a strong financial foundation.';
+  }
+  resBox.innerHTML='<h4 style="color:var(--blue);">🎯 Mike\'s Recommendation:</h4><h3 style="color:var(--blue-dark);margin:8px 0;">'+recTitle+'</h3><p style="font-size:0.9rem;color:var(--muted);">'+recDesc+'</p><a href="https://wa.me/+919382181126?text=Hi Mike, the Profiler recommended *'+encodeURIComponent(recTitle)+'* (Age: '+age+'). Can we discuss?" target="_blank" style="display:inline-block;margin-top:14px;background:var(--red);color:#fff;padding:10px 22px;border-radius:8px;font-weight:700;text-decoration:none;font-size:0.88rem;">📲 Get Custom Quote from Mike</a>';
+  resBox.style.display='block';
+  var st=document.getElementById('stickyRecText');
+  var sb=document.getElementById('stickyRec');
+  if(st&&sb){st.innerText=recTitle;sb.classList.add('show');}
+}
+
+/* ═══════════════════════════════════
+   GEMINI API INTEGRATION
+═══════════════════════════════════ */
+let conversationHistory = [];
+
+async function processAIQuery() {
+  const inp = document.getElementById('aiInput');
+  if (!inp) return;
+  const text = inp.value.trim();
+  if (!text) return;
+
+  appendChat('user', text);
+  inp.value = '';
+
+  conversationHistory.push({ role: 'user', content: text });
+
+  const typId = 'typ-' + Date.now();
+  appendChat('bot', '<span class="typing-anim">Mike\'s Assistant is typing...</span>', typId);
+
+  try {
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: text,
+        history: conversationHistory.slice(0, -1),
+        userContext: {}
+      })
+    });
+
+    // -------- THE NEW CHECK ADDED HERE --------
+    if (!response.ok) {
+      throw new Error(`Server returned ${response.status}: ${response.statusText}. Check your API folder structure in GitHub.`);
+    }
+    // ------------------------------------------
+
+    const data = await response.json();
+    const reply = data.reply || 'Sorry, I encountered an issue. Please try again.';
+
+    const el = document.getElementById(typId);
+    if (el) el.innerHTML = reply;
+
+    conversationHistory.push({ role: 'assistant', content: reply });
+
+    const body = document.getElementById('aiChatBody');
+    if (body) body.scrollTop = body.scrollHeight;
+
+  } catch (error) {
+    console.error('Fetch/Network error details:', error);
+    const el = document.getElementById(typId);
+    if (el) el.innerHTML = `⚠️ Error: ${error.message}. Please try again or contact Mike.`;
+  }
+}
+
+function sendQuickReply(text) {
+  const inp = document.getElementById('aiInput');
+  if (inp) {
+    inp.value = text;
+    processAIQuery();
+  }
+}
+
+function toggleAIChat() {
+  const win = document.getElementById('aiWindow');
+  if (win) win.classList.toggle('open');
+}
+
+function appendChat(sender, text, id) {
+  const body = document.getElementById('aiChatBody');
+  if (!body) return;
+  const div = document.createElement('div');
+  div.className = 'ai-msg ai-' + sender;
+  if (id) div.id = id;
+  div.innerHTML = text;
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
+}
+
+/* UI FUNCTIONS */
+function toggleFAQ(el){
+  var a=el.nextElementSibling,isOpen=a.classList.contains('open');
+  document.querySelectorAll('.faq-a.open').forEach(function(x){x.classList.remove('open');x.previousElementSibling.classList.remove('open');});
+  if(!isOpen){a.classList.add('open');el.classList.add('open');}
+}
+var SHEETS_URL="https://script.google.com/macros/s/AKfycbyb52GLo31uEXFXfbNKjVMCF_L28gh2uNJikrTNooivuiXg7If_7gem5yv9ZKAXrRI8Vg/exec";
+var MIKE_WA="+919382181126";
+function getLeadData(){return {name:(document.getElementById('lf_name').value||'').trim(),phone:(document.getElementById('lf_phone').value||'').trim(),age:(document.getElementById('lf_age').value||'').trim(),plan:(document.getElementById('lf_plan').value||''),budget:(document.getElementById('lf_budget').value||''),city:(document.getElementById('lf_city').value||'').trim()};}
+function validateLead(d){if(!d.name){alert('Name is required.');return false;}if(!d.phone||d.phone.length<10){alert('Enter valid 10-digit WhatsApp number.');return false;}return true;}
+function saveToSheets(d){fetch(SHEETS_URL,{method:'POST',body:JSON.stringify(d)}).catch(function(){});}
+function showLeadSuccess(){var el=document.getElementById('lead-success');if(el){el.style.display='block';el.scrollIntoView({behavior:'smooth',block:'nearest'});}}
+function submitLeadWA(){
+  var d=getLeadData();if(!validateLead(d))return;saveToSheets(d);
+  var msg='Hello Mike!%0A%0AMy name is *'+encodeURIComponent(d.name)+'*%0AWhatsApp: *'+d.phone+'*'+(d.age?'%0AAge: *'+d.age+' years*':'')+(d.plan?'%0APlan: *'+encodeURIComponent(d.plan)+'*':'')+(d.budget?'%0ABudget: *'+encodeURIComponent(d.budget)+'*':'')+(d.city?'%0ACity: *'+encodeURIComponent(d.city)+'*':'')+'%0A%0APlease share customized quotation. Thank you!';
+  window.open('https://wa.me/'+MIKE_WA+'?text='+msg,'_blank');showLeadSuccess();
+}
+function submitLeadSheet(){var d=getLeadData();if(!validateLead(d))return;saveToSheets(d);showLeadSuccess();}
+function openVideo(id){document.getElementById('modalVC').innerHTML='<iframe width="100%" height="100%" src="https://www.youtube.com/embed/'+id+'?autoplay=1" frameborder="0" allowfullscreen></iframe>';document.getElementById('videoModal').style.display='flex';}
+function closeVideo(){document.getElementById('videoModal').style.display='none';document.getElementById('modalVC').innerHTML='';}
+
+window.addEventListener('scroll',function(){
+  var btn=document.getElementById('scrollBtn');
+  if(btn) btn.classList.toggle('visible',window.scrollY>400);
+});
+
+document.addEventListener('DOMContentLoaded',function(){
+  var els=document.querySelectorAll('.reveal');
+  if(typeof IntersectionObserver!=='undefined'){
+    var obs=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('active');obs.unobserve(e.target);}});
+    },{threshold:0.12});
+    els.forEach(function(el){obs.observe(el);});
+  } else {
+    els.forEach(function(el){el.classList.add('active');});
+  }
+});
+</script>
+</body>
+</html>
