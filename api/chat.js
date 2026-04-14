@@ -1,11 +1,16 @@
 export default async function handler(req, res) {
-    // 1. Mandatory CORS Headers to allow your website to connect
+    // 1. Mandatory CORS Headers (Allows your website to talk to Vercel)
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-    if (req.method === 'OPTIONS') return res.status(200).end();
-    if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Method not allowed' });
+    }
 
     const { message, history = [] } = req.body;
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -14,13 +19,13 @@ export default async function handler(req, res) {
         return res.status(500).json({ reply: "⚠️ Config Error: GEMINI_API_KEY is missing in Vercel." });
     }
 
-    // 2. Using the stable Gemini 1.5 Flash model (gemini-2.5 does not exist)
+    // Stable 2026 Endpoint
     const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
     const SYSTEM_PROMPT = `You are Mike Ronald Lakra's Assistant. 
     Knowledge: Bajaj Life Insurance (CSR 99.29%, Solvency 343%). 
-    Tone: Professional. Match user language (English, Hindi, Bengali, Nepali).
-    Identity: Developed by Mike Ronald Lakra.`;
+    Tone: Professional. Match the user's language (English, Hindi, Bengali, or Nepali).
+    Identity: Developed by Mike Ronald Lakra. Always stay in character.`;
 
     const contents = [
         { role: 'user', parts: [{ text: SYSTEM_PROMPT }] },
@@ -40,10 +45,15 @@ export default async function handler(req, res) {
         });
 
         const data = await response.json();
-        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm sorry, I'm having trouble thinking. Please contact Mike.";
+        
+        if (!response.ok) {
+            return res.status(500).json({ reply: "Sorry, Mike is currently updating my systems. Please WhatsApp him directly." });
+        }
+
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm not sure I understand. Please contact Mike Ronald Lakra.";
         return res.status(200).json({ reply });
 
     } catch (error) {
-        return res.status(500).json({ reply: "Connection Error. Please contact Mike Ronald Lakra." });
+        return res.status(500).json({ reply: "Connection Error. Please contact Mike Ronald Lakra directly on WhatsApp." });
     }
 }
