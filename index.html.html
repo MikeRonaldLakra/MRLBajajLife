@@ -1248,7 +1248,8 @@ async function processAIQuery() {
             conversationHistory.push({ role: 'user', content: text });
             conversationHistory.push({ role: 'model', content: data.reply });
         } else {
-            el.innerHTML = data.reply || "⚠️ My system is being updated. Please WhatsApp Mike.";
+            // This shows the error message we defined in the backend
+            el.innerHTML = data.reply; 
         }
     } catch (error) {
         const el = document.getElementById(typId);
