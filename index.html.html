@@ -1226,10 +1226,10 @@ async function processAIQuery() {
     try {
         // ✅ FIXED: Full Vercel URL instead of relative /api/chat
         const response = await fetch('https://project3-pi-dun.vercel.app/api/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: text, history: conversationHistory })
-        });
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: userInput, history: chatHistory })
+});
 
         const data = await response.json();
         const el = document.getElementById(typId);
