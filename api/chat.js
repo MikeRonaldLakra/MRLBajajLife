@@ -1,54 +1,35 @@
-// api/chat.js
-const SYSTEM_PROMPT = `
-You are Mike Ronald Lakra's AI Assistant, an expert in Bajaj Life Insurance. 
-Goal: Persuade users that Bajaj Life is the best choice using facts.
-Knowledge: IRDAI Reg 116, CSR 99.29%, Solvency 343%.
-Plans: AWG (6 variants), Smart Protect (Term), Smart Wealth Goal V (ULIP), Pension Goal II, ACE.
-Personality: Warm, trustworthy, uses Hinglish/Bengali/Nepali.
-`;
+// Replace ONLY the processAIQuery function inside your <script> tag:
+async function processAIQuery() {
+    const inp = document.getElementById('aiInput');
+    const text = inp.value.trim();
+    if (!text) return;
 
-export default async function handler(req, res) {
-    if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-
-    const { message, history = [] } = req.body;
-    const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-
-    // ERROR CHECK 1: Missing Key
-    if (!GEMINI_API_KEY) {
-        return res.status(500).json({ reply: "⚠️ Config Error: GEMINI_API_KEY is missing in Vercel. Please add it in Settings > Environment Variables and REDEPLOY." });
-    }
-
-    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
-
-    const contents = [
-        { role: 'user', parts: [{ text: SYSTEM_PROMPT }] },
-        { role: 'model', parts: [{ text: 'Ready.' }] },
-        ...history.map(entry => ({
-            role: entry.role === 'user' ? 'user' : 'model',
-            parts: [{ text: entry.content }]
-        })),
-        { role: 'user', parts: [{ text: message }] }
-    ];
+    appendChat('user', text);
+    inp.value = '';
+    const typId = 'typ-' + Date.now();
+    appendChat('bot', '<span class="typing-anim">Assistant is thinking...</span>', typId);
 
     try {
-        const response = await fetch(GEMINI_URL, {
+        const response = await fetch('/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ contents })
+            body: JSON.stringify({ 
+                message: text, 
+                history: conversationHistory 
+            })
         });
 
         const data = await response.json();
-
-        // ERROR CHECK 2: Google rejection
-        if (!response.ok) {
-            console.error('Gemini Error:', data);
-            return res.status(500).json({ reply: `⚠️ Google API Error: ${data.error?.message || 'Unknown error'}` });
+        const el = document.getElementById(typId);
+        
+        // This will now display the specific error message from the backend
+        el.innerHTML = data.reply || data.error || "Something went wrong.";
+        
+        if (response.ok) {
+            conversationHistory.push({ role: 'user', content: text });
+            conversationHistory.push({ role: 'model', content: el.innerText });
         }
-
-        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "I couldn't generate a response.";
-        return res.status(200).json({ reply });
-
     } catch (error) {
-        return res.status(500).json({ reply: `⚠️ Server Crash: ${error.message}` });
+        document.getElementById(typId).innerHTML = "⚠️ Network Error. Check your internet or Vercel logs.";
     }
 }
