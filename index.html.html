@@ -1276,10 +1276,10 @@ async function processAIQuery() {
     const body = document.getElementById('aiChatBody');
     if (body) body.scrollTop = body.scrollHeight;
 
-  } catch (error) {
-    console.error('API error:', error);
+} catch (error) {
+    console.error('Fetch/Network error details:', error);
     const el = document.getElementById(typId);
-    if (el) el.innerHTML = '⚠️ Unable to connect. Please try again or contact Mike directly on WhatsApp.';
+    if (el) el.innerHTML = `⚠️ Error: ${error.message}. Please try again or contact Mike.`;
   }
 }
 
