@@ -1208,7 +1208,19 @@ function runSmartProfiler(){
 /* ═══════════════════════════════════
    AI CHATBOT — ✅ FULLY FIXED
 ═══════════════════════════════════ */
+
 let conversationHistory = [];
+
+function toggleAIChat() {
+    const win = document.getElementById('aiWindow');
+    if(win.classList.contains('open')) {
+        win.classList.remove('open');
+        win.style.display = 'none';
+    } else {
+        win.classList.add('open');
+        win.style.display = 'flex';
+    }
+}
 
 async function processAIQuery() {
     const inp = document.getElementById('aiInput');
@@ -1222,7 +1234,6 @@ async function processAIQuery() {
     appendChat('bot', '<span class="typing-anim">Assistant is thinking...</span>', typId);
 
     try {
-        // ✅ FIXED: Points to your actual Vercel Backend
         const response = await fetch('https://project3-pi-dun.vercel.app/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -1231,46 +1242,29 @@ async function processAIQuery() {
 
         const data = await response.json();
         const el = document.getElementById(typId);
-        if (!el) return;
-
+        
         if (response.ok) {
             el.innerHTML = data.reply;
             conversationHistory.push({ role: 'user', content: text });
             conversationHistory.push({ role: 'model', content: data.reply });
         } else {
-            el.innerHTML = "⚠️ Sorry, my boss is working on me. Please WhatsApp Mike.";
+            el.innerHTML = data.reply || "⚠️ My system is being updated. Please WhatsApp Mike.";
         }
     } catch (error) {
         const el = document.getElementById(typId);
-        if (el) el.innerHTML = "⚠️ Could not connect. Please WhatsApp Mike directly!";
+        if (el) el.innerHTML = "⚠️ Connection lost. Please WhatsApp Mike directly!";
     }
-}
-}
-
-function sendQuickReply(text) {
-  const inp = document.getElementById('aiInput');
-  if (inp) {
-    inp.value = text;
-    processAIQuery();
-  }
-}
-
-function toggleAIChat() {
-  const win = document.getElementById('aiWindow');
-  if (win) win.classList.toggle('open');
 }
 
 function appendChat(sender, text, id) {
-  const body = document.getElementById('aiChatBody');
-  if (!body) return;
-  const div = document.createElement('div');
-  div.className = 'ai-msg ai-' + sender;
-  if (id) div.id = id;
-  div.innerHTML = text;
-  body.appendChild(div);
-  body.scrollTop = body.scrollHeight;
+    const body = document.getElementById('aiChatBody');
+    const div = document.createElement('div');
+    div.className = 'ai-msg ai-' + sender;
+    if (id) div.id = id;
+    div.innerHTML = text;
+    body.appendChild(div);
+    body.scrollTop = body.scrollHeight;
 }
-
 /* UI FUNCTIONS */
 function toggleFAQ(el){
   var a=el.nextElementSibling,isOpen=a.classList.contains('open');
