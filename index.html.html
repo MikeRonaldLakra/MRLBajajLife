@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mike Ronald Lakra | Bajaj Life Insurance Advisor — Kolkata</title>
+<meta name="description" content="Mike Ronald Lakra — Authorized Bajaj Allianz Life Financial Advisor, Kolkata (IC: ABLIC1003446377). Get guaranteed income plans, term insurance, ULIP & pension plans with free consultation.">
+<meta name="keywords" content="Bajaj Allianz Life Insurance Kolkata, AWG plan, term insurance Kolkata, ULIP, retirement plan, Mike Ronald Lakra">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ... ALL EXISTING STYLES (exactly as you provided) ... */
+*{margin:0;padding:0;box-sizing:border-box;scroll-behavior:smooth}
+:root{
+  --blue:#1d74ca;--blue-dark:#0a3b75;--blue-light:#e8f2ff;
+  --red:#ed1c24;--red-dark:#c0141a;
+  --gold:#c9940a;--gold-light:#fff8e6;
+  --green:#28a745;--green-light:#f0fff4;
+  --orange:#ff8c00;--orange-light:#fffaf0;
+  --purple:#6a0dad;--purple-light:#f5eeff;
+  --text:#1b2a47;--muted:#5a6580;--border:#e8edf5;--white:#ffffff;
+}
+/* ... rest of your extensive CSS ... (copy the full style block from your original file) ... */
+</style>
+</head>
+<body>
+<!-- ... ALL YOUR EXISTING HTML CONTENT (Hero, Plans, Tables, Forms, etc.) ... -->
+<!-- Copy everything from your original HTML body, including all sections, modals, and the AI floating button -->
+
+<!-- AI FLOATING ASSISTANT -->
+<button class="ai-fab" id="aiFab" onclick="toggleAIChat()" title="Ask Mike's Assistant">
+  <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/Woman%20Office%20Worker.png" alt="Assistant">
+  <div class="ai-fab-label">Ask Assistant</div>
+</button>
+
+<!-- AI CHAT WINDOW -->
+<div class="ai-window" id="aiWindow">
+  <div class="ai-header">
+    <span>🤷‍♂️ Mike's Assistant</span>
+    <button class="ai-header-close" onclick="toggleAIChat()">✕</button>
+  </div>
+  <div class="ai-body" id="aiChatBody">
+    <div class="ai-msg ai-bot">Hello! 🙏 I'm Mike's assistant.<br><br>Tell me your <strong>age + goal</strong> and I'll recommend the best Bajaj Life plan for you!</div>
+  </div>
+  <div class="quick-replies">
+      <button class="qr-btn" onclick="sendQuickReply('Best plan for women')">Women's Plan</button>
+      <button class="qr-btn" onclick="sendQuickReply('AWG vs FD')">AWG vs FD</button>
+      <button class="qr-btn" onclick="sendQuickReply('Best term plan')">Term Plan</button>
+  </div>
+  <div class="ai-input-area">
+    <input type="text" id="aiInput" class="ai-input" placeholder="Type your question..." onkeypress="if(event.key==='Enter')processAIQuery()">
+    <button class="ai-send" onclick="processAIQuery()">Send</button>
+  </div>
+</div>
+
+<!-- ... Rest of your HTML (footer, sticky elements, video modal) ... -->
+
+<script>
+/* ═══════════════════════════════════
+   CALCULATOR FUNCTIONS (UNCHANGED)
+═══════════════════════════════════ */
+function fmt(n){ return '₹' + Math.round(n).toLocaleString('en-IN'); }
+function val(id){ var el = document.getElementById(id); return el ? el.value : ''; }
+// ... include all calculator functions (calcSI, calcLL, calcTerm, etc.) exactly as you had them ...
+// ... (copy the entire calculator section from your original file) ...
+
+/* ═══════════════════════════════════
+   SMART PROFILER (UNCHANGED)
+═══════════════════════════════════ */
+function runSmartProfiler(){ /* ... unchanged ... */ }
+
+/* ═══════════════════════════════════
+   GEMINI API INTEGRATION — NEW FUNCTIONS
+   (Replaces old local AI completely)
+═══════════════════════════════════ */
+
+// Conversation history array to maintain context
+let conversationHistory = [];
+
+// Process user query by calling the Vercel backend
+async function processAIQuery() {
+  const inp = document.getElementById('aiInput');
+  if (!inp) return;
+  const text = inp.value.trim();
+  if (!text) return;
+
+  appendChat('user', text);
+  inp.value = '';
+
+  // Add to history
+  conversationHistory.push({ role: 'user', content: text });
+
+  const typId = 'typ-' + Date.now();
+  appendChat('bot', '<span class="typing-anim">Mike\'s Assistant is typing...</span>', typId);
+
+  try {
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: text,
+        history: conversationHistory.slice(0, -1), // send previous messages without the current one
+        userContext: {} // You can pass age, gender etc. if you collect them
+      })
+    });
+
+    const data = await response.json();
+    const reply = data.reply || 'Sorry, I encountered an issue. Please try again.';
+
+    // Update typing indicator with actual reply
+    const el = document.getElementById(typId);
+    if (el) el.innerHTML = reply;
+
+    // Add assistant response to history
+    conversationHistory.push({ role: 'assistant', content: reply });
+
+    // Scroll to bottom
+    const body = document.getElementById('aiChatBody');
+    if (body) body.scrollTop = body.scrollHeight;
+
+  } catch (error) {
+    console.error('API error:', error);
+    const el = document.getElementById(typId);
+    if (el) el.innerHTML = '⚠️ Unable to connect. Please try again or contact Mike directly on WhatsApp.';
+  }
+}
+
+// Quick reply button handler
+function sendQuickReply(text) {
+  const inp = document.getElementById('aiInput');
+  if (inp) {
+    inp.value = text;
+    processAIQuery();
+  }
+}
+
+// Toggle chat window
+function toggleAIChat() {
+  const win = document.getElementById('aiWindow');
+  if (win) win.classList.toggle('open');
+}
+
+// Append message to chat window
+function appendChat(sender, text, id) {
+  const body = document.getElementById('aiChatBody');
+  if (!body) return;
+  const div = document.createElement('div');
+  div.className = 'ai-msg ai-' + sender;
+  if (id) div.id = id;
+  div.innerHTML = text;
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
+}
+
+/* ═══════════════════════════════════
+   UI UTILITY FUNCTIONS (UNCHANGED)
+═══════════════════════════════════ */
+function toggleFAQ(el){ /* ... unchanged ... */ }
+function openVideo(id){ /* ... unchanged ... */ }
+function closeVideo(){ /* ... unchanged ... */ }
+// ... rest of your UI functions (submitLeadWA, etc.) ...
+
+// Scroll reveal, sticky rec, etc.
+</script>
+</body>
+</html>
