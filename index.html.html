@@ -1226,26 +1226,25 @@ async function processAIQuery() {
     try {
         // ✅ FIXED: Full Vercel URL instead of relative /api/chat
         // Replace the old fetch line with this one:
-const response = await fetch('https://project3-pi-dun.vercel.app/api/chat', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: userInput, history: chatHistory })
-});
-        const data = await response.json();
-        const el = document.getElementById(typId);
-        if (!el) return;
+// FIND THIS SECTION IN YOUR HTML AND REPLACE THE FETCH PART:
+try {
+    const response = await fetch('https://project3-pi-dun.vercel.app/api/chat', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            message: userInput,
+            history: chatHistory
+        })
+    });
 
-        if (response.ok) {
-            el.innerHTML = data.reply;
-            conversationHistory.push({ role: 'user', content: text });
-            conversationHistory.push({ role: 'model', content: data.reply });
-        } else {
-            el.innerHTML = data.reply || "⚠️ Something went wrong. Please try again or WhatsApp Mike.";
-        }
-    } catch (error) {
-        const el = document.getElementById(typId);
-        if (el) el.innerHTML = "⚠️ Could not connect. Please WhatsApp Mike directly!";
-    }
+    const data = await response.json();
+    // ... rest of your display logic
+} catch (error) {
+    // This is where your "Could not connect" error comes from
+    addMessage('⚠️ Could not connect. Please WhatsApp Mike direct.', 'ai-message');
+}
 }
 
 function sendQuickReply(text) {
