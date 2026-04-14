@@ -1,28 +1,23 @@
 // api/chat.js
 const SYSTEM_PROMPT = `
-You are Mike Ronald Lakra's AI Assistant, specializing in Bajaj Life Insurance. 
-Knowledge: CSR 99.29%, Solvency 343%. 
-Personality: Warm, persuasive, and professional. Use Hinglish/Bengali/Nepali as needed.
+You are Mike Ronald Lakra's AI Assistant. 
+Knowledge: Bajaj Life Insurance (CSR 99.29%, Solvency 343%). 
+Tone: Professional and persuasive. Mix Hinglish/Bengali/Nepali.
 `;
 
-export default async function (req, res) {
-    // 1. Check for POST method
-    if (req.method !== 'POST') {
-        return res.status(405).json({ reply: "Method not allowed" });
-    }
+export default async function handler(req, res) {
+    if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
     const { message, history = [] } = req.body;
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
-    // 2. Check for API Key
     if (!GEMINI_API_KEY) {
-        return res.status(500).json({ reply: "⚠️ GEMINI_API_KEY is missing in Vercel. Please add it and REDEPLOY." });
+        return res.status(500).json({ reply: "⚠️ Config Error: GEMINI_API_KEY is missing in Vercel." });
     }
 
-    // 3. Stable Gemini Model URL// Replace your GEMINI_URL line with this:
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+    // UPDATED MODEL NAME FOR 2026
+    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
-    // 4. Format Content
     const contents = [
         { role: 'user', parts: [{ text: SYSTEM_PROMPT }] },
         { role: 'model', parts: [{ text: 'Ready.' }] },
@@ -43,8 +38,7 @@ const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemi
         const data = await response.json();
 
         if (!response.ok) {
-            console.error('Google Error:', data);
-            return res.status(500).json({ reply: `⚠️ Google API Error: ${data.error?.message || 'Check Key'}` });
+            return res.status(500).json({ reply: `⚠️ Google API Error: ${data.error?.message || 'Check model version'}` });
         }
 
         const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "I couldn't generate a response.";
