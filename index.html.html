@@ -8,7 +8,9 @@
 <meta name="keywords" content="Bajaj Allianz Life Insurance Kolkata, AWG plan, term insurance Kolkata, ULIP, retirement plan, Mike Ronald Lakra">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* ... ALL EXISTING STYLES (exactly as you provided) ... */
+/* ═══════════════════════════════════
+   FULL CSS (EXACTLY AS YOU PROVIDED)
+═══════════════════════════════════ */
 *{margin:0;padding:0;box-sizing:border-box;scroll-behavior:smooth}
 :root{
   --blue:#1d74ca;--blue-dark:#0a3b75;--blue-light:#e8f2ff;
@@ -19,14 +21,995 @@
   --purple:#6a0dad;--purple-light:#f5eeff;
   --text:#1b2a47;--muted:#5a6580;--border:#e8edf5;--white:#ffffff;
 }
-/* ... rest of your extensive CSS ... (copy the full style block from your original file) ... */
+body{font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);background:#f4f7fb;line-height:1.6;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:300;background:rgba(255,255,255,0.98);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 4%;box-shadow:0 2px 20px rgba(0,0,0,0.06);}
+.nav-brand{display:flex;align-items:center;gap:12px;}
+.nav-logo-box{width:40px;height:40px;background:linear-gradient(135deg,var(--blue-dark),var(--blue));border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:0.9rem;flex-shrink:0;}
+.nav-name{font-weight:700;font-size:0.95rem;line-height:1.2;}
+.nav-name span{display:block;font-size:0.7rem;font-weight:400;color:var(--muted);}
+.nav-links{display:flex;gap:4px;align-items:center;}
+.nav-link{padding:6px 12px;border-radius:6px;font-size:0.8rem;font-weight:600;color:var(--text);text-decoration:none;transition:0.2s;}
+.nav-link:hover{background:var(--blue-light);color:var(--blue);}
+.nav-cta{background:var(--red);color:#fff;padding:0.55rem 1.3rem;border-radius:8px;font-weight:700;text-decoration:none;font-size:0.85rem;transition:0.3s;white-space:nowrap;}
+.nav-cta:hover{background:var(--red-dark);transform:translateY(-1px);}
+
+/* STICKY REC BAR */
+.sticky-recommendation{position:fixed;top:70px;left:0;right:0;background:var(--blue-dark);color:white;padding:12px 4%;text-align:center;font-size:0.88rem;font-weight:700;z-index:299;transform:translateY(-100%);transition:transform 0.4s ease;box-shadow:0 4px 15px rgba(0,0,0,0.15);}
+.sticky-recommendation.show{transform:translateY(0);}
+
+/* HERO */
+.hero{min-height:90vh;padding:120px 4% 60px;background:linear-gradient(135deg,#0d2d6b 0%,#1a52a8 50%,#0d3a7a 100%);display:flex;align-items:center;color:#fff;position:relative;overflow:hidden;}
+.hero-blob{position:absolute;border-radius:50%;pointer-events:none;opacity:0.06;}
+.hero-blob-1{width:600px;height:600px;background:white;top:-200px;right:-100px;}
+.hero-blob-2{width:300px;height:300px;background:#ffd166;bottom:-50px;left:-50px;}
+.hero-inner{display:grid;grid-template-columns:1.3fr 1fr;gap:4rem;max-width:1150px;margin:0 auto;z-index:2;width:100%;align-items:center;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(237,28,36,0.2);border:1px solid rgba(237,28,36,0.6);padding:0.4rem 1rem;border-radius:50px;font-size:0.72rem;font-weight:700;margin-bottom:1.5rem;letter-spacing:0.5px;}
+.live-dot{width:8px;height:8px;background:#ff4444;border-radius:50%;animation:blink 1.5s infinite;flex-shrink:0;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.6rem,5vw,4rem);line-height:1.08;margin-bottom:1.2rem;}
+.hero h1 em{color:#ffd166;font-style:normal;}
+.hero-sub{opacity:0.88;font-size:1.05rem;margin-bottom:2rem;line-height:1.7;max-width:520px;}
+.hero-stats{display:flex;gap:2rem;margin-bottom:2rem;}
+.hstat-val{font-size:1.6rem;font-weight:700;color:#ffd166;line-height:1;}
+.hstat-lbl{font-size:0.68rem;opacity:0.75;margin-top:3px;text-transform:uppercase;letter-spacing:0.5px;}
+.ic-card{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:1rem 1.4rem;display:inline-flex;gap:1.8rem;margin-bottom:1.8rem;backdrop-filter:blur(10px);}
+.ic-label{font-size:0.66rem;color:rgba(255,255,255,0.65);text-transform:uppercase;letter-spacing:1px;}
+.ic-code{font-family:monospace;font-size:1.05rem;color:#ffd166;font-weight:700;}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;}
+.hero-btn-primary{background:var(--red);color:#fff;padding:14px 28px;border-radius:10px;font-weight:700;text-decoration:none;font-size:0.95rem;transition:0.3s;display:inline-flex;align-items:center;gap:8px;}
+.hero-btn-primary:hover{background:var(--red-dark);transform:translateY(-2px);box-shadow:0 8px 20px rgba(237,28,36,0.4);}
+.hero-btn-secondary{background:rgba(255,255,255,0.12);color:#fff;padding:14px 28px;border-radius:10px;font-weight:700;text-decoration:none;font-size:0.95rem;transition:0.3s;border:1px solid rgba(255,255,255,0.3);display:inline-flex;align-items:center;gap:8px;}
+.hero-btn-secondary:hover{background:rgba(255,255,255,0.2);}
+.profile-card{background:rgba(39,104,184,0.8);border-radius:20px;padding:2rem;box-shadow:0 30px 70px rgba(0,0,0,0.25);color:var(--text);position:relative;overflow:hidden;}
+.profile-card::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--blue),var(--red),#ffd166);}
+.profile-avatar{width:65px;height:65px;background:linear-gradient(135deg,var(--blue-dark),var(--blue));border-radius:14px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.9rem;font-weight:bold;margin-bottom:1rem;}
+.profile-card h3{font-size:1.15rem;font-weight:700;color:var(--text);margin-bottom:2px;}
+.profile-card .role{font-size:0.78rem;color:var(--muted);margin-bottom:1rem;}
+.pstat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:1rem 0;}
+.pstat{background:var(--blue-light);padding:10px;border-radius:10px;text-align:center;}
+.pstat div:first-child{font-weight:700;color:var(--blue);font-size:0.9rem;}
+.pstat div:last-child{font-size:0.68rem;color:var(--muted);margin-top:2px;}
+.trust-badges{display:flex;flex-direction:column;gap:6px;margin-top:1rem;}
+.tbadge{display:flex;align-items:center;gap:8px;font-size:0.78rem;color:var(--muted);background:#f8fafc;padding:7px 10px;border-radius:8px;}
+
+/* TRUST STRIP */
+.trust-strip{background:var(--blue-dark);color:#fff;padding:18px 4%;display:flex;justify-content:center;align-items:center;gap:3rem;flex-wrap:wrap;}
+.tstrip-item{display:flex;align-items:center;gap:10px;font-size:0.82rem;}
+.tstrip-val{font-size:1.2rem;font-weight:700;color:#ffd166;}
+
+/* SMART PROFILER / QUIZ */
+.quiz-section{background:linear-gradient(135deg,#f4f5f8,#f8f4f4);padding:60px 4%;border-bottom:1px solid var(--border);}
+.quiz-inner{max-width:900px;margin:0 auto;text-align:center;}
+.quiz-title{font-size:1.8rem;font-weight:700;color:var(--text);margin-bottom:8px;}
+.quiz-sub{color:var(--muted);margin-bottom:2rem;font-size:0.95rem;}
+.smart-profiler{background:white;border-radius:16px;padding:2.5rem;box-shadow:0 8px 25px rgba(0,0,0,0.08);margin-top:1.5rem;text-align:left;}
+.sp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin-bottom:15px;}
+.sp-input{width:100%;padding:14px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:0.95rem;color:var(--text);background:#fff;}
+.sp-input:focus{outline:none;border-color:var(--blue);}
+.sp-btn{width:100%;background:var(--blue);color:white;border:none;padding:14px;border-radius:8px;font-weight:800;cursor:pointer;transition:0.3s;font-size:1rem;}
+.sp-btn:hover{background:var(--blue-dark);transform:translateY(-2px);}
+.quiz-result{background:#f8f9fc;border:2px solid var(--blue);border-radius:14px;padding:20px;display:none;text-align:left;margin-top:1.5rem;}
+
+/* FD COMPARE */
+.fd-compare{background:linear-gradient(135deg,#fff,#f0f6ff);border:2px solid var(--blue);border-radius:16px;padding:2rem;margin:3rem 0 1rem;box-shadow:0 10px 30px rgba(29,116,202,0.15);position:relative;overflow:hidden;text-align:left;}
+.fd-badge{position:absolute;top:15px;right:-35px;background:var(--red);color:white;padding:5px 40px;font-weight:800;font-size:0.75rem;transform:rotate(45deg);letter-spacing:1px;}
+.fd-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1.5rem;}
+.fd-col{padding:1.5rem;border-radius:12px;}
+.fd-bank{background:#fff5f5;border:1px solid #ffcccc;}
+.fd-bajaj{background:var(--blue-dark);color:white;transform:scale(1.02);box-shadow:0 8px 20px rgba(0,0,0,0.2);}
+.fd-bajaj h4{color:#ffd166;}
+
+/* BLOG & PLANS */
+.blog-section{padding:70px 4%;max-width:1150px;margin:0 auto;}
+.section-intro{text-align:center;margin-bottom:2.5rem;}
+.section-intro h2{font-size:2.2rem;font-weight:700;color:var(--text);letter-spacing:-0.5px;}
+.section-intro p{color:var(--muted);margin-top:8px;font-size:0.95rem;}
+.category-header{font-size:1.75rem;font-weight:700;color:var(--text);border-bottom:3px solid var(--red);padding-bottom:10px;margin-top:55px;margin-bottom:28px;letter-spacing:-0.3px;display:flex;align-items:center;gap:10px;}
+.article-card{background:#fff;border-radius:16px;padding:2rem;margin-bottom:1.8rem;box-shadow:0 4px 24px rgba(0,0,0,0.06);border-left:5px solid var(--blue);display:grid;grid-template-columns:1fr 370px;gap:2rem;align-items:start;transition:0.4s;}
+.article-card:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(29,116,202,0.13);}
+.article-content h3{font-size:1.3rem;margin-bottom:10px;color:var(--text);}
+.article-content p{font-size:0.93rem;color:var(--muted);margin-bottom:15px;line-height:1.75;}
+.article-features{list-style:none;display:flex;flex-wrap:wrap;gap:7px;margin-bottom:15px;}
+.article-features li{background:var(--blue-light);color:var(--blue-dark);font-size:0.76rem;font-weight:700;padding:5px 11px;border-radius:20px;}
+.plan-highlight{background:linear-gradient(135deg,#eff1f3,#fbfdff);border-radius:10px;padding:12px 15px;margin-top:10px;font-size:0.85rem;border-left:3px solid var(--blue);}
+.plan-highlight strong{color:var(--blue-dark);}
+
+/* CALCULATORS */
+.action-box{background:#eff1f4;border:1px solid var(--border);padding:1.4rem;border-radius:14px;text-align:center;position:sticky;top:80px;}
+.variant-tabs{display:flex;gap:4px;margin-bottom:10px;flex-wrap:wrap;}
+.vtab{padding:5px 9px;border-radius:6px;border:1px solid var(--blue);background:#fff;color:var(--blue);font-size:0.7rem;font-weight:700;cursor:pointer;transition:0.2s;}
+.vtab.active{background:var(--blue);color:#fff;}
+.vtab:hover:not(.active){background:var(--blue-light);}
+.variant-panel{display:none;}
+.variant-panel.active{display:block;}
+.calc-container{background:#faf8f8;border-radius:10px;padding:13px;border:1px solid #f0f0f0;text-align:left;margin-bottom:10px;}
+.calc-label{font-size:0.66rem;font-weight:700;color:var(--muted);display:block;margin-bottom:3px;text-transform:uppercase;letter-spacing:0.5px;}
+.calc-input{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:6px;margin-bottom:8px;font-family:inherit;font-size:0.87rem;color:var(--text);background:#f8f9fc;}
+.calc-input:focus{outline:none;border-color:var(--blue);background:#fff;}
+.btn-calc{width:100%;color:#fff;border:none;padding:10px;border-radius:7px;font-weight:700;cursor:pointer;transition:0.3s;font-size:0.87rem;}
+.btn-calc:hover{filter:brightness(1.1);transform:translateY(-1px);}
+.res-box{display:none;margin-top:10px;padding:12px;border-radius:8px;font-size:0.85rem;}
+.res-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid rgba(0,0,0,0.05);}
+.res-row:last-child{border-bottom:none;}
+.res-label{color:var(--muted);font-size:0.76rem;}
+.res-value{font-weight:700;font-size:0.9rem;}
+.calc-note{font-size:0.66rem;color:var(--muted);text-align:center;margin-top:6px;line-height:1.4;font-style:italic;}
+.btn-video{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:var(--blue-dark);color:#fff;padding:11px;border-radius:8px;border:none;font-weight:700;font-size:0.88rem;cursor:pointer;transition:0.3s;margin-bottom:10px;}
+.btn-video:hover{background:#000;box-shadow:0 5px 15px rgba(0,0,0,0.3);}
+.btn-whatsapp{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;background:#fff;color:#25D366;border:2px solid #25D366;padding:9px;border-radius:8px;text-decoration:none;font-weight:700;transition:0.3s;text-align:center;margin-top:8px;font-size:0.87rem;}
+.btn-whatsapp:hover{background:#25D366;color:#fff;}
+.btn-brochure{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;background:#f0f6ff;color:var(--blue);border:1px solid var(--blue);padding:9px;border-radius:8px;text-decoration:none;font-weight:700;transition:0.3s;text-align:center;margin-top:8px;font-size:0.87rem;}
+.btn-brochure:hover{background:var(--blue);color:white;}
+.btn-protect{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;border-radius:9px;border:none;font-weight:800;font-size:0.9rem;cursor:pointer;transition:0.3s;text-decoration:none;text-align:center;margin-top:8px;letter-spacing:0.3px;color:#fff;}
+.btn-protect:hover{transform:translateY(-2px);}
+.btn-protect.awg{background:linear-gradient(135deg,#0a3b75,#1d74ca);box-shadow:0 4px 15px rgba(29,116,202,0.3);}
+.btn-protect.term{background:linear-gradient(135deg,#c0141a,#ed1c24);box-shadow:0 4px 15px rgba(237,28,36,0.3);}
+.btn-protect.ulip{background:linear-gradient(135deg,#1a6b30,#28a745);box-shadow:0 4px 15px rgba(40,167,69,0.3);}
+.btn-protect.pension{background:linear-gradient(135deg,#c46800,#ff8c00);box-shadow:0 4px 15px rgba(255,140,0,0.3);}
+.btn-protect.ace{background:linear-gradient(135deg,#8a6500,#c9940a);box-shadow:0 4px 15px rgba(201,148,10,0.3);}
+.btn-trust-line{font-size:0.65rem;color:var(--muted);text-align:center;margin-top:5px;display:flex;align-items:center;justify-content:center;gap:4px;flex-wrap:wrap;}
+
+/* COMPARE TABLES */
+.compare-section{padding:60px 4%;background:#f6f3f3;}
+.compare-inner{max-width:1100px;margin:0 auto;}
+.compare-title{text-align:center;font-size:1.9rem;font-weight:700;color:var(--text);margin-bottom:2rem;}
+.compare-table{width:100%;border-collapse:collapse;font-size:0.83rem;}
+.compare-table th{background:var(--blue-dark);color:white;padding:12px 14px;text-align:left;font-weight:700;}
+.compare-table th:first-child{border-radius:10px 0 0 0;}
+.compare-table th:last-child{border-radius:0 10px 0 0;}
+.compare-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text);}
+.compare-table tr:last-child td{border-bottom:none;}
+.compare-table tr:nth-child(even) td{background:#f8fafc;}
+.compare-table .yes{color:var(--green);font-weight:700;}
+.compare-table .no{color:var(--red);font-weight:700;}
+.compare-table .plan-name{font-weight:700;color:var(--blue-dark);}
+.compare-table .best-badge{background:var(--red);color:white;font-size:0.65rem;padding:2px 7px;border-radius:10px;margin-left:5px;font-weight:700;}
+.compare-wrapper{overflow-x:auto;border-radius:12px;border:1px solid var(--border);}
+
+/* VS TABLE */
+.vs-compare-section{padding:50px 4% 60px;background:#f4f7fb;}
+.vs-compare-inner{max-width:900px;margin:0 auto;}
+.vs-compare-title{text-align:center;font-size:1.75rem;font-weight:700;color:var(--text);margin-bottom:6px;}
+.vs-compare-sub{text-align:center;color:var(--muted);font-size:0.9rem;margin-bottom:2rem;}
+.vs-table{width:100%;border-collapse:collapse;font-size:0.85rem;min-width:560px;}
+.vs-table th{padding:14px 16px;font-weight:700;}
+.vs-table th:first-child{background:var(--blue-dark);color:white;border-radius:10px 0 0 0;width:32%;}
+.vs-table th.col-trad{background:#e53e3e;color:white;text-align:center;}
+.vs-table th.col-bajaj{background:#c9940a;color:#1b2a47;text-align:center;border-radius:0 10px 0 0;}
+.vs-table td{padding:12px 16px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5;}
+.vs-table tr:nth-child(even) td{background:rgba(0,0,0,0.02);}
+.vs-table tr:last-child td{border-bottom:none;}
+.vs-table .feat-label{font-weight:700;color:var(--text);font-size:0.83rem;}
+.vs-table .feat-sub{font-size:0.72rem;color:var(--muted);margin-top:2px;}
+.vs-trad-cell{text-align:center;color:#c0141a;font-size:0.82rem;}
+.vs-bajaj-cell{text-align:center;color:#1b2a47;font-size:0.82rem;background:#fff8e6;}
+.vs-bajaj-cell strong{color:#8a6500;}
+.vs-badge-winner{display:inline-block;background:#c9940a;color:#1b2a47;font-size:0.65rem;font-weight:800;padding:2px 8px;border-radius:10px;margin-bottom:3px;}
+.vs-cta-row{text-align:center;margin-top:24px;}
+.vs-cta-btn{display:inline-block;background:var(--gold);color:#1b2a47;padding:14px 32px;border-radius:30px;text-decoration:none;font-weight:800;font-size:0.95rem;transition:0.3s;box-shadow:0 4px 15px rgba(201,148,10,0.3);}
+.vs-cta-btn:hover{background:#b8860a;color:white;transform:translateY(-2px);}
+
+/* LEAD FORM */
+.lead-section{background:linear-gradient(135deg,#0a3b75,#1d74ca);padding:60px 4%;text-align:center;color:#fff;}
+.lead-inner{max-width:680px;margin:0 auto;}
+.lead-title{font-size:2rem;font-weight:700;margin-bottom:8px;font-family:'Cormorant Garamond',serif;}
+.lead-sub{opacity:0.85;margin-bottom:2rem;font-size:0.95rem;}
+.lead-form{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:16px;padding:2rem;backdrop-filter:blur(10px);}
+.lead-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.lead-input{width:100%;padding:12px 15px;border:1px solid rgba(255,255,255,0.3);border-radius:8px;background:rgba(255,255,255,0.12);color:#fff;font-family:inherit;font-size:0.9rem;transition:0.2s;}
+.lead-input::placeholder{color:rgba(255,255,255,0.55);}
+.lead-input:focus{outline:none;border-color:rgba(255,255,255,0.6);background:rgba(255,255,255,0.18);}
+.lead-input option{color:var(--text);background:#fff;}
+.lead-submit{width:100%;background:#25D366;color:#fff;border:none;padding:15px;border-radius:8px;font-weight:800;font-size:1rem;cursor:pointer;transition:0.3s;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:10px;}
+.lead-submit:hover{background:#1ebd5a;transform:translateY(-2px);}
+.lead-submit-sheet{width:100%;background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);padding:11px;border-radius:8px;font-weight:700;font-size:0.85rem;cursor:pointer;transition:0.3s;margin-top:8px;}
+.lead-submit-sheet:hover{background:rgba(255,255,255,0.25);}
+.lead-privacy{font-size:0.68rem;opacity:0.6;margin-top:10px;}
+.lead-success{display:none;background:rgba(37,211,102,0.2);border:1px solid rgba(37,211,102,0.5);border-radius:10px;padding:14px;margin-top:12px;font-size:0.88rem;color:white;}
+.lead-benefits{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.lead-benefit{font-size:0.78rem;opacity:0.85;display:flex;align-items:center;gap:5px;}
+
+/* TESTIMONIALS */
+.testi-section{padding:60px 4%;background:#f8f3f3;}
+.testi-inner{max-width:1100px;margin:0 auto;}
+.testi-title{text-align:center;font-size:1.9rem;font-weight:700;color:var(--text);margin-bottom:2rem;}
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;}
+.testi-card{background:#f5f6f8;border-radius:14px;padding:1.5rem;border:1px solid var(--border);position:relative;}
+.testi-card::before{content:'\201C';font-size:4rem;color:var(--blue-light);font-family:'Cormorant Garamond',serif;position:absolute;top:-5px;left:15px;line-height:1;}
+.testi-text{font-size:0.88rem;color:var(--muted);line-height:1.7;margin-top:1rem;padding-top:0.5rem;}
+.testi-author{display:flex;align-items:center;gap:10px;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);}
+.testi-avatar{width:40px;height:40px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:0.9rem;flex-shrink:0;}
+.testi-name{font-weight:700;font-size:0.85rem;color:var(--text);}
+.testi-plan{font-size:0.72rem;color:var(--blue);}
+.stars{color:#f5c430;font-size:0.85rem;margin-bottom:6px;}
+
+/* FAQ */
+.faq-section{padding:60px 4%;background:#f5f7f8;}
+.faq-inner{max-width:760px;margin:0 auto;}
+.faq-title{text-align:center;font-size:1.9rem;font-weight:700;color:var(--text);margin-bottom:2rem;}
+.faq-item{background:#fffbfb;border-radius:12px;margin-bottom:10px;border:1px solid var(--border);overflow:hidden;}
+.faq-q{padding:16px 20px;font-weight:700;font-size:0.9rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;color:var(--text);transition:0.2s;user-select:none;}
+.faq-q:hover{background:#f9fbfc;}
+.faq-q .arrow{font-size:1.1rem;transition:0.3s;color:var(--blue);}
+.faq-q.open .arrow{transform:rotate(180deg);}
+.faq-a{display:none;padding:0 20px 16px;font-size:0.87rem;color:var(--muted);line-height:1.75;border-top:1px solid var(--border);}
+.faq-a.open{display:block;}
+
+/* VIDEOS */
+.video-showcase{padding:50px 4%;max-width:1100px;margin:0 auto;}
+.vs-header{text-align:center;margin-bottom:2rem;}
+.vs-header h2{font-size:1.9rem;font-weight:700;color:var(--text);}
+.vs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.2rem;}
+.vs-card{background:#f6f2f2;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.07);border:1px solid var(--border);transition:0.4s;cursor:pointer;}
+.vs-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(29,116,202,0.12);}
+.vs-thumb{height:150px;background-size:cover;background-position:center;position:relative;}
+.vs-thumb::before{content:'';position:absolute;inset:0;background:rgba(0,0,0,0.18);transition:0.3s;}
+.vs-card:hover .vs-thumb::before{background:rgba(0,0,0,0.08);}
+.vs-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(237,28,36,0.92);width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.1rem;transition:0.3s;padding-left:4px;}
+.vs-card:hover .vs-play{transform:translate(-50%,-50%) scale(1.1);}
+.vs-title{padding:12px;font-weight:600;font-size:0.85rem;color:var(--text);text-align:center;line-height:1.4;}
+
+/* CONTACT */
+.contact-section{padding:60px 4%;max-width:1000px;margin:0 auto;text-align:center;}
+.contact-header h2{font-size:1.9rem;font-weight:700;color:var(--text);margin-bottom:6px;}
+.contact-header p{color:var(--muted);margin-bottom:2rem;font-size:0.95rem;}
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.2rem;}
+.contact-card{background:#f8f5f5;padding:1.8rem;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,0.06);border:1px solid var(--border);transition:0.4s;}
+.contact-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(29,116,202,0.12);}
+.contact-icon{width:58px;height:58px;background:var(--blue-light);color:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.7rem;margin:0 auto 1rem;}
+.contact-card h3{font-size:1.1rem;color:var(--text);margin-bottom:5px;font-weight:700;}
+.contact-card p{color:var(--muted);font-size:0.87rem;margin-bottom:18px;}
+.contact-btn{display:inline-block;padding:10px 20px;background:var(--blue);color:#fff;border-radius:8px;text-decoration:none;font-weight:700;transition:0.3s;width:100%;font-size:0.87rem;}
+.contact-btn:hover{background:var(--blue-dark);}
+.contact-btn.whatsapp{background:#25D366;}
+.contact-btn.whatsapp:hover{background:#1ebd5a;}
+
+/* ═══════════════════════════════════════
+   AI CHATBOT — FLOATING AVATAR + WINDOW
+═══════════════════════════════════════ */
+.ai-fab{
+  position:fixed;top:110px;right:18px;z-index:9997;
+  display:flex;flex-direction:column;align-items:center;
+  cursor:pointer;border:none;background:transparent;padding:0;
+}
+.ai-fab img{
+  width:72px;height:auto;
+  filter:drop-shadow(0 8px 15px rgba(0,0,0,0.28));
+  animation:floatAvatar 3s ease-in-out infinite;
+}
+@keyframes floatAvatar{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.ai-fab-label{
+  background:white;color:var(--blue-dark);font-size:11px;font-weight:700;
+  padding:5px 11px;border-radius:18px;border:1px solid #ccc;
+  margin-top:-8px;box-shadow:0 4px 10px rgba(0,0,0,0.18);white-space:nowrap;
+}
+
+.ai-window{
+  position:fixed;top:195px;right:18px;width:340px;height:460px;
+  background:white;border-radius:16px;
+  box-shadow:0 12px 40px rgba(0,0,0,0.2);
+  display:none;flex-direction:column;overflow:hidden;
+  border:1px solid var(--border);z-index:9996;
+}
+.ai-window.open{display:flex;animation:popUp 0.3s ease;}
+@keyframes popUp{from{opacity:0;transform:translateY(15px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+.ai-header{
+  background:var(--blue-dark);color:white;padding:14px 16px;
+  font-weight:700;display:flex;justify-content:space-between;align-items:center;
+  font-size:0.88rem;flex-shrink:0;
+}
+.ai-header-close{cursor:pointer;font-size:1.1rem;background:rgba(255,255,255,0.15);border:none;color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.ai-body{
+  flex:1;padding:12px;overflow-y:auto;background:#f8fafc;
+  display:flex;flex-direction:column;gap:9px;font-size:0.84rem;
+}
+.ai-body::-webkit-scrollbar{width:3px;}
+.ai-body::-webkit-scrollbar-thumb{background:#dde3ef;border-radius:3px;}
+.ai-msg{padding:9px 13px;border-radius:12px;max-width:88%;line-height:1.55;}
+.ai-bot{background:white;border:1px solid var(--border);align-self:flex-start;border-bottom-left-radius:3px;}
+.ai-user{background:var(--blue-dark);color:white;align-self:flex-end;border-bottom-right-radius:3px;}
+.typing-anim{color:var(--muted);font-style:italic;}
+
+.ai-quick-replies{display:flex;gap:5px;flex-wrap:wrap;padding:9px 12px;background:white;border-top:1px solid #f0f0f0;flex-shrink:0;}
+.qr-btn{background:#eff1f4;border:1px solid #ccc;padding:5px 10px;border-radius:13px;font-size:0.72rem;cursor:pointer;transition:0.2s;white-space:nowrap;}
+.qr-btn:hover{background:var(--blue-light);color:var(--blue);border-color:var(--blue);}
+
+.ai-input-area{display:flex;padding:9px 11px;border-top:1px solid var(--border);background:white;flex-shrink:0;gap:7px;}
+.ai-input{flex:1;padding:9px 12px;border:1px solid var(--border);border-radius:18px;outline:none;font-size:0.84rem;font-family:inherit;}
+.ai-input:focus{border-color:var(--blue);}
+.ai-send{background:var(--blue);color:white;border:none;padding:0 14px;border-radius:18px;font-weight:700;cursor:pointer;font-size:0.84rem;transition:0.2s;}
+.ai-send:hover{background:var(--blue-dark);}
+
+/* FOOTER & MISC */
+.sticky-wa{position:fixed;bottom:24px;right:24px;z-index:500;background:#25D366;color:white;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,0.5);transition:0.3s;animation:pulse 2.5s infinite;}
+.sticky-wa:hover{transform:scale(1.1);}
+@keyframes pulse{0%,100%{box-shadow:0 4px 20px rgba(37,211,102,0.5)}50%{box-shadow:0 4px 30px rgba(37,211,102,0.8)}}
+.scroll-top{position:fixed;bottom:24px;right:96px;z-index:500;background:var(--blue);color:white;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;cursor:pointer;border:none;box-shadow:0 3px 12px rgba(29,116,202,0.4);transition:0.3s;opacity:0;pointer-events:none;}
+.scroll-top.visible{opacity:1;pointer-events:all;}
+.scroll-top:hover{background:var(--blue-dark);}
+.mobile-sticky{display:none;position:fixed;bottom:0;left:0;right:0;z-index:400;background:white;border-top:1px solid var(--border);padding:10px 12px;gap:10px;box-shadow:0 -4px 20px rgba(0,0,0,0.1);}
+.msb-call{flex:1;background:var(--blue);color:#fff;border:none;padding:12px;border-radius:8px;font-weight:700;font-size:0.88rem;cursor:pointer;text-decoration:none;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px;}
+.msb-wa{flex:1;background:#25D366;color:white;border:none;padding:12px;border-radius:8px;font-weight:700;font-size:0.88rem;text-decoration:none;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px;}
+.video-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;align-items:center;justify-content:center;padding:20px;}
+.modal-content{width:100%;max-width:880px;background:#000;border-radius:10px;overflow:hidden;position:relative;aspect-ratio:16/9;}
+.close-modal{position:absolute;top:-42px;right:0;color:#fff;font-size:2rem;cursor:pointer;background:none;border:none;}
+footer{background:#0d1117;color:rgba(255,255,255,0.55);padding:50px 4%;text-align:center;margin-top:50px;}
+.footer-brand{font-family:'Cormorant Garamond',serif;color:#fff;font-size:1.9rem;margin-bottom:8px;}
+.footer-links{display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;margin:16px 0;}
+.footer-links a{color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.8rem;transition:0.2s;}
+.footer-links a:hover{color:#fff;}
+.footer-disclaimer{font-size:0.68rem;max-width:820px;margin:20px auto 0;border-top:1px solid rgba(255,255,255,0.08);padding-top:18px;line-height:1.7;}
+
+/* Reveal animations */
+.reveal{opacity:0;transform:translateY(35px);transition:all 0.75s cubic-bezier(0.25,0.46,0.45,0.94);}
+.reveal.active{opacity:1;transform:translateY(0);}
+
+@media(max-width:960px){
+  .hero-inner{grid-template-columns:1fr;}
+  .hero-card-wrap{display:none;}
+  .article-card{grid-template-columns:1fr;}
+  .action-box{position:static;}
+  .nav-links{display:none;}
+  .lead-row{grid-template-columns:1fr;}
+  .mobile-sticky{display:flex;}
+  body{padding-bottom:70px;}
+  .fd-grid{grid-template-columns:1fr;}
+  .ai-window{width:calc(100vw - 20px);right:10px;top:185px;height:55vh;}
+  .ai-fab{top:105px;right:12px;}
+}
+@media(max-width:600px){
+  .section-intro h2,.category-header{font-size:1.5rem;}
+  .hero-stats{gap:1.2rem;}
+  .hstat-val{font-size:1.3rem;}
+  nav{padding:0 3.5%;}
+}
 </style>
 </head>
 <body>
-<!-- ... ALL YOUR EXISTING HTML CONTENT (Hero, Plans, Tables, Forms, etc.) ... -->
-<!-- Copy everything from your original HTML body, including all sections, modals, and the AI floating button -->
 
-<!-- AI FLOATING ASSISTANT -->
+<!-- NAVIGATION -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-logo-box">MRL</div>
+    <div class="nav-name">Mike Ronald Lakra <span>Authorized Bajaj Life Sales Manager</span></div>
+  </div>
+  <div class="nav-links">
+    <a href="#plans" class="nav-link">Plans</a>
+    <a href="#find-plan" class="nav-link">Find My Plan</a>
+    <a href="#compare" class="nav-link">Compare</a>
+    <a href="#vs-compare" class="nav-link">Bajaj vs Others</a>
+    <a href="#faq" class="nav-link">FAQ</a>
+    <a href="#contact" class="nav-link">Contact</a>
+  </div>
+  <a href="https://wa.me/+919382181126?text=Hi Mike, I want to know more about Bajaj Life plans" target="_blank" class="nav-cta">📋 Free Consultation</a>
+</nav>
+
+<!-- STICKY RECOMMENDATION BAR -->
+<div class="sticky-recommendation" id="stickyRec">
+  Based on your profile, we recommend: <span id="stickyRecText" style="color:#ffd166;"></span>
+  <a href="https://wa.me/+919382181126" target="_blank" style="margin-left:15px;color:#ffd166;text-decoration:underline;">Discuss Now →</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+  <div class="hero-inner">
+    <div class="reveal">
+      <div class="hero-badge"><span class="live-dot"></span> Official Bajaj Life Partner | Kolkata</div>
+      <h1>Secure Your <br>Future With <em>Guaranteed</em><br>Income Plans</h1>
+      <p class="hero-sub">I am Mike Ronald Lakra — Bajaj Life Authorized Financial Advisor. Free from market risks, 100% guaranteed returns. Every plan is designed for your life goals.</p>
+      <div class="hero-stats">
+        <div class="hstat"><div class="hstat-val">99.29%</div><div class="hstat-lbl">Claim Settlement</div></div>
+        <div class="hstat"><div class="hstat-val">5+</div><div class="hstat-lbl">Active Plans</div></div>
+        <div class="hstat"><div class="hstat-val">₹1.37L Cr</div><div class="hstat-lbl">AUM</div></div>
+        <div class="hstat"><div class="hstat-val">343%</div><div class="hstat-lbl">Solvency Ratio</div></div>
+      </div>
+      <div class="ic-card">
+        <div><div class="ic-label">IC Code</div><div class="ic-code">ABLIC1003446377</div></div>
+        <div style="width:1px;background:rgba(255,255,255,0.2)"></div>
+        <div><div class="ic-label">Unit</div><div style="font-weight:600;font-size:0.9rem;">Kolkata, JK Millenium</div></div>
+        <div style="width:1px;background:rgba(255,255,255,0.2)"></div>
+        <div><div class="ic-label">Valid Till</div><div style="font-weight:600;font-size:0.9rem;">31/03/2027</div></div>
+      </div>
+      <div class="hero-ctas">
+        <a href="#find-plan" class="hero-btn-primary">Find My Best Plan</a>
+        <a href="https://wa.me/+919382181126" target="_blank" class="hero-btn-secondary"> WhatsApp Now</a>
+      </div>
+    </div>
+    <div class="hero-card-wrap reveal">
+      <div class="profile-card">
+        <div class="profile-avatar">M</div>
+        <h3>Mike Ronald Lakra</h3>
+        <div class="role">Sales Manager | Bajaj Allianz Life</div>
+        <div class="pstat-grid">
+          <div class="pstat"><div>Valid</div><div>Till 31/03/2027</div></div>
+          <div class="pstat"><div>Certified</div><div>IRDAI Licensed</div></div>
+          <div class="pstat"><div>Unit</div><div>JK Millenium</div></div>
+          <div class="pstat"><div>City</div><div>Kolkata</div></div>
+        </div>
+        <div class="trust-badges">
+          <div class="tbadge"> Direct Policy — Zero Hidden Fees</div>
+          <div class="tbadge"> 100% Guaranteed Plan Benefits</div>
+          <div class="tbadge"> Free Lifetime Support</div>
+          <div class="tbadge"> Instant PDF Quote on WhatsApp</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST STRIP -->
+<div class="trust-strip">
+  <div class="tstrip-item"><span class="tstrip-val">99.29%</span> Claim Settlement Ratio FY 2024-25</div>
+  <div class="tstrip-item"><span class="tstrip-val">₹1.37L Cr</span> Assets Under Management</div>
+  <div class="tstrip-item"><span class="tstrip-val">343%</span> Solvency Ratio (vs 150% required)</div>
+  <div class="tstrip-item"><span class="tstrip-val">IRDAI</span> Reg. No. 116 | Since 2001</div>
+  <div class="tstrip-item"><span class="tstrip-val">ZERO GST</span> On policies (Sept 2025+)</div>
+</div>
+
+<!-- SMART PROFILER -->
+<div class="quiz-section reveal" id="find-plan">
+  <div class="quiz-inner">
+    <h2 class="quiz-title">Discover Your Perfect Plan</h2>
+    <p class="quiz-sub">Stop guessing. Let Mike find the exact Bajaj Life plan for you.</p>
+    <div class="smart-profiler">
+      <h3 style="margin-bottom:15px;color:var(--blue-dark);">Mike's Smart Profiler</h3>
+      <div class="sp-grid">
+        <input type="number" id="sp_age" class="sp-input" placeholder="Your Age (e.g. 35)">
+        <select id="sp_income" class="sp-input">
+          <option value="" disabled selected>Annual Income</option>
+          <option value="low">Under ₹5 Lakhs</option>
+          <option value="mid">₹5 – ₹12 Lakhs</option>
+          <option value="high">Above ₹12 Lakhs</option>
+        </select>
+        <select id="sp_profile" class="sp-input">
+          <option value="" disabled selected>Life Stage</option>
+          <option value="single">Single / Unmarried</option>
+          <option value="married_kids">Married with Kids</option>
+          <option value="married_nokids">Married (No Kids yet)</option>
+          <option value="single_parent">Single Mother / Father</option>
+          <option value="retired">Nearing Retirement (50+)</option>
+        </select>
+      </div>
+      <button class="sp-btn" onclick="runSmartProfiler()">Analyze &amp; Recommend Plan</button>
+      <div id="sp_result" class="quiz-result"></div>
+    </div>
+
+    <div class="fd-compare" style="margin-top:2.5rem;">
+      <div class="fd-badge">EYE OPENER</div>
+      <h2 style="font-size:1.6rem;color:var(--text);">Why AWG Beats Bank FDs</h2>
+      <p style="color:var(--muted);font-size:0.9rem;margin-top:6px;">The wealthy don't put all their money in FDs. Here is the mathematical truth.</p>
+      <div class="fd-grid">
+        <div class="fd-col fd-bank">
+          <h4 style="color:var(--red-dark);margin-bottom:10px;">❌ Bank Fixed Deposit</h4>
+          <ul style="list-style:none;font-size:0.85rem;line-height:1.8;">
+            <li>📉 <strong>Floating Rates:</strong> Rates reset on renewal — you lose when rates drop.</li>
+            <li>💸 <strong>Fully Taxable:</strong> 30% bracket? You keep only 70% of growth.</li>
+            <li>⚠️ <strong>Zero Life Cover:</strong> FD dies when you die.</li>
+          </ul>
+        </div>
+        <div class="fd-col fd-bajaj">
+          <h4 style="margin-bottom:10px;"> Bajaj Life AWG</h4>
+          <ul style="list-style:none;font-size:0.85rem;line-height:1.8;">
+            <li>🔒 <strong>Locked 30+ Years:</strong> Lock today's high rates forever.</li>
+            <li>🪙 <strong>100% Tax-Free:</strong> u/s 10(10D). Every rupee is yours.</li>
+            <li>🛡️ <strong>Life Cover Built-in:</strong> Family protected from Day 1.</li>
+            <li>🔄 <strong>Capital Returned:</strong> 100–110% ROP at maturity.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PLANS -->
+<div class="blog-section" id="plans">
+  <div class="section-intro reveal">
+    <h2>Complete Insurance Plan Portfolio</h2>
+    <p>Every plan — fully transparent, with live calculators.</p>
+  </div>
+
+  <h2 class="category-header reveal" style="border-bottom-color:var(--blue);">1. Assured Wealth Goal (AWG) — 6 Variants</h2>
+  <div class="article-card reveal" style="border-left-color:var(--blue);" id="awg-second">
+    <div class="article-content">
+      <h3>Bajaj Life Assured Wealth Goal — Guaranteed Income for Every Goal</h3>
+      <p><strong>Zero market risk, 100% guaranteed returns.</strong> 6 variants — Second Income, Lifelong, Step-Up, Wealth Creation, Assured, Extra. Policy mein sab kuch likha hota hai. UIN: 116N170V12</p>
+      <div class="plan-highlight"><strong>Key:</strong> Non-Linked, Non-Participating, IRDAI regulated. UIN: 116N170V12</div>
+      <div style="margin-top:14px;">
+        <div class="variant-tabs">
+          <button class="vtab active" onclick="switchDesc('awg-desc',['second','lifelong','stepup','wealth','assured','extra'],0,this)">2nd Income</button>
+          <button class="vtab" onclick="switchDesc('awg-desc',['second','lifelong','stepup','wealth','assured','extra'],1,this)">Lifelong</button>
+          <button class="vtab" onclick="switchDesc('awg-desc',['second','lifelong','stepup','wealth','assured','extra'],2,this)">Step-Up</button>
+          <button class="vtab" onclick="switchDesc('awg-desc',['second','lifelong','stepup','wealth','assured','extra'],3,this)">Wealth</button>
+          <button class="vtab" onclick="switchDesc('awg-desc',['second','lifelong','stepup','wealth','assured','extra'],4,this)">Assured</button>
+          <button class="vtab" onclick="switchDesc('awg-desc',['second','lifelong','stepup','wealth','assured','extra'],5,this)">Extra</button>
+        </div>
+        <div id="awg-desc-second" class="variant-panel active" style="background:var(--blue-light);border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:var(--blue-dark);">Second Income</strong> — PPT ke baad 25/30 saal guaranteed income + 110% ROP. ₹1L/yr × 10yr PPT → ₹1,81,500/yr for 30 yrs + ₹11L back.</div>
+        <div id="awg-desc-lifelong" class="variant-panel" style="background:var(--blue-light);border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:var(--blue-dark);">Lifelong Income</strong> — Age 99 tak guaranteed income + 110% ROP. ₹1L × 10yr → ₹89,500/yr till 99.</div>
+        <div id="awg-desc-stepup" class="variant-panel" style="background:var(--blue-light);border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:var(--blue-dark);">Step-Up Income</strong> — Har 5 saal mein 10% income increase. 100% ROP. ₹80K→₹88K→₹96K→₹1.04L.</div>
+        <div id="awg-desc-wealth" class="variant-panel" style="background:var(--blue-light);border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:var(--blue-dark);">Wealth Creation</strong> — No income, guaranteed lumpsum at maturity. ₹1.5L × 8yr → GMB ≈ ₹19.2L+.</div>
+        <div id="awg-desc-assured" class="variant-panel" style="background:var(--blue-light);border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:var(--blue-dark);">Assured Income</strong> — Regular income + 100% ROP. ₹1L × 8yr → ₹74,500/yr for 30 yrs.</div>
+        <div id="awg-desc-extra" class="variant-panel" style="background:var(--blue-light);border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:var(--blue-dark);">Extra Income</strong> — Highest payout, no ROP. IRR ~7.2%. ₹1L × 10yr → ₹2,05,000/yr for 25 yrs.</div>
+      </div>
+      <ul class="article-features" style="margin-top:12px;">
+        <li>100% Guaranteed</li><li>6 Variants</li><li>110% ROP</li><li>Tax-Free 10(10D)</li><li>Life Cover</li><li>Joint Life Option</li><li>Zero GST</li>
+      </ul>
+      <a href="https://www.bajajlifeinsurance.com/savings-plans/assured-wealth-goal.html" target="_blank" class="btn-brochure" style="display:inline-flex;width:auto;padding:6px 14px;font-size:0.75rem;margin-top:4px;border-radius:6px;">📥 Official Brochure</a>
+    </div>
+    <div class="action-box">
+      <button class="btn-video" onclick="openVideo('YC2FRaqRnWk')">▶ AWG Video Guide</button>
+      <div class="calc-container">
+        <div style="font-size:0.73rem;font-weight:700;color:var(--blue);margin-bottom:8px;text-align:center;">AWG VARIANT CALCULATOR</div>
+        <div class="variant-tabs">
+          <button class="vtab active" onclick="switchCalcTab('awg',['second','lifelong','stepup','wealth','assured','extra'],0,this)">2nd</button>
+          <button class="vtab" onclick="switchCalcTab('awg',['second','lifelong','stepup','wealth','assured','extra'],1,this)">Lifelong</button>
+          <button class="vtab" onclick="switchCalcTab('awg',['second','lifelong','stepup','wealth','assured','extra'],2,this)">Step</button>
+          <button class="vtab" onclick="switchCalcTab('awg',['second','lifelong','stepup','wealth','assured','extra'],3,this)">Wealth</button>
+          <button class="vtab" onclick="switchCalcTab('awg',['second','lifelong','stepup','wealth','assured','extra'],4,this)">Assured</button>
+          <button class="vtab" onclick="switchCalcTab('awg',['second','lifelong','stepup','wealth','assured','extra'],5,this)">Extra</button>
+        </div>
+        <div id="awg-second-calc" class="variant-panel active">
+          <label class="calc-label">Annual Premium (₹)</label><input type="number" id="si_prem" value="100000" class="calc-input" min="25000">
+          <label class="calc-label">Premium Pay Term</label><select id="si_ppt" class="calc-input"><option value="7">7 Yrs</option><option value="8">8 Yrs</option><option value="10" selected>10 Yrs</option><option value="12">12 Yrs</option><option value="15">15 Yrs</option></select>
+          <label class="calc-label">Income Period</label><select id="si_ip" class="calc-input"><option value="25">25 Yrs</option><option value="30" selected>30 Yrs</option></select>
+          <button class="btn-calc" style="background:var(--blue);" onclick="calcSI()">Calculate Benefits</button>
+          <div id="si_res" class="res-box" style="background:var(--blue-light);border:1px solid #b3d4f7;">
+            <div class="res-row"><span class="res-label">Annual Income</span><span class="res-value" id="si_inc" style="color:var(--green);"></span></div>
+            <div class="res-row"><span class="res-label">Monthly Income</span><span class="res-value" id="si_mon" style="color:var(--blue-dark);"></span></div>
+            <div class="res-row"><span class="res-label">Total Income</span><span class="res-value" id="si_tot" style="color:var(--blue);"></span></div>
+            <div class="res-row"><span class="res-label">110% ROP</span><span class="res-value" id="si_rop" style="color:var(--red);"></span></div>
+            <button id="share_si_quote" class="btn-whatsapp" style="display:none;margin-top:8px;" onclick="shareAWGQuote('si')">📲 Share Quote to Client</button>
+          </div>
+        </div>
+        <div id="awg-lifelong-calc" class="variant-panel">
+          <label class="calc-label">Annual Premium (₹)</label><input type="number" id="ll_prem" value="100000" class="calc-input">
+          <label class="calc-label">Premium Pay Term</label><select id="ll_ppt" class="calc-input"><option value="7">7 Yrs</option><option value="10" selected>10 Yrs</option><option value="12">12 Yrs</option><option value="15">15 Yrs</option></select>
+          <label class="calc-label">Current Age</label><input type="number" id="ll_age" value="40" class="calc-input">
+          <button class="btn-calc" style="background:var(--blue);" onclick="calcLL()">Calculate</button>
+          <div id="ll_res" class="res-box" style="background:var(--blue-light);border:1px solid #b3d4f7;">
+            <div class="res-row"><span class="res-label">Annual Income</span><span class="res-value" id="ll_inc" style="color:var(--green);"></span></div>
+            <div class="res-row"><span class="res-label">Monthly Income</span><span class="res-value" id="ll_mon" style="color:var(--blue-dark);"></span></div>
+            <div class="res-row"><span class="res-label">Income Years (till 99)</span><span class="res-value" id="ll_yrs" style="color:var(--blue);"></span></div>
+            <div class="res-row"><span class="res-label">Total Lifetime Income</span><span class="res-value" id="ll_tot" style="color:var(--orange);"></span></div>
+            <div class="res-row"><span class="res-label">110% ROP</span><span class="res-value" id="ll_rop" style="color:var(--red);"></span></div>
+            <button id="share_ll_quote" class="btn-whatsapp" style="display:none;margin-top:8px;" onclick="shareAWGQuote('ll')">📲 Share Quote</button>
+          </div>
+        </div>
+        <div id="awg-stepup-calc" class="variant-panel">
+          <label class="calc-label">Annual Premium (₹)</label><input type="number" id="su_prem" value="100000" class="calc-input">
+          <label class="calc-label">PPT</label><select id="su_ppt" class="calc-input"><option value="7">7 Yrs</option><option value="10" selected>10 Yrs</option><option value="12">12 Yrs</option></select>
+          <button class="btn-calc" style="background:var(--blue);" onclick="calcSU()">Calculate</button>
+          <div id="su_res" class="res-box" style="background:var(--blue-light);border:1px solid #b3d4f7;">
+            <div class="res-row"><span class="res-label">Yr 1–5</span><span class="res-value" id="su_y1" style="color:var(--green);"></span></div>
+            <div class="res-row"><span class="res-label">Yr 6–10</span><span class="res-value" id="su_y2" style="color:var(--blue);"></span></div>
+            <div class="res-row"><span class="res-label">Yr 11–15</span><span class="res-value" id="su_y3" style="color:var(--blue-dark);"></span></div>
+            <div class="res-row"><span class="res-label">Yr 16–20</span><span class="res-value" id="su_y4" style="color:var(--orange);"></span></div>
+            <div class="res-row"><span class="res-label">100% ROP</span><span class="res-value" id="su_rop" style="color:var(--red);"></span></div>
+          </div>
+        </div>
+        <div id="awg-wealth-calc" class="variant-panel">
+          <label class="calc-label">Annual Premium (₹)</label><input type="number" id="wc_prem" value="150000" class="calc-input">
+          <label class="calc-label">PPT</label><select id="wc_ppt" class="calc-input"><option value="5">5 Yrs</option><option value="7">7 Yrs</option><option value="8" selected>8 Yrs</option><option value="10">10 Yrs</option><option value="12">12 Yrs</option></select>
+          <button class="btn-calc" style="background:var(--blue);" onclick="calcWC()">Calculate Corpus</button>
+          <div id="wc_res" class="res-box" style="background:var(--blue-light);border:1px solid #b3d4f7;">
+            <div class="res-row"><span class="res-label">Total Premiums</span><span class="res-value" id="wc_paid"></span></div>
+            <div class="res-row"><span class="res-label">Guaranteed Maturity</span><span class="res-value" id="wc_gmb" style="color:var(--green);"></span></div>
+            <div class="res-row"><span class="res-label">% of Premiums</span><span class="res-value" id="wc_pct" style="color:var(--blue-dark);"></span></div>
+          </div>
+        </div>
+        <div id="awg-assured-calc" class="variant-panel">
+          <label class="calc-label">Annual Premium (₹)</label><input type="number" id="ai_prem" value="100000" class="calc-input">
+          <label class="calc-label">PPT</label><select id="ai_ppt" class="calc-input"><option value="7">7 Yrs</option><option value="8" selected>8 Yrs</option><option value="10">10 Yrs</option><option value="12">12 Yrs</option></select>
+          <label class="calc-label">Income Period</label><select id="ai_ip" class="calc-input"><option value="20">20 Yrs</option><option value="25">25 Yrs</option><option value="30" selected>30 Yrs</option></select>
+          <button class="btn-calc" style="background:var(--blue);" onclick="calcAI()">Calculate</button>
+          <div id="ai_res" class="res-box" style="background:var(--blue-light);border:1px solid #b3d4f7;">
+            <div class="res-row"><span class="res-label">Annual Income</span><span class="res-value" id="ai_inc" style="color:var(--green);"></span></div>
+            <div class="res-row"><span class="res-label">Monthly</span><span class="res-value" id="ai_mon" style="color:var(--blue-dark);"></span></div>
+            <div class="res-row"><span class="res-label">Total Income</span><span class="res-value" id="ai_tot" style="color:var(--blue);"></span></div>
+            <div class="res-row"><span class="res-label">100% ROP</span><span class="res-value" id="ai_rop" style="color:var(--red);"></span></div>
+          </div>
+        </div>
+        <div id="awg-extra-calc" class="variant-panel">
+          <label class="calc-label">Annual Premium (₹)</label><input type="number" id="ei_prem" value="100000" class="calc-input">
+          <label class="calc-label">PPT</label><select id="ei_ppt" class="calc-input"><option value="7">7 Yrs</option><option value="10" selected>10 Yrs</option><option value="12">12 Yrs</option><option value="15">15 Yrs</option></select>
+          <label class="calc-label">Income Period</label><select id="ei_ip" class="calc-input"><option value="20">20 Yrs</option><option value="25" selected>25 Yrs</option><option value="30">30 Yrs</option></select>
+          <button class="btn-calc" style="background:var(--blue);" onclick="calcEI()">Calculate</button>
+          <div id="ei_res" class="res-box" style="background:var(--blue-light);border:1px solid #b3d4f7;">
+            <div class="res-row"><span class="res-label">Annual Income (Max)</span><span class="res-value" id="ei_inc" style="color:var(--green);"></span></div>
+            <div class="res-row"><span class="res-label">Monthly</span><span class="res-value" id="ei_mon" style="color:var(--blue-dark);"></span></div>
+            <div class="res-row"><span class="res-label">Total Income</span><span class="res-value" id="ei_tot" style="color:var(--blue);"></span></div>
+            <div class="res-row"><span class="res-label">ROP</span><span class="res-value" style="color:var(--muted);font-size:0.76rem;">Not available (higher income tradeoff)</span></div>
+          </div>
+        </div>
+        <p class="calc-note">Based on official Bajaj Life AWG brochure. Actual benefits vary by age & underwriting.</p>
+      </div>
+      <a href="https://wa.me/+919382181126?text=Hi Mike, AWG plan PDF chahiye" target="_blank" class="btn-whatsapp">📄 Get AWG PDF on WhatsApp</a>
+      <a href="https://blsht.in/BAJLIF/pSGzzg" class="btn-protect awg">🔒 Apply for AWG Now</a>
+      <div class="btn-trust-line">IRDAI Certified · Zero GST · Direct Policy</div>
+    </div>
+  </div>
+
+  <!-- AWG PLATINUM -->
+  <div class="article-card reveal" style="border-left-color:var(--purple);margin-top:-0.5rem;">
+    <div class="article-content">
+      <h3>AWG Platinum — Early Income Even During Premium Payment</h3>
+      <p>AWG Platinum mein <strong>Early Guaranteed Payouts (EGP)</strong> milti hain — premium pay karte waqt hi income shuru! ₹1L/yr × 10yr → ₹1,00,800/yr for 30 yrs. UIN: 116N170V12</p>
+      <ul class="article-features"><li>Early Payouts During PPT</li><li>~1.008x Annual Income (10yr)</li><li>Enhanced 115% ROP</li><li>Lumpsum Commutation Option</li></ul>
+    </div>
+    <div class="action-box">
+      <div class="calc-container">
+        <div style="font-size:0.73rem;font-weight:700;color:var(--purple);margin-bottom:8px;text-align:center;">AWG PLATINUM CALCULATOR</div>
+        <div class="variant-tabs">
+          <button class="vtab active" onclick="switchPT('smart',this)">Smart Income (Opt 1)</button>
+          <button class="vtab" onclick="switchPT('regular',this)">Regular Income (Opt 2)</button>
+        </div>
+        <div id="pt-smart" class="variant-panel active">
+          <label class="calc-label">Annual Premium (₹)</label><input type="number" id="ps_p" value="100000" class="calc-input">
+          <label class="calc-label">PPT</label><select id="ps_ppt" class="calc-input"><option value="7">7 Yrs</option><option value="10" selected>10 Yrs</option><option value="12">12 Yrs</option></select>
+          <label class="calc-label">EGP Period (yrs during PPT)</label><select id="ps_egp" class="calc-input"><option value="3">3 Yrs</option><option value="5" selected>5 Yrs</option><option value="7">7 Yrs</option></select>
+          <button class="btn-calc" style="background:var(--purple);" onclick="calcPS()">Calculate</button>
+          <div id="ps_res" class="res-box" style="background:var(--purple-light);border:1px solid var(--purple);">
+            <div class="res-row"><span class="res-label">Early Payouts (p.a.)</span><span class="res-value" id="ps_egp_o" style="color:var(--purple);"></span></div>
+            <div class="res-row"><span class="res-label">Regular Income (p.a.)</span><span class="res-value" id="ps_ri" style="color:var(--green);"></span></div>
+            <div class="res-row"><span class="res-label">Monthly (post-PPT)</span><span class="res-value" id="ps_mon" style="color:var(--blue-dark);"></span></div>
+          </div>
+        </div>
+        <div id="pt-regular" class="variant-panel">
+          <label class="calc-label">Annual Premium (₹)</label><input type="number" id="pr_p" value="100000" class="calc-input">
+          <label class="calc-label">PPT</label><select id="pr_ppt" class="calc-input"><option value="7">7 Yrs</option><option value="10" selected>10 Yrs</option><option value="12">12 Yrs</option></select>
+          <label class="calc-label">Income Period</label><select id="pr_ip" class="calc-input"><option value="20">20 Yrs</option><option value="25">25 Yrs</option><option value="30" selected>30 Yrs</option></select>
+          <button class="btn-calc" style="background:var(--purple);" onclick="calcPR()">Calculate</button>
+          <div id="pr_res" class="res-box" style="background:var(--purple-light);border:1px solid var(--purple);">
+            <div class="res-row"><span class="res-label">Annual Income</span><span class="res-value" id="pr_inc" style="color:var(--green);"></span></div>
+            <div class="res-row"><span class="res-label">Monthly</span><span class="res-value" id="pr_mon" style="color:var(--blue-dark);"></span></div>
+            <div class="res-row"><span class="res-label">Total Income</span><span class="res-value" id="pr_tot" style="color:var(--blue);"></span></div>
+            <div class="res-row"><span class="res-label">Enhanced ROP (~115%)</span><span class="res-value" id="pr_rop" style="color:var(--red);"></span></div>
+          </div>
+        </div>
+      </div>
+      <a href="https://wa.me/+919382181126?text=Hi Mike, AWG Platinum chahiye" target="_blank" class="btn-whatsapp">📄 AWG Platinum PDF</a>
+      <a href="https://blsht.in/BAJLIF/pSGzzg" class="btn-protect awg">Get AWG Platinum</a>
+    </div>
+  </div>
+
+  <!-- TERM -->
+  <h2 class="category-header reveal" style="border-bottom-color:var(--red);">🛡️ 2. Smart Protect Goal — Term Insurance</h2>
+  <div class="article-card reveal" style="border-left-color:var(--red);">
+    <div class="article-content">
+      <h3>Smart Protect Goal — Pure Term Life Cover (All Variants)</h3>
+      <p><strong>₹651/month mein ₹1 Crore life cover</strong> (30yr male, non-smoker). 99.29% claim settlement ratio FY 2024-25. Cover till age 99.</p>
+      <ul class="article-features"><li>₹651/mo for 1 Cr (Age 30)</li><li>ROP Option</li><li>55 Critical Illnesses</li><li>Cover till Age 99</li><li>Income Payout Option</li><li>99.29% CSR FY25</li></ul>
+    </div>
+    <div class="action-box">
+      <button class="btn-video" onclick="openVideo('d1FTR2af11Q')">▶ Term Plan Video</button>
+      <div class="calc-container">
+        <div style="font-size:0.73rem;font-weight:700;color:var(--red);margin-bottom:8px;text-align:center;">TERM INSURANCE CALCULATOR</div>
+        <label class="calc-label">Life Cover</label><select id="t_sa" class="calc-input"><option value="5000000">₹50 Lakhs</option><option value="10000000" selected>₹1 Crore</option><option value="15000000">₹1.5 Crore</option><option value="20000000">₹2 Crore</option><option value="50000000">₹5 Crore</option></select>
+        <label class="calc-label">Your Age</label><input type="number" id="t_age" value="30" class="calc-input">
+        <label class="calc-label">Gender</label><select id="t_gender" class="calc-input"><option value="male">Male</option><option value="female">Female (~15% lower)</option></select>
+        <label class="calc-label">Variant</label><select id="t_variant" class="calc-input"><option value="basic">Life Only (Lowest)</option><option value="rop">With Return of Premium</option><option value="ci">With Critical Illness Rider</option><option value="income">Income Payout Option</option></select>
+        <label class="calc-label">Smoker?</label><select id="t_smoke" class="calc-input"><option value="no">Non-Smoker</option><option value="yes">Smoker (~25% higher)</option></select>
+        <button class="btn-calc" style="background:var(--red);" onclick="calcTerm()">Get Quote</button>
+        <div id="t_res" class="res-box" style="background:#fff5f5;border:1px solid #f7c1c1;">
+          <div class="res-row"><span class="res-label">Est. Monthly Premium</span><span class="res-value" id="t_mon" style="color:var(--red);font-size:1.1rem;"></span></div>
+          <div class="res-row"><span class="res-label">Est. Annual Premium</span><span class="res-value" id="t_ann" style="color:var(--blue-dark);"></span></div>
+          <div class="res-row"><span class="res-label">Life Cover</span><span class="res-value" id="t_cov" style="color:var(--green);"></span></div>
+          <div class="res-row"><span class="res-label">Variant</span><span class="res-value" id="t_var" style="color:var(--muted);font-size:0.78rem;"></span></div>
+        </div>
+      </div>
+      <a href="https://wa.me/+919382181126?text=Hi Mike, Smart Protect Goal ka exact quote chahiye" target="_blank" class="btn-whatsapp">📋 Exact Quote on WhatsApp</a>
+      <a href="https://blsht.in/BAJLIF/pSGzzg" class="btn-protect term">Protect My Family Now</a>
+    </div>
+  </div>
+
+  <!-- ULIP -->
+  <h2 class="category-header reveal" style="border-bottom-color:var(--green);">📈 3. Smart Wealth Goal V — ULIP</h2>
+  <div class="article-card reveal" style="border-left-color:var(--green);">
+    <div class="article-content">
+      <h3>Smart Wealth Goal V — Market-Linked Wealth (Zero Allocation Charges)</h3>
+      <p><strong>Zero Premium Allocation Charges</strong> — poora paisa invest hota hai. ROMC at maturity. 15 funds, 5 portfolio strategies, Fund Boosters at 10yr+.</p>
+      <ul class="article-features"><li>Zero Allocation Charges</li><li>ROMC at Maturity</li><li>Fund Boosters</li><li>15 Funds</li><li>5 Strategies</li><li>Tax Benefit 80C</li></ul>
+    </div>
+    <div class="action-box">
+      <button class="btn-video" onclick="openVideo('tw5pCZc3Adw')">▶ ULIP Video Guide</button>
+      <div class="calc-container">
+        <div style="font-size:0.73rem;font-weight:700;color:var(--green);margin-bottom:8px;text-align:center;">ULIP WEALTH CALCULATOR</div>
+        <label class="calc-label">Annual Premium (₹)</label><input type="number" id="u_amt" value="100000" class="calc-input">
+        <label class="calc-label">PPT</label><select id="u_ppt" class="calc-input"><option value="5">5 Yrs</option><option value="10" selected>10 Yrs</option><option value="15">15 Yrs</option></select>
+        <label class="calc-label">Policy Term</label><select id="u_pt" class="calc-input"><option value="10">10 Yrs</option><option value="15">15 Yrs</option><option value="20" selected>20 Yrs</option><option value="25">25 Yrs</option><option value="30">30 Yrs</option></select>
+        <button class="btn-calc" style="background:var(--green);" onclick="calcULIP()">Estimate Wealth</button>
+        <div id="u_res" class="res-box" style="background:var(--green-light);border:1px solid #a8d5b5;">
+          <div class="res-row"><span class="res-label">Total Invested</span><span class="res-value" id="u_inv"></span></div>
+          <div class="res-row"><span class="res-label">@8% CAGR (Illustrative)</span><span class="res-value" id="u_8" style="color:var(--green);"></span></div>
+          <div class="res-row"><span class="res-label">@4% CAGR (Conservative)</span><span class="res-value" id="u_4" style="color:var(--orange);"></span></div>
+          <div class="res-row"><span class="res-label">Est. Fund Booster @10yr</span><span class="res-value" id="u_bst" style="color:var(--blue);"></span></div>
+        </div>
+        <p class="calc-note">IRDAI mandated illustration. Returns NOT guaranteed.</p>
+      </div>
+      <a href="https://wa.me/+919382181126?text=ULIP ke baare mein jaanna hai" target="_blank" class="btn-whatsapp">Ask About ULIP</a>
+      <a href="https://blsht.in/BAJLIF/pSGzzg" class="btn-protect ulip">📈 Start Growing Wealth</a>
+    </div>
+  </div>
+
+  <!-- PENSION -->
+  <h2 class="category-header reveal" style="border-bottom-color:var(--orange);">🏖️ 4. Guaranteed Pension Goal II — Lifetime Income</h2>
+  <div class="article-card reveal" style="border-left-color:var(--orange);">
+    <div class="article-content">
+      <h3>Guaranteed Pension Goal II — Zindagi Bhar Pension</h3>
+      <p>Ek lumpsum invest karo aur <strong>lifetime guaranteed pension</strong> pao. Age 60 par ~<strong>9.0%</strong> annuity rate. Joint life option available.</p>
+      <ul class="article-features"><li>Lifetime Pension</li><li>~8.5–10.4% Rate</li><li>Joint Life Option</li><li>Return of Purchase Price</li><li>Guaranteed Period Options</li><li>Zero Market Risk</li></ul>
+    </div>
+    <div class="action-box">
+      <button class="btn-video" onclick="openVideo('4Et_v0EC2hU')">▶ Pension Plan Guide</button>
+      <div class="calc-container">
+        <div style="font-size:0.73rem;font-weight:700;color:var(--orange);margin-bottom:8px;text-align:center;">PENSION GOAL II CALCULATOR</div>
+        <label class="calc-label">Lumpsum Investment (₹)</label><input type="number" id="p_amt" value="1000000" class="calc-input">
+        <label class="calc-label">Age at Annuity Start</label><select id="p_age" class="calc-input"><option value="45">45 yrs</option><option value="50">50 yrs</option><option value="55">55 yrs</option><option value="60" selected>60 yrs</option><option value="65">65 yrs</option><option value="70">70 yrs</option></select>
+        <label class="calc-label">Annuity Option</label><select id="p_opt" class="calc-input"><option value="life">Single Life Only (Max Rate)</option><option value="rop">Life + Return of Purchase Price</option><option value="joint">Joint Life (With Spouse)</option><option value="g10">Guaranteed 10 Yrs + Lifelong</option><option value="g20">Guaranteed 20 Yrs + Lifelong</option></select>
+        <button class="btn-calc" style="background:var(--orange);" onclick="calcPension()">Calculate Pension</button>
+        <div id="p_res" class="res-box" style="background:var(--orange-light);border:1px solid #f5c470;">
+          <div class="res-row"><span class="res-label">Yearly Pension</span><span class="res-value" id="p_yr" style="color:var(--orange);font-size:1rem;"></span></div>
+          <div class="res-row"><span class="res-label">Monthly Pension</span><span class="res-value" id="p_mon" style="color:var(--blue-dark);"></span></div>
+          <div class="res-row"><span class="res-label">Annuity Rate</span><span class="res-value" id="p_rate" style="color:var(--green);"></span></div>
+          <div class="res-row"><span class="res-label">Nominee Benefit</span><span class="res-value" id="p_nom" style="color:var(--muted);font-size:0.78rem;"></span></div>
+        </div>
+      </div>
+      <a href="https://wa.me/+919382181126?text=Pension Goal II ke baare mein jaanna hai" target="_blank" class="btn-whatsapp">Retirement Planning Help</a>
+      <a href="https://blsht.in/BAJLIF/pSGzzg" class="btn-protect pension">🏖️ Secure My Retirement</a>
+    </div>
+  </div>
+
+  <!-- ACE -->
+  <h2 class="category-header reveal" style="border-bottom-color:var(--gold);">5. Bajaj Life ACE — Design Your Own Plan</h2>
+  <div class="article-card reveal" style="border-left-color:var(--gold);">
+    <div class="article-content">
+      <h3>Bajaj Life ACE — India's First Modular Income Plan 🏆 Product of Year 2024</h3>
+      <p><strong>Aap khud design karo apna plan!</strong> Non-Linked, Participating — Guaranteed Income + Cash Bonus. PPT 5–12 saal. SISO / SIDO / Lumpsum. Cover till age 100.</p>
+      <ul class="article-features"><li>Modular Design</li><li>GI + Cash Bonus</li><li>PPT 5–12 Yrs</li><li>Level or Increasing</li><li>Cover till Age 100</li><li>Product of Year 2024</li><li>Tax 80C + 10(10D)</li></ul>
+    </div>
+    <div class="action-box">
+      <button class="btn-video" onclick="openVideo('mjEoNGv3rGY')">▶ Bajaj ACE Guide</button>
+      <div class="calc-container">
+        <div style="font-size:0.73rem;font-weight:700;color:var(--gold);margin-bottom:8px;text-align:center;">BAJAJ LIFE ACE CALCULATOR</div>
+        <div class="variant-tabs">
+          <button class="vtab active" onclick="switchCalcTab('ace',['siso','sido','ls'],0,this)">SISO</button>
+          <button class="vtab" onclick="switchCalcTab('ace',['siso','sido','ls'],1,this)">SIDO</button>
+          <button class="vtab" onclick="switchCalcTab('ace',['siso','sido','ls'],2,this)">Lumpsum</button>
+        </div>
+        <div id="ace-siso" class="variant-panel active">
+          <label class="calc-label">Annual Premium (₹)</label><input type="number" id="as_p" value="100000" class="calc-input">
+          <label class="calc-label">PPT</label><select id="as_ppt" class="calc-input"><option value="5">5 Yrs</option><option value="7">7 Yrs</option><option value="10" selected>10 Yrs</option><option value="12">12 Yrs</option></select>
+          <label class="calc-label">Income Type</label><select id="as_t" class="calc-input"><option value="level">Level Income</option><option value="inc">Increasing Income</option></select>
+          <button class="btn-calc" style="background:var(--gold);color:#1b2a47;" onclick="calcASISO()">Estimate</button>
+          <div id="as_res" class="res-box" style="background:var(--gold-light);border:1px solid #e0c070;">
+            <div class="res-row"><span class="res-label">Guaranteed Income (p.a.)</span><span class="res-value" id="as_gi" style="color:var(--gold);"></span></div>
+            <div class="res-row"><span class="res-label">Est. Cash Bonus* (p.a.)</span><span class="res-value" id="as_cb" style="color:var(--green);"></span></div>
+            <div class="res-row"><span class="res-label">Total Est. (p.a.)</span><span class="res-value" id="as_tot" style="color:var(--blue-dark);"></span></div>
+            <div class="res-row"><span class="res-label">Monthly (GI only)</span><span class="res-value" id="as_mon" style="color:var(--muted);"></span></div>
+          </div>
+        </div>
+        <div id="ace-sido" class="variant-panel">
+          <label class="calc-label">Annual Premium (₹)</label><input type="number" id="ad_p" value="100000" class="calc-input">
+          <label class="calc-label">PPT</label><select id="ad_ppt" class="calc-input"><option value="5">5 Yrs</option><option value="7">7 Yrs</option><option value="10" selected>10 Yrs</option><option value="12">12 Yrs</option></select>
+          <label class="calc-label">Deferment</label><select id="ad_def" class="calc-input"><option value="2">2 Yrs</option><option value="5" selected>5 Yrs</option><option value="10">10 Yrs</option><option value="15">15 Yrs</option></select>
+          <button class="btn-calc" style="background:var(--gold);color:#1b2a47;" onclick="calcASIDO()">Estimate</button>
+          <div id="ad_res" class="res-box" style="background:var(--gold-light);border:1px solid #e0c070;">
+            <div class="res-row"><span class="res-label">Income Starts After</span><span class="res-value" id="ad_st" style="color:var(--blue);"></span></div>
+            <div class="res-row"><span class="res-label">Guaranteed Income (p.a.)</span><span class="res-value" id="ad_gi" style="color:var(--gold);"></span></div>
+            <div class="res-row"><span class="res-label">Est. Cash Bonus*</span><span class="res-value" id="ad_cb" style="color:var(--green);"></span></div>
+            <div class="res-row"><span class="res-label">Total Est.</span><span class="res-value" id="ad_tot" style="color:var(--blue-dark);"></span></div>
+          </div>
+        </div>
+        <div id="ace-ls" class="variant-panel">
+          <label class="calc-label">Annual Premium (₹)</label><input type="number" id="al_p" value="100000" class="calc-input">
+          <label class="calc-label">PPT</label><select id="al_ppt" class="calc-input"><option value="5">5 Yrs</option><option value="7">7 Yrs</option><option value="10" selected>10 Yrs</option><option value="12">12 Yrs</option></select>
+          <label class="calc-label">Policy Term</label><select id="al_pt" class="calc-input"><option value="15">15 Yrs</option><option value="20" selected>20 Yrs</option><option value="25">25 Yrs</option></select>
+          <button class="btn-calc" style="background:var(--gold);color:#1b2a47;" onclick="calcALS()">Estimate Corpus</button>
+          <div id="al_res" class="res-box" style="background:var(--gold-light);border:1px solid #e0c070;">
+            <div class="res-row"><span class="res-label">Total Premiums</span><span class="res-value" id="al_paid"></span></div>
+            <div class="res-row"><span class="res-label">Guaranteed Maturity</span><span class="res-value" id="al_gmb" style="color:var(--gold);"></span></div>
+            <div class="res-row"><span class="res-label">Est. Bonuses*</span><span class="res-value" id="al_bon" style="color:var(--green);"></span></div>
+            <div class="res-row"><span class="res-label">Total Est. Corpus</span><span class="res-value" id="al_tot" style="color:var(--blue-dark);"></span></div>
+          </div>
+        </div>
+        <p class="calc-note">*Cash Bonus NOT guaranteed. GI is fixed & guaranteed.</p>
+      </div>
+      <a href="https://wa.me/+919382181126?text=Bajaj Life ACE plan design karna hai" target="_blank" class="btn-whatsapp">Design My ACE Plan</a>
+      <a href="https://blsht.in/BAJLIF/pSGzzg" class="btn-protect ace">Get My Custom ACE Plan</a>
+    </div>
+  </div>
+</div>
+
+<!-- COMPARE TABLE -->
+<div class="compare-section reveal" id="compare">
+  <div class="compare-inner">
+    <h2 class="compare-title">All Plans at a Glance</h2>
+    <div class="compare-wrapper">
+      <table class="compare-table">
+        <thead><tr><th>Plan</th><th>Type</th><th>Market Risk</th><th>Regular Income</th><th>Life Cover</th><th>ROP Option</th><th>Best For</th></tr></thead>
+        <tbody>
+          <tr><td class="plan-name">AWG – Second Income<span class="best-badge">POPULAR</span></td><td>Guaranteed</td><td class="yes">Zero</td><td class="yes">✅ Guaranteed</td><td class="yes">✅</td><td class="yes">110%</td><td>Second income + capital</td></tr>
+          <tr><td class="plan-name">AWG – Lifelong Income</td><td>Guaranteed</td><td class="yes">Zero</td><td class="yes">✅ Till 99</td><td class="yes">✅</td><td class="yes">110%</td><td>Retirement — lifetime</td></tr>
+          <tr><td class="plan-name">AWG – Step-Up</td><td>Guaranteed</td><td class="yes">Zero</td><td class="yes">✅ Increasing</td><td class="yes">✅</td><td class="yes">100%</td><td>Rising expenses</td></tr>
+          <tr><td class="plan-name">AWG – Wealth Creation</td><td>Guaranteed</td><td class="yes">Zero</td><td class="no">❌ Lumpsum only</td><td class="yes">✅</td><td class="yes">GMB</td><td>Child education</td></tr>
+          <tr><td class="plan-name">AWG Platinum<span class="best-badge">PREMIUM</span></td><td>Guaranteed</td><td class="yes">Zero</td><td class="yes">✅ + Early Payouts</td><td class="yes">✅</td><td class="yes">115%</td><td>Income during PPT</td></tr>
+          <tr><td class="plan-name">Smart Protect Goal</td><td>Term Insurance</td><td class="yes">Zero</td><td class="no">❌ Death benefit</td><td class="yes">✅ Up to 99</td><td class="yes">Optional</td><td>Family protection</td></tr>
+          <tr><td class="plan-name">Smart Wealth Goal V</td><td>ULIP</td><td style="color:var(--orange);font-weight:700;">Market-Linked</td><td>Partial Withdrawal</td><td class="yes">✅</td><td class="no">❌</td><td>Long-term wealth</td></tr>
+          <tr><td class="plan-name">Guaranteed Pension II</td><td>Annuity</td><td class="yes">Zero</td><td class="yes">✅ Lifetime</td><td class="no">❌</td><td class="yes">On death</td><td>Retirement pension</td></tr>
+          <tr><td class="plan-name">Bajaj Life ACE<span class="best-badge">2024 AWARD</span></td><td>Participating</td><td class="yes">Zero (GI)</td><td class="yes">✅ GI + Bonus</td><td class="yes">✅ Till 100</td><td>Variant-based</td><td>Custom design</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- VS OTHERS -->
+<div class="vs-compare-section reveal" id="vs-compare">
+  <div class="vs-compare-inner">
+    <h2 class="vs-compare-title">⚔️ Bajaj Life vs Traditional Plans</h2>
+    <p class="vs-compare-sub">Why Bajaj Life plans are better than traditional endowment plans.</p>
+    <div class="compare-wrapper">
+      <table class="vs-table">
+        <thead><tr>
+          <th>Feature</th>
+          <th class="col-trad">❌ Traditional Plans<br><span style="font-weight:400;font-size:0.72rem;">(LIC / HDFC / SBI / Tata AIA)</span></th>
+          <th class="col-bajaj">✅ Bajaj Life Plans<br><span style="font-weight:400;font-size:0.72rem;">(AWG / ACE / Smart Protect)</span></th>
+        </tr></thead>
+        <tbody>
+          <tr><td><div class="feat-label">Returns / Yield</div></td><td class="vs-trad-cell">4–5% effective IRR. Bonus not guaranteed</td><td class="vs-bajaj-cell"><div class="vs-badge-winner">WINNER</div><strong>AWG: ~6–7% IRR guaranteed</strong></td></tr>
+          <tr><td><div class="feat-label">Income Start</div></td><td class="vs-trad-cell">Only at maturity (20–30 yrs later)</td><td class="vs-bajaj-cell"><div class="vs-badge-winner">WINNER</div><strong>AWG Platinum: income even during PPT!</strong></td></tr>
+          <tr><td><div class="feat-label">Inflation Protection</div></td><td class="vs-trad-cell">Fixed income erodes with inflation</td><td class="vs-bajaj-cell"><div class="vs-badge-winner">WINNER</div><strong>AWG Step-Up: 10% every 5 years</strong></td></tr>
+          <tr><td><div class="feat-label">Tax Benefits</div></td><td class="vs-trad-cell">Maturity often taxable</td><td class="vs-bajaj-cell"><div class="vs-badge-winner">WINNER</div><strong>80C + 10(10D) + Zero GST!</strong></td></tr>
+          <tr><td><div class="feat-label">Claim Settlement</div></td><td class="vs-trad-cell">LIC 98.3% | SBI 96.1%</td><td class="vs-bajaj-cell"><div class="vs-badge-winner">WINNER</div><strong>99.29% CSR, 96% in 1 working day</strong></td></tr>
+          <tr><td><div class="feat-label">Return of Premium</div></td><td class="vs-trad-cell">Low IRR, heavy surrender penalty</td><td class="vs-bajaj-cell"><div class="vs-badge-winner">WINNER</div><strong>AWG: 110% ROP guaranteed</strong></td></tr>
+          <tr><td><div class="feat-label">Plan Flexibility</div></td><td class="vs-trad-cell">One-size-fits-all</td><td class="vs-bajaj-cell"><div class="vs-badge-winner">WINNER</div><strong>ACE — India's first modular plan</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="vs-cta-row">
+      <a href="#lead-section" class="vs-cta-btn">Compare My Current Policy with Mike</a>
+    </div>
+  </div>
+</div>
+
+<!-- LEAD FORM -->
+<div class="lead-section reveal" id="lead-section">
+  <div class="lead-inner">
+    <h2 class="lead-title">Book Your Free Consultation</h2>
+    <p class="lead-sub">Fill the form — Mike will contact you via WhatsApp within 2 hours.</p>
+    <div class="lead-benefits">
+      <span class="lead-benefit">✅ 100% Free</span>
+      <span class="lead-benefit">📄 Instant PDF Quote</span>
+      <span class="lead-benefit">🔒 Data Secure</span>
+      <span class="lead-benefit">⏰ Reply in 2 Hours</span>
+    </div>
+    <div class="lead-form">
+      <div class="lead-row">
+        <input type="text" id="lf_name" class="lead-input" placeholder="Full Name *">
+        <input type="tel" id="lf_phone" class="lead-input" placeholder="WhatsApp Number * (10 digits)" maxlength="10">
+      </div>
+      <div class="lead-row">
+        <input type="number" id="lf_age" class="lead-input" placeholder="Your Age">
+        <select id="lf_plan" class="lead-input">
+          <option value="" disabled selected>Which Plan Interests You?</option>
+          <option>AWG – Second Income (Guaranteed)</option>
+          <option>AWG – Lifelong Income (Till 99)</option>
+          <option>AWG – Step-Up Income</option>
+          <option>AWG – Wealth Creation</option>
+          <option>AWG Platinum (Early Payouts)</option>
+          <option>Smart Protect Goal – Term</option>
+          <option>Smart Wealth Goal V – ULIP</option>
+          <option>Guaranteed Pension Goal II</option>
+          <option>Bajaj Life ACE</option>
+          <option>Suggest me the best plan</option>
+        </select>
+      </div>
+      <div class="lead-row">
+        <select id="lf_budget" class="lead-input">
+          <option value="" disabled selected>Yearly Budget?</option>
+          <option>₹25,000 – ₹50,000 / year</option>
+          <option>₹50,000 – ₹1,00,000 / year</option>
+          <option>₹1,00,000 – ₹2,00,000 / year</option>
+          <option>₹2,00,000 – ₹5,00,000 / year</option>
+          <option>₹5,00,000+ / year</option>
+          <option>Discuss with Mike</option>
+        </select>
+        <input type="text" id="lf_city" class="lead-input" placeholder="Your City">
+      </div>
+      <button class="lead-submit" onclick="submitLeadWA()">
+         Submit &amp; Get Details on WhatsApp
+      </button>
+      <button class="lead-submit-sheet" onclick="submitLeadSheet()">📩 Save Enquiry Only</button>
+      <div id="lead-success" class="lead-success">✅ <strong>Enquiry saved!</strong> Mike will contact you shortly. Direct: <a href="https://wa.me/+919382181126" target="_blank" style="color:#ffd166;">+91 93821 81126</a></div>
+      <div class="lead-privacy">🔒 Your details are 100% safe. No spam. Only Mike will contact you personally.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<div class="testi-section reveal">
+  <div class="testi-inner">
+    <h2 class="testi-title">What Our Clients Say</h2>
+    <div class="testi-grid">
+      <div class="testi-card"><div class="stars">★★★★★</div><p class="testi-text">Mike has been very helpful in explaining the AWG Second Income plan. I now receive guaranteed income every year. Very trustworthy.</p><div class="testi-author"><div class="testi-avatar">PK</div><div><div class="testi-name">Pratick Kujur</div><div class="testi-plan">AWG Second Income</div></div></div></div>
+      <div class="testi-card"><div class="stars">★★★★★</div><p class="testi-text">Guaranteed pension without any market risk. Mike made the whole process smooth — policy issued in one day.</p><div class="testi-author"><div class="testi-avatar">SP</div><div><div class="testi-name">Sunita Pal</div><div class="testi-plan">Guaranteed Pension Goal II</div></div></div></div>
+      <div class="testi-card"><div class="stars">★★★★★</div><p class="testi-text">₹1 Crore cover for just ₹651/month. My family is now secure, and I sleep soundly.</p><div class="testi-author"><div class="testi-avatar">SR</div><div><div class="testi-name">Sahil Rai</div><div class="testi-plan">Smart Protect Goal</div></div></div></div>
+      <div class="testi-card"><div class="stars">★★★★★</div><p class="testi-text">Mike ke recommendation se best plan mila. Lagbhag 2 guna returns milenge term period ke baad.</p><div class="testi-author"><div class="testi-avatar">VL</div><div><div class="testi-name">Vishal Loha</div><div class="testi-plan">AWG Wealth Creation</div></div></div></div>
+      <div class="testi-card"><div class="stars">★★★★★</div><p class="testi-text">The best plan for my needs. Thank you, Mike!</p><div class="testi-author"><div class="testi-avatar">IB</div><div><div class="testi-name">Inocent Bara</div><div class="testi-plan">AWG Second Income</div></div></div></div>
+      <div class="testi-card"><div class="stars">★★★★★</div><p class="testi-text">Best guidance throughout. Very professional and prompt in follow-ups.</p><div class="testi-author"><div class="testi-avatar">AJ</div><div><div class="testi-name">Alok Justine</div><div class="testi-plan">ULIP</div></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="faq-section reveal" id="faq">
+  <div class="faq-inner">
+    <h2 class="faq-title">❓ Frequently Asked Questions</h2>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)">Bajaj Life AWG mein guaranteed income kya hoti hai? <span class="arrow">▼</span></div><div class="faq-a">AWG plan mein income 100% guaranteed hai — policy document mein likhi hoti hai. Market se koi lena dena nahi. Example: ₹1L/yr × 10yr PPT → ₹1,81,500/yr guaranteed for 30 years (Second Income variant).</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)">Kya Bajaj Life premiums par GST lagti hai? <span class="arrow">▼</span></div><div class="faq-a">Nahi! GOI Notification No. 16/2025 ke anusaar, 22 September 2025 se individual life insurance policies par GST ZERO ho gayi hai.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)">AWG aur AWG Platinum mein kya fark hai? <span class="arrow">▼</span></div><div class="faq-a">AWG mein income PPT ke baad shuru hoti hai. AWG Platinum mein Option 1 (Smart Income) mein PPT ke dauran bhi Early Guaranteed Payouts milti hain. Enhanced 115% ROP bhi available hai.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)">Claim settlement process kaisi hai? <span class="arrow">▼</span></div><div class="faq-a">Bajaj Life ka CSR FY 2024-25 mein 99.29% raha. 96% non-investigative claims 1 working day mein process hote hain — private sector best.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)">ULIP aur AWG mein kaun better hai? <span class="arrow">▼</span></div><div class="faq-a">Risk appetite par depend karta hai. AWG: 100% guaranteed, zero market risk — conservative investors ke liye. ULIP: market-linked, higher potential (8%+) but not guaranteed — long-term wealth (15-20+ years) ke liye. Consult Mike for personalized advice.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)">Bajaj Life ACE ka Cash Bonus guaranteed hai? <span class="arrow">▼</span></div><div class="faq-a">Nahi. ACE mein Guaranteed Income (GI) fixed hai. Cash Bonus company performance par depend karta hai — guaranteed nahi. Yeh participating plan hai.</div></div>
+  </div>
+</div>
+
+<!-- VIDEOS -->
+<div class="video-showcase reveal">
+  <div class="vs-header"><h2>📺 Important Video Guides</h2></div>
+  <div class="vs-grid">
+    <div class="vs-card" onclick="openVideo('8Y23PRFIbCg')"><div class="vs-thumb" style="background-image:url('https://img.youtube.com/vi/8Y23PRFIbCg/hqdefault.jpg')"><div class="vs-play">▶</div></div><div class="vs-title">Financial Goals with Bajaj Life</div></div>
+    <div class="vs-card" onclick="openVideo('85F2-VHg98k')"><div class="vs-thumb" style="background-image:url('https://img.youtube.com/vi/85F2-VHg98k/hqdefault.jpg')"><div class="vs-play">▶</div></div><div class="vs-title">Wealth | Assured Income | Second Income</div></div>
+    <div class="vs-card" onclick="openVideo('UhlQJmAKfMo')"><div class="vs-thumb" style="background-image:url('https://img.youtube.com/vi/UhlQJmAKfMo/hqdefault.jpg')"><div class="vs-play">▶</div></div><div class="vs-title">Bajaj Life Insurance Review</div></div>
+    <div class="vs-card" onclick="openVideo('mjEoNGv3rGY')"><div class="vs-thumb" style="background-image:url('https://img.youtube.com/vi/mjEoNGv3rGY/hqdefault.jpg')"><div class="vs-play">▶</div></div><div class="vs-title">Bajaj Life ACE Plan Review</div></div>
+    <div class="vs-card" onclick="openVideo('R10Rq6WCGSs')"><div class="vs-thumb" style="background-image:url('https://img.youtube.com/vi/R10Rq6WCGSs/hqdefault.jpg')"><div class="vs-play">▶</div></div><div class="vs-title">Child Education Planning</div></div>
+    <div class="vs-card" onclick="openVideo('VpKlgC8rZJU')"><div class="vs-thumb" style="background-image:url('https://img.youtube.com/vi/VpKlgC8rZJU/hqdefault.jpg')"><div class="vs-play">▶</div></div><div class="vs-title">GAIN Plan | Tax-Smart Wealth</div></div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="contact-section reveal" id="contact">
+  <div class="contact-header"><h2>Let's Plan Your Future Together</h2><p>Free consultation — directly from Mike.</p></div>
+  <div class="contact-grid">
+    <div class="contact-card"><div class="contact-icon" style="background:#e8f9f0;color:#25D366;">📱</div><h3>WhatsApp Chat</h3><p>Quick replies & instant PDF quotes.</p><a href="https://wa.me/+919382181126?text=Hi Mike, I want free consultation for Bajaj Life plans" target="_blank" class="contact-btn whatsapp">Chat on WhatsApp</a></div>
+    <div class="contact-card"><div class="contact-icon">📞</div><h3>Phone Call</h3><p>Call directly — clear all doubts.</p><a href="tel:+919382181126" class="contact-btn">Call: +91 93821 81126</a></div>
+    <div class="contact-card"><div class="contact-icon" style="background:var(--gold-light);color:var(--gold);">📧</div><h3>Email</h3><p>Bajaj Life, Kolkata — JK Millenium Unit.</p><a href="mailto:mikeronald338@gmail.com" class="contact-btn" style="background:var(--text);">Email Mike</a></div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-brand">Mike Ronald Lakra</div>
+  <p style="font-size:0.82rem;">Bajaj Life Sales Manager | IC: ABLIC1003446377 | Kolkata, JK Millenium</p>
+  <div class="footer-links">
+    <a href="#plans">Plans</a><a href="#find-plan">Plan Finder</a><a href="#compare">Compare</a>
+    <a href="#vs-compare">Bajaj vs Others</a><a href="#faq">FAQ</a><a href="#contact">Contact</a>
+    <a href="https://www.bajajlifeinsurance.com" target="_blank">Official Bajaj Life Website</a>
+  </div>
+  <div class="footer-disclaimer">
+    Bajaj Life Insurance Limited (Formerly Bajaj Allianz Life Insurance Co. Ltd.) IRDAI Reg. No. 116. This website is operated by Mike Ronald Lakra (IC:ABLIC1003446377), an authorized Financial Advisor. CSR 99.29% FY 2024-25. AUM ₹1.37L Cr Jan 2026. Solvency 343% June 2025.
+  </div>
+</footer>
+
+<!-- FIXED ELEMENTS -->
+<a href="https://wa.me/+919382181126?text=Hi Mike, wanted to know more about Bajaj Life plans" target="_blank" class="sticky-wa" title="WhatsApp Mike">💬</a>
+<button class="scroll-top" id="scrollBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<div class="mobile-sticky">
+  <a href="tel:+919382181126" class="msb-call">📞 Call Mike</a>
+  <a href="https://wa.me/+919382181126?text=Hi Mike, wanted to know more" target="_blank" class="msb-wa">💬 WhatsApp</a>
+</div>
+
+<!-- VIDEO MODAL -->
+<div class="video-modal" id="videoModal" onclick="if(event.target===this)closeVideo()">
+  <div style="position:relative;width:100%;max-width:880px;">
+    <button class="close-modal" onclick="closeVideo()">✖</button>
+    <div class="modal-content" id="modalVC"></div>
+  </div>
+</div>
+
+<!-- AI FLOATING ASSISTANT (connected to Gemini backend) -->
 <button class="ai-fab" id="aiFab" onclick="toggleAIChat()" title="Ask Mike's Assistant">
   <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/Woman%20Office%20Worker.png" alt="Assistant">
   <div class="ai-fab-label">Ask Assistant</div>
@@ -52,31 +1035,211 @@
   </div>
 </div>
 
-<!-- ... Rest of your HTML (footer, sticky elements, video modal) ... -->
-
 <script>
 /* ═══════════════════════════════════
-   CALCULATOR FUNCTIONS (UNCHANGED)
+   UTILITY FUNCTIONS
 ═══════════════════════════════════ */
 function fmt(n){ return '₹' + Math.round(n).toLocaleString('en-IN'); }
 function val(id){ var el = document.getElementById(id); return el ? el.value : ''; }
-// ... include all calculator functions (calcSI, calcLL, calcTerm, etc.) exactly as you had them ...
-// ... (copy the entire calculator section from your original file) ...
+function showRes(boxId, data){
+  var box = document.getElementById(boxId);
+  if(!box) return;
+  Object.keys(data).forEach(function(k){ var el = document.getElementById(k); if(el) el.innerText = data[k]; });
+  box.style.display = 'block';
+}
+function switchDesc(prefix, ids, idx, btn){
+  ids.forEach(function(id){ var el = document.getElementById(prefix+'-'+id); if(el) el.className = 'variant-panel'; });
+  var a = document.getElementById(prefix+'-'+ids[idx]); if(a) a.className = 'variant-panel active';
+  btn.closest('.variant-tabs').querySelectorAll('.vtab').forEach(function(b){ b.className='vtab'; });
+  btn.className = 'vtab active';
+}
+function switchCalcTab(prefix, ids, idx, btn){
+  ids.forEach(function(id){
+    var el1 = document.getElementById(prefix+'-'+id+'-calc');
+    var el2 = document.getElementById(prefix+'-'+id);
+    if(el1) el1.className = 'variant-panel';
+    else if(el2) el2.className = 'variant-panel';
+  });
+  var a1 = document.getElementById(prefix+'-'+ids[idx]+'-calc');
+  var a2 = document.getElementById(prefix+'-'+ids[idx]);
+  if(a1) a1.className = 'variant-panel active';
+  else if(a2) a2.className = 'variant-panel active';
+  btn.closest('.variant-tabs').querySelectorAll('.vtab').forEach(function(b){ b.className='vtab'; });
+  btn.className = 'vtab active';
+}
+function switchPT(v, btn){
+  ['smart','regular'].forEach(function(x){ var el = document.getElementById('pt-'+x); if(el) el.className='variant-panel'; });
+  var a = document.getElementById('pt-'+v); if(a) a.className='variant-panel active';
+  btn.closest('.variant-tabs').querySelectorAll('.vtab').forEach(function(b){ b.className='vtab'; });
+  btn.className = 'vtab active';
+}
+
+/* CALCULATORS */
+var SI_F={7:1.52,8:1.62,10:1.815,12:1.98,15:2.35};
+function calcSI(){
+  var p=parseFloat(val('si_prem'))||0,ppt=parseInt(val('si_ppt'))||10,ip=parseInt(val('si_ip'))||30;
+  if(!p){alert('Premium enter karein.');return;}
+  var ann=Math.round(p*(SI_F[ppt]||1.815));
+  showRes('si_res',{si_inc:fmt(ann)+' / year',si_mon:fmt(Math.round(ann/12))+' / month',si_tot:fmt(ann*ip)+' ('+ip+' yrs)',si_rop:fmt(Math.round(p*ppt*1.10))+' (110% ROP)'});
+  var sb=document.getElementById('share_si_quote');
+  if(sb){sb.style.display='block';window.lastQuote={plan:'AWG Second Income',premium:fmt(p),ppt:ppt+' Yrs',income:fmt(ann),total:fmt(ann*ip),rop:fmt(Math.round(p*ppt*1.10))};}
+}
+var LL_F={7:0.78,10:0.895,12:0.97,15:1.12};
+function calcLL(){
+  var p=parseFloat(val('ll_prem'))||0,ppt=parseInt(val('ll_ppt'))||10,age=parseInt(val('ll_age'))||40;
+  if(!p){alert('Premium enter karein.');return;}
+  var ann=Math.round(p*(LL_F[ppt]||0.895)),yrs=Math.max(0,99-age-ppt);
+  showRes('ll_res',{ll_inc:fmt(ann)+' / year',ll_mon:fmt(Math.round(ann/12))+' / month',ll_yrs:yrs+' years (till age 99)',ll_tot:fmt(ann*yrs)+' approx. lifetime',ll_rop:fmt(Math.round(p*ppt*1.10))+' (110% ROP)'});
+  var sb=document.getElementById('share_ll_quote');
+  if(sb){sb.style.display='block';window.lastQuote={plan:'AWG Lifelong Income',premium:fmt(p),ppt:ppt+' Yrs',income:fmt(ann),total:fmt(ann*yrs)+' (approx)',rop:fmt(Math.round(p*ppt*1.10))};}
+}
+function shareAWGQuote(){
+  if(!window.lastQuote) return;
+  var d=window.lastQuote;
+  var msg='*Your Customized Bajaj Life Quote*%0A%0A*Plan:* '+d.plan+'%0A*Annual Premium:* '+d.premium+' for '+d.ppt+'%0A*Guaranteed Yearly Income:* '+d.income+'%0A*Total Est. Returns:* '+d.total+'%0A*Return of Premium:* '+d.rop+'%0A%0A_100% Guaranteed & Tax-Free._';
+  window.open('https://wa.me/?text='+msg,'_blank');
+}
+var SU_F={7:0.70,10:0.80,12:0.87};
+function calcSU(){
+  var p=parseFloat(val('su_prem'))||0,ppt=parseInt(val('su_ppt'))||10;
+  if(!p){alert('Premium enter karein.');return;}
+  var b=Math.round(p*(SU_F[ppt]||0.80)),s=Math.round(b*0.10);
+  showRes('su_res',{su_y1:fmt(b)+' / year',su_y2:fmt(b+s)+' / year',su_y3:fmt(b+2*s)+' / year',su_y4:fmt(b+3*s)+' / year',su_rop:fmt(p*ppt)+' (100% ROP)'});
+}
+var WC_F={5:1.35,7:1.50,8:1.60,10:1.75,12:1.95};
+function calcWC(){
+  var p=parseFloat(val('wc_prem'))||0,ppt=parseInt(val('wc_ppt'))||8;
+  if(!p){alert('Premium enter karein.');return;}
+  var f=WC_F[ppt]||1.60,total=p*ppt,gmb=Math.round(total*f);
+  showRes('wc_res',{wc_paid:fmt(total),wc_gmb:fmt(gmb),wc_pct:Math.round(f*100)+'% of total premiums'});
+}
+var AI_F={7:0.68,8:0.745,10:0.85,12:0.92};
+function calcAI(){
+  var p=parseFloat(val('ai_prem'))||0,ppt=parseInt(val('ai_ppt'))||8,ip=parseInt(val('ai_ip'))||30;
+  if(!p){alert('Premium enter karein.');return;}
+  var ann=Math.round(p*(AI_F[ppt]||0.745));
+  showRes('ai_res',{ai_inc:fmt(ann)+' / year',ai_mon:fmt(Math.round(ann/12))+' / month',ai_tot:fmt(ann*ip)+' ('+ip+' yrs)',ai_rop:fmt(p*ppt)+' (100% ROP)'});
+}
+var EI_F={7:1.70,10:2.05,12:2.22,15:2.60};
+function calcEI(){
+  var p=parseFloat(val('ei_prem'))||0,ppt=parseInt(val('ei_ppt'))||10,ip=parseInt(val('ei_ip'))||25;
+  if(!p){alert('Premium enter karein.');return;}
+  var ann=Math.round(p*(EI_F[ppt]||2.05));
+  showRes('ei_res',{ei_inc:fmt(ann)+' / year',ei_mon:fmt(Math.round(ann/12))+' / month',ei_tot:fmt(ann*ip)+' ('+ip+' yrs)'});
+}
+var PT_F={7:0.88,10:1.008,12:1.10};
+function calcPS(){
+  var p=parseFloat(val('ps_p'))||0,ppt=parseInt(val('ps_ppt'))||10,egp=parseInt(val('ps_egp'))||5;
+  if(!p){alert('Premium enter karein.');return;}
+  var egpRt={3:0.07,5:0.08,7:0.09};
+  showRes('ps_res',{ps_egp_o:fmt(Math.round(p*(egpRt[egp]||0.08)))+' / yr (during PPT)',ps_ri:fmt(Math.round(p*(PT_F[ppt]||1.008)))+' / year (after PPT)',ps_mon:fmt(Math.round(p*(PT_F[ppt]||1.008)/12))+' / month'});
+}
+function calcPR(){
+  var p=parseFloat(val('pr_p'))||0,ppt=parseInt(val('pr_ppt'))||10,ip=parseInt(val('pr_ip'))||30;
+  if(!p){alert('Premium enter karein.');return;}
+  var ann=Math.round(p*(PT_F[ppt]||1.008));
+  showRes('pr_res',{pr_inc:fmt(ann)+' / year',pr_mon:fmt(Math.round(ann/12))+' / month',pr_tot:fmt(ann*ip)+' ('+ip+' yrs)',pr_rop:fmt(Math.round(p*ppt*1.15))+' (~115%)'});
+}
+var TERM_BASE={18:480,20:500,22:530,25:560,28:610,30:651,32:720,35:820,38:1000,40:1200,42:1450,45:1750,48:2200,50:2700,52:3400,55:4200,58:5500,60:6800,65:9500};
+function calcTerm(){
+  var sa=parseInt(val('t_sa'))||10000000,age=parseInt(val('t_age'))||30,gender=val('t_gender')||'male',variant=val('t_variant')||'basic',smoke=val('t_smoke')||'no';
+  var ages=Object.keys(TERM_BASE).map(Number);
+  var near=ages.reduce(function(p,c){return Math.abs(c-age)<Math.abs(p-age)?c:p;});
+  var base=TERM_BASE[near];
+  if(gender==='female') base=Math.round(base*0.85);
+  if(smoke==='yes') base=Math.round(base*1.25);
+  var cMul=sa===5000000?0.56:sa===15000000?1.4:sa===20000000?1.75:sa===50000000?3.8:1.0;
+  var mo=Math.round(base*cMul);
+  if(variant==='rop') mo=Math.round(mo*2.3);
+  if(variant==='ci') mo=Math.round(mo*1.4);
+  if(variant==='income') mo=Math.round(mo*1.15);
+  var vMap={basic:'Life Only',rop:'With Return of Premium',ci:'With 55 CI Rider',income:'Income Payout to Nominee'};
+  showRes('t_res',{t_mon:'₹'+mo.toLocaleString('en-IN')+' / month',t_ann:'₹'+(mo*12).toLocaleString('en-IN')+' / year',t_cov:'₹'+(sa/100000)+' Lakhs',t_var:vMap[variant]||variant});
+}
+function calcULIP(){
+  var p=parseFloat(val('u_amt'))||0,ppt=parseInt(val('u_ppt'))||10,pt=parseInt(val('u_pt'))||20;
+  if(!p){alert('Premium enter karein.');return;}
+  function fvA(pmt,r,n){return pmt*((Math.pow(1+r,n)-1)/r);}
+  var fv8=fvA(p,0.08,ppt)*Math.pow(1.08,pt-ppt),fv4=fvA(p,0.04,ppt)*Math.pow(1.04,pt-ppt);
+  showRes('u_res',{u_inv:fmt(p*ppt),u_8:fmt(Math.round(fv8))+' (@8% illus.)',u_4:fmt(Math.round(fv4))+' (@4% illus.)',u_bst:fmt(Math.round(fv8*0.025))+' approx.'});
+}
+var PEN_BASE={45:7.2,50:7.9,55:8.4,60:9.0,65:9.6,70:10.4};
+function calcPension(){
+  var inv=parseFloat(val('p_amt'))||0,age=parseInt(val('p_age'))||60,opt=val('p_opt')||'life';
+  if(inv<100000){alert('Min ₹1,00,000 investment karein.');return;}
+  var rate=PEN_BASE[age]||9.0,nom='';
+  if(opt==='rop'){rate-=1.5;nom='Full purchase price returned to nominee on death';}
+  else if(opt==='joint'){rate-=0.8;nom='Pension continues to spouse till either is alive';}
+  else if(opt==='g10'){rate-=0.5;nom='Nominee gets income 10 yrs if early death, then lifelong';}
+  else if(opt==='g20'){rate-=1.2;nom='Nominee gets income 20 yrs if early death, then lifelong';}
+  else{nom='Nothing to nominee after death (pure life annuity)';}
+  if(rate<4) rate=4;
+  var yr=Math.round(inv*rate/100);
+  showRes('p_res',{p_yr:fmt(yr)+' / year',p_mon:fmt(Math.round(yr/12))+' / month',p_rate:rate.toFixed(1)+'% annuity rate',p_nom:nom});
+}
+var ACE_GI={5:0.10,7:0.12,10:0.14,12:0.15};
+var DEF_MULT={2:1.08,5:1.20,10:1.40,15:1.65};
+var ACE_GMB={5:1.30,7:1.48,10:1.72,12:1.92};
+function calcASISO(){
+  var p=parseFloat(val('as_p'))||0,ppt=parseInt(val('as_ppt'))||10,t=val('as_t')||'level';
+  if(!p){alert('Premium enter karein.');return;}
+  var gi=Math.round(p*(ACE_GI[ppt]||0.14));
+  if(t==='inc') gi=Math.round(gi*0.85);
+  var cb=Math.round(p*ppt*0.04);
+  showRes('as_res',{as_gi:fmt(gi)+' / year (Guaranteed)',as_cb:fmt(cb)+' / year (NOT guaranteed)',as_tot:fmt(gi+cb)+' / year (est.)',as_mon:fmt(Math.round(gi/12))+' / month (GI only)'});
+}
+function calcASIDO(){
+  var p=parseFloat(val('ad_p'))||0,ppt=parseInt(val('ad_ppt'))||10,def=parseInt(val('ad_def'))||5;
+  if(!p){alert('Premium enter karein.');return;}
+  var gi=Math.round(p*(ACE_GI[ppt]||0.14)*(DEF_MULT[def]||1.20)),cb=Math.round(p*ppt*0.05);
+  showRes('ad_res',{ad_st:(ppt+def)+' years from start',ad_gi:fmt(gi)+' / year (Guaranteed)',ad_cb:fmt(cb)+' / year (NOT guaranteed)',ad_tot:fmt(gi+cb)+' / year (est.)'});
+}
+function calcALS(){
+  var p=parseFloat(val('al_p'))||0,ppt=parseInt(val('al_ppt'))||10,pt=parseInt(val('al_pt'))||20;
+  if(!p){alert('Premium enter karein.');return;}
+  var paid=p*ppt,gmb=Math.round(paid*(ACE_GMB[ppt]||1.72)),bon=Math.round(p*ppt*10*0.04*pt*0.55);
+  showRes('al_res',{al_paid:fmt(paid),al_gmb:fmt(gmb)+' (Guaranteed)',al_bon:fmt(bon)+' (NOT guaranteed)',al_tot:fmt(gmb+bon)+' estimated'});
+}
+
+/* SMART PROFILER */
+function runSmartProfiler(){
+  var age=parseInt(document.getElementById('sp_age').value)||0;
+  var income=document.getElementById('sp_income').value;
+  var profile=document.getElementById('sp_profile').value;
+  var resBox=document.getElementById('sp_result');
+  if(!age||!income||!profile){alert('Please fill Age, Income, and Life Stage.');return;}
+  var recTitle='',recDesc='';
+  if(profile==='single_parent'){
+    recTitle='Smart Protect Goal + AWG Wealth Creation';
+    recDesc='As a single parent, securing your child\'s future is #1. Get a Term Plan for immediate protection, plus AWG Wealth Creation to guarantee their education fund.';
+  } else if(profile==='retired'||age>=50){
+    recTitle='Guaranteed Pension Goal II & AWG Lifelong';
+    recDesc='Capital preservation and regular income are crucial. Pension plan gives immediate ~9% lifetime yield. AWG Lifelong for legacy planning.';
+  } else if(profile==='married_kids'){
+    recTitle='AWG Second Income + Term Insurance';
+    recDesc='You need dual protection. Term plan for family security + AWG Second Income to combat inflation with a tax-free secondary salary.';
+  } else if(profile==='single'&&age<30){
+    recTitle='Smart Wealth Goal V (ULIP)';
+    recDesc='You have time on your side! ULIPs with Zero Allocation charges let the market grow your money over 15–20 years.';
+  } else if(income==='high'){
+    recTitle='Bajaj Life ACE (Modular) & AWG Platinum';
+    recDesc='High income needs heavy tax-saving. ACE lets you design cash flows exactly when needed. AWG Platinum gives payouts even while paying premiums.';
+  } else {
+    recTitle='AWG Second Income';
+    recDesc='The safest, most reliable income builder. 100% Guaranteed returns, zero market risk, 110% ROP. Perfect for building a strong financial foundation.';
+  }
+  resBox.innerHTML='<h4 style="color:var(--blue);">🎯 Mike\'s Recommendation:</h4><h3 style="color:var(--blue-dark);margin:8px 0;">'+recTitle+'</h3><p style="font-size:0.9rem;color:var(--muted);">'+recDesc+'</p><a href="https://wa.me/+919382181126?text=Hi Mike, the Profiler recommended *'+encodeURIComponent(recTitle)+'* (Age: '+age+'). Can we discuss?" target="_blank" style="display:inline-block;margin-top:14px;background:var(--red);color:#fff;padding:10px 22px;border-radius:8px;font-weight:700;text-decoration:none;font-size:0.88rem;">📲 Get Custom Quote from Mike</a>';
+  resBox.style.display='block';
+  var st=document.getElementById('stickyRecText');
+  var sb=document.getElementById('stickyRec');
+  if(st&&sb){st.innerText=recTitle;sb.classList.add('show');}
+}
 
 /* ═══════════════════════════════════
-   SMART PROFILER (UNCHANGED)
+   GEMINI API INTEGRATION
 ═══════════════════════════════════ */
-function runSmartProfiler(){ /* ... unchanged ... */ }
-
-/* ═══════════════════════════════════
-   GEMINI API INTEGRATION — NEW FUNCTIONS
-   (Replaces old local AI completely)
-═══════════════════════════════════ */
-
-// Conversation history array to maintain context
 let conversationHistory = [];
 
-// Process user query by calling the Vercel backend
 async function processAIQuery() {
   const inp = document.getElementById('aiInput');
   if (!inp) return;
@@ -86,7 +1249,6 @@ async function processAIQuery() {
   appendChat('user', text);
   inp.value = '';
 
-  // Add to history
   conversationHistory.push({ role: 'user', content: text });
 
   const typId = 'typ-' + Date.now();
@@ -98,22 +1260,19 @@ async function processAIQuery() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         message: text,
-        history: conversationHistory.slice(0, -1), // send previous messages without the current one
-        userContext: {} // You can pass age, gender etc. if you collect them
+        history: conversationHistory.slice(0, -1),
+        userContext: {}
       })
     });
 
     const data = await response.json();
     const reply = data.reply || 'Sorry, I encountered an issue. Please try again.';
 
-    // Update typing indicator with actual reply
     const el = document.getElementById(typId);
     if (el) el.innerHTML = reply;
 
-    // Add assistant response to history
     conversationHistory.push({ role: 'assistant', content: reply });
 
-    // Scroll to bottom
     const body = document.getElementById('aiChatBody');
     if (body) body.scrollTop = body.scrollHeight;
 
@@ -124,7 +1283,6 @@ async function processAIQuery() {
   }
 }
 
-// Quick reply button handler
 function sendQuickReply(text) {
   const inp = document.getElementById('aiInput');
   if (inp) {
@@ -133,13 +1291,11 @@ function sendQuickReply(text) {
   }
 }
 
-// Toggle chat window
 function toggleAIChat() {
   const win = document.getElementById('aiWindow');
   if (win) win.classList.toggle('open');
 }
 
-// Append message to chat window
 function appendChat(sender, text, id) {
   const body = document.getElementById('aiChatBody');
   if (!body) return;
@@ -151,15 +1307,43 @@ function appendChat(sender, text, id) {
   body.scrollTop = body.scrollHeight;
 }
 
-/* ═══════════════════════════════════
-   UI UTILITY FUNCTIONS (UNCHANGED)
-═══════════════════════════════════ */
-function toggleFAQ(el){ /* ... unchanged ... */ }
-function openVideo(id){ /* ... unchanged ... */ }
-function closeVideo(){ /* ... unchanged ... */ }
-// ... rest of your UI functions (submitLeadWA, etc.) ...
+/* UI FUNCTIONS */
+function toggleFAQ(el){
+  var a=el.nextElementSibling,isOpen=a.classList.contains('open');
+  document.querySelectorAll('.faq-a.open').forEach(function(x){x.classList.remove('open');x.previousElementSibling.classList.remove('open');});
+  if(!isOpen){a.classList.add('open');el.classList.add('open');}
+}
+var SHEETS_URL="https://script.google.com/macros/s/AKfycbyb52GLo31uEXFXfbNKjVMCF_L28gh2uNJikrTNooivuiXg7If_7gem5yv9ZKAXrRI8Vg/exec";
+var MIKE_WA="+919382181126";
+function getLeadData(){return {name:(document.getElementById('lf_name').value||'').trim(),phone:(document.getElementById('lf_phone').value||'').trim(),age:(document.getElementById('lf_age').value||'').trim(),plan:(document.getElementById('lf_plan').value||''),budget:(document.getElementById('lf_budget').value||''),city:(document.getElementById('lf_city').value||'').trim()};}
+function validateLead(d){if(!d.name){alert('Name is required.');return false;}if(!d.phone||d.phone.length<10){alert('Enter valid 10-digit WhatsApp number.');return false;}return true;}
+function saveToSheets(d){fetch(SHEETS_URL,{method:'POST',body:JSON.stringify(d)}).catch(function(){});}
+function showLeadSuccess(){var el=document.getElementById('lead-success');if(el){el.style.display='block';el.scrollIntoView({behavior:'smooth',block:'nearest'});}}
+function submitLeadWA(){
+  var d=getLeadData();if(!validateLead(d))return;saveToSheets(d);
+  var msg='Hello Mike!%0A%0AMy name is *'+encodeURIComponent(d.name)+'*%0AWhatsApp: *'+d.phone+'*'+(d.age?'%0AAge: *'+d.age+' years*':'')+(d.plan?'%0APlan: *'+encodeURIComponent(d.plan)+'*':'')+(d.budget?'%0ABudget: *'+encodeURIComponent(d.budget)+'*':'')+(d.city?'%0ACity: *'+encodeURIComponent(d.city)+'*':'')+'%0A%0APlease share customized quotation. Thank you!';
+  window.open('https://wa.me/'+MIKE_WA+'?text='+msg,'_blank');showLeadSuccess();
+}
+function submitLeadSheet(){var d=getLeadData();if(!validateLead(d))return;saveToSheets(d);showLeadSuccess();}
+function openVideo(id){document.getElementById('modalVC').innerHTML='<iframe width="100%" height="100%" src="https://www.youtube.com/embed/'+id+'?autoplay=1" frameborder="0" allowfullscreen></iframe>';document.getElementById('videoModal').style.display='flex';}
+function closeVideo(){document.getElementById('videoModal').style.display='none';document.getElementById('modalVC').innerHTML='';}
 
-// Scroll reveal, sticky rec, etc.
+window.addEventListener('scroll',function(){
+  var btn=document.getElementById('scrollBtn');
+  if(btn) btn.classList.toggle('visible',window.scrollY>400);
+});
+
+document.addEventListener('DOMContentLoaded',function(){
+  var els=document.querySelectorAll('.reveal');
+  if(typeof IntersectionObserver!=='undefined'){
+    var obs=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('active');obs.unobserve(e.target);}});
+    },{threshold:0.12});
+    els.forEach(function(el){obs.observe(el);});
+  } else {
+    els.forEach(function(el){el.classList.add('active');});
+  }
+});
 </script>
 </body>
 </html>
