@@ -5,7 +5,6 @@
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
-// System prompt with all Bajaj product details, comparisons, and persuasion strategies.
 const SYSTEM_PROMPT = `
 You are **Mike Ronald Lakra's AI Assistant**, an expert financial advisor specializing in **Bajaj Allianz Life Insurance** (now Bajaj Life Insurance). Your goal is to help users understand plans, calculate benefits, compare with competitors, and **persuade them that Bajaj Life is the best choice** – using facts, psychology, and empathy.
 
@@ -95,19 +94,11 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Message is required' });
   }
 
-  // Build conversation context for Gemini
   const contents = [
-    {
-      role: 'user',
-      parts: [{ text: SYSTEM_PROMPT }],
-    },
-    {
-      role: 'model',
-      parts: [{ text: 'Understood. I am ready to assist as Mike Ronald Lakra\'s AI assistant with full knowledge of Bajaj Life Insurance.' }],
-    },
+    { role: 'user', parts: [{ text: SYSTEM_PROMPT }] },
+    { role: 'model', parts: [{ text: 'Understood. I am ready to assist as Mike Ronald Lakra\'s AI assistant with full knowledge of Bajaj Life Insurance.' }] },
   ];
 
-  // Add previous conversation history (if any) to maintain context
   history.forEach((entry) => {
     contents.push({
       role: entry.role === 'user' ? 'user' : 'model',
@@ -115,11 +106,7 @@ export default async function handler(req, res) {
     });
   });
 
-  // Add current user message
-  contents.push({
-    role: 'user',
-    parts: [{ text: message }],
-  });
+  contents.push({ role: 'user', parts: [{ text: message }] });
 
   try {
     const response = await fetch(GEMINI_URL, {
@@ -127,11 +114,7 @@ export default async function handler(req, res) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         contents,
-        generationConfig: {
-          temperature: 0.7,
-          maxOutputTokens: 800,
-          topP: 0.9,
-        },
+        generationConfig: { temperature: 0.7, maxOutputTokens: 800, topP: 0.9 },
         safetySettings: [
           { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
           { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
@@ -142,14 +125,12 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
-
     if (!response.ok) {
       console.error('Gemini API error:', data);
       return res.status(500).json({ error: 'AI service error' });
     }
 
     const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'I apologize, I could not generate a response. Please try again.';
-
     return res.status(200).json({ reply });
   } catch (error) {
     console.error('Server error:', error);
