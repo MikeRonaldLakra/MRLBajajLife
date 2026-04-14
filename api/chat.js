@@ -19,8 +19,8 @@ export default async function (req, res) {
         return res.status(500).json({ reply: "⚠️ GEMINI_API_KEY is missing in Vercel. Please add it and REDEPLOY." });
     }
 
-    // 3. Stable Gemini Model URL
-    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+    // 3. Stable Gemini Model URL// Replace your GEMINI_URL line with this:
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
     // 4. Format Content
     const contents = [
