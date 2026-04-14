@@ -2,9 +2,6 @@
 // Vercel serverless function for Bajaj Life Insurance AI Chatbot
 // Uses Google Gemini API with comprehensive product knowledge.
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-
 const SYSTEM_PROMPT = `
 You are **Mike Ronald Lakra's AI Assistant**, an expert financial advisor specializing in **Bajaj Allianz Life Insurance** (now Bajaj Life Insurance). Your goal is to help users understand plans, calculate benefits, compare with competitors, and **persuade them that Bajaj Life is the best choice** – using facts, psychology, and empathy.
 
@@ -94,6 +91,15 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Message is required' });
   }
 
+  const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+  if (!GEMINI_API_KEY) {
+      console.error("API Key is missing from Vercel Environment Variables");
+      return res.status(500).json({ error: 'Server configuration error: Missing API Key' });
+  }
+
+  // UPDATED: Using 'gemini-1.5-flash-latest' to resolve the 404 Model Not Found error
+  const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
+
   const contents = [
     { role: 'user', parts: [{ text: SYSTEM_PROMPT }] },
     { role: 'model', parts: [{ text: 'Understood. I am ready to assist as Mike Ronald Lakra\'s AI assistant with full knowledge of Bajaj Life Insurance.' }] },
@@ -126,14 +132,14 @@ export default async function handler(req, res) {
 
     const data = await response.json();
     if (!response.ok) {
-      console.error('Gemini API error:', data);
-      return res.status(500).json({ error: 'AI service error' });
+      console.error('Gemini API error response details:', data);
+      return res.status(500).json({ error: 'AI service error', details: data });
     }
 
     const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'I apologize, I could not generate a response. Please try again.';
     return res.status(200).json({ reply });
   } catch (error) {
-    console.error('Server error:', error);
+    console.error('Server error details:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
 }
