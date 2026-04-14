@@ -11,6 +11,12 @@ IDENTITY RULES:
 `;
 
 export default async function handler(req, res) {
+    // ✅ CORS HEADERS — Required for cross-origin requests
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    if (req.method === 'OPTIONS') return res.status(200).end();
+
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
     const { message, history = [] } = req.body;
@@ -20,7 +26,6 @@ export default async function handler(req, res) {
         return res.status(500).json({ reply: "⚠️ Config Error: GEMINI_API_KEY is missing in Vercel." });
     }
 
-    // UPDATED MODEL NAME FOR 2026
     const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
     const contents = [
@@ -43,7 +48,6 @@ export default async function handler(req, res) {
         const data = await response.json();
 
         if (!response.ok) {
-            // Yahan se Google ka naam hata diya gaya hai
             return res.status(500).json({ reply: "Sorry my boss is working on me, Ask me after sometime." });
         }
 
@@ -51,6 +55,6 @@ export default async function handler(req, res) {
         return res.status(200).json({ reply });
 
     } catch (error) {
-        // Yahan se Server Crash/Error details hata di gayi hain
         return res.status(500).json({ reply: "Kuch takniki samasya hai, kripya Mike Ronald Lakra se sampark karein agar ye baar baar ho raha ho." });
     }
+}
