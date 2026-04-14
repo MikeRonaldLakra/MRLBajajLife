@@ -1242,21 +1242,24 @@ async function processAIQuery() {
         const data = await response.json();
         const el = document.getElementById(typId);
 
-        // Success or Error reporting
         if (response.ok) {
             el.innerHTML = data.reply;
             conversationHistory.push({ role: 'user', content: text });
             conversationHistory.push({ role: 'model', content: data.reply });
         } else {
-            el.innerHTML = data.reply || "⚠️ Server returned an error.";
+            // YAHAN HUM ERROR KO HIDE KARKE APNA MESSAGE DIKHAYENGE
+            if (data.reply && data.reply.includes("high demand")) {
+                el.innerHTML = "🙏 Mike's Assistant is currently handling many queries. **Please try again in 1 minute** or contact Mike directly on WhatsApp for an instant quote!";
+            } else {
+                el.innerHTML = "⚠️ Sorry, I'm having a small connection issue. Please try again or WhatsApp Mike.";
+            }
         }
         
     } catch (error) {
         const el = document.getElementById(typId);
-        if (el) el.innerHTML = "⚠️ Network Error. Check your connection.";
+        if (el) el.innerHTML = "⚠️ Wait for 2 minutes i'm attending a phone call.";
     }
 }
-
 function sendQuickReply(text) {
   const inp = document.getElementById('aiInput');
   if (inp) {
