@@ -1219,52 +1219,42 @@ function runSmartProfiler(){
 let conversationHistory = [];
 
 async function processAIQuery() {
-  const inp = document.getElementById('aiInput');
-  if (!inp) return;
-  const text = inp.value.trim();
-  if (!text) return;
+    const inp = document.getElementById('aiInput');
+    const text = inp.value.trim();
+    if (!text) return;
 
-  appendChat('user', text);
-  inp.value = '';
+    appendChat('user', text);
+    inp.value = '';
+    
+    const typId = 'typ-' + Date.now();
+    appendChat('bot', '<span class="typing-anim">Assistant is thinking...</span>', typId);
 
-  conversationHistory.push({ role: 'user', content: text });
+    try {
+        const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                message: text, 
+                history: conversationHistory 
+            })
+        });
 
-  const typId = 'typ-' + Date.now();
-  appendChat('bot', '<span class="typing-anim">Mike\'s Assistant is typing...</span>', typId);
+        const data = await response.json();
+        const el = document.getElementById(typId);
 
-  try {
-    const response = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message: text,
-        history: conversationHistory.slice(0, -1),
-        userContext: {}
-      })
-    });
-
-    // -------- THE NEW CHECK ADDED HERE --------
-    if (!response.ok) {
-      throw new Error(`Server returned ${response.status}: ${response.statusText}. Check your API folder structure in GitHub.`);
+        // Success or Error reporting
+        if (response.ok) {
+            el.innerHTML = data.reply;
+            conversationHistory.push({ role: 'user', content: text });
+            conversationHistory.push({ role: 'model', content: data.reply });
+        } else {
+            el.innerHTML = data.reply || "⚠️ Server returned an error.";
+        }
+        
+    } catch (error) {
+        const el = document.getElementById(typId);
+        if (el) el.innerHTML = "⚠️ Network Error. Check your connection.";
     }
-    // ------------------------------------------
-
-    const data = await response.json();
-    const reply = data.reply || 'Sorry, I encountered an issue. Please try again.';
-
-    const el = document.getElementById(typId);
-    if (el) el.innerHTML = reply;
-
-    conversationHistory.push({ role: 'assistant', content: reply });
-
-    const body = document.getElementById('aiChatBody');
-    if (body) body.scrollTop = body.scrollHeight;
-
-  } catch (error) {
-    console.error('Fetch/Network error details:', error);
-    const el = document.getElementById(typId);
-    if (el) el.innerHTML = `⚠️ Error: ${error.message}. Please try again or contact Mike.`;
-  }
 }
 
 function sendQuickReply(text) {
