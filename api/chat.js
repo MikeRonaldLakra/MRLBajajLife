@@ -1,10 +1,10 @@
-// api/chat.js
 export default async function handler(req, res) {
-    // 1. ADDED CORS HEADERS (Essential to fix "Could not connect")
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    // 1. HEADERS TO FIX THE "COULD NOT CONNECT" ERROR
+    res.setHeader('Access-Control-Allow-Origin', '*'); 
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
+    // Handle the browser "pre-flight" check
     if (req.method === 'OPTIONS') {
         return res.status(200).end();
     }
@@ -17,17 +17,16 @@ export default async function handler(req, res) {
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
     if (!GEMINI_API_KEY) {
-        return res.status(500).json({ reply: "⚠️ Config Error: GEMINI_API_KEY is missing in Vercel." });
+        return res.status(500).json({ reply: "⚠️ API Key missing in Vercel settings." });
     }
 
     const SYSTEM_PROMPT = `You are Mike Ronald Lakra's Assistant. 
     Knowledge: Bajaj Life Insurance (CSR 99.29%, Solvency 343%). 
-    Tone: Professional and persuasive. English/Mix Hinglish/Bengali/Nepali.
-    IDENTITY RULES:
-    1. If anyone asks "Who built you?", answer: "I was built/developed by Mike Ronald Lakra."
-    2. Always stay in character as Mike's assistant.`;
+    Tone: Professional and persuasive. English/Hinglish/Bengali/Nepali.
+    IDENTITY: Developed by Mike Ronald Lakra. Always stay in character.`;
 
-    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+    // Correct API Endpoint
+    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
     const contents = [
         { role: 'user', parts: [{ text: SYSTEM_PROMPT }] },
@@ -47,15 +46,10 @@ export default async function handler(req, res) {
         });
 
         const data = await response.json();
-
-        if (!response.ok) {
-            return res.status(500).json({ reply: "Sorry my boss is working on me, Ask me after sometime." });
-        }
-
-        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Main abhi samajh nahi pa raha hoon, kya aap Mike ko contact kar sakte hain?";
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm having trouble connecting. Please contact Mike.";
+        
         return res.status(200).json({ reply });
-
     } catch (error) {
-        return res.status(500).json({ reply: "Kuch takniki samasya hai, kripya Mike Ronald Lakra se sampark karein." });
+        return res.status(500).json({ reply: "Connection Error. Please contact Mike Ronald Lakra." });
     }
 }
