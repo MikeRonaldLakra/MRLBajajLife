@@ -15,7 +15,8 @@ export default async function handler(req, res) {
     }
 
     // ✅ UPDATED FOR 2026: Using Gemini 2.0 Flash (Fastest & Latest)
-    const URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${KEY}`;
+   // ✅ Switch to 1.5-flash for higher free limits
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
     const SYSTEM_PROMPT = `You are Mike Ronald Lakra's Assistant. 
     Knowledge: Bajaj Life Insurance (CSR 99.29%, Solvency 343%). 
