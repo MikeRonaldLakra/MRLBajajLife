@@ -1231,7 +1231,6 @@ const response = await fetch('https://project3-pi-dun.vercel.app/api/chat', {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ message: userInput, history: chatHistory })
 });
-
         const data = await response.json();
         const el = document.getElementById(typId);
         if (!el) return;
