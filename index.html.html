@@ -1141,4 +1141,12 @@ function calcULIP(){
   var fv8=fvA(p,0.08,ppt)*Math.pow(1.08,pt-ppt),fv4=fvA(p,0.04,ppt)*Math.pow(1.04,pt-ppt);
   showRes('u_res',{u_inv:fmt(p*ppt),u_8:fmt(Math.round(fv8))+' (@8% illus.)',u_4:fmt(Math.round(fv4))+' (@4% illus.)',u_bst:fmt(Math.round(fv8*0.025))+' approx.'});
 }
-var PEN_BASE={45:
+var PEN_BASE={45:7.2,50:7.9,55:8.4,60:9.0,65:9.6,70:10.4};
+function calcPension(){
+  var inv=parseFloat(val('p_amt'))||0,age=parseInt(val('p_age'))||60,opt=val('p_opt')||'life';
+  if(inv<100000){alert('Min ₹1,00,000 investment karein.');return;}
+  var rate=PEN_BASE[age]||9.0,nom='';
+  if(opt==='rop'){rate-=1.5;nom='Full purchase price returned to nominee on death';}
+  else if(opt==='joint'){rate-=0.8;nom='Pension continues to spouse till either is alive';}
+  else if(opt==='g10'){rate-=0.5;nom='Nominee gets income 10 yrs if early death, then lifelong';}
+  else if(opt==='g20'){rate-=1.2;nom='Nominee gets income
