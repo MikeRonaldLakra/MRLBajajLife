@@ -1228,39 +1228,37 @@ async function processAIQuery() {
     
     const typId = 'typ-' + Date.now();
     appendChat('bot', '<span class="typing-anim">Assistant is thinking...</span>', typId);
-
+// Replace the block starting from the 'try' keyword
     try {
         const response = await fetch('/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                message: text, 
-                history: conversationHistory 
-            })
+            body: JSON.stringify({ message: text, history: conversationHistory })
         });
 
         const data = await response.json();
         const el = document.getElementById(typId);
+        if (!el) return;
 
         if (response.ok) {
             el.innerHTML = data.reply;
             conversationHistory.push({ role: 'user', content: text });
             conversationHistory.push({ role: 'model', content: data.reply });
         } else {
-            // YAHAN HUM ERROR KO HIDE KARKE APNA MESSAGE DIKHAYENGE
+            // Error from the server
             if (data.reply && data.reply.includes("high demand")) {
-                el.innerHTML = "🙏 Mike's Assistant is currently handling many queries. **Please try again in 1 minute** or contact Mike directly on WhatsApp for an instant quote!";
+                el.innerHTML = "🙏 Assistant is busy. **Try again in 1 minute** or WhatsApp Mike!";
             } else {
-                el.innerHTML = "⚠️ Sorry, I'm having a small connection issue. Please try again or WhatsApp Mike.";
+                el.innerHTML = "⚠️ Connection issue. Please try again or WhatsApp Mike.";
             }
         }
-        
     } catch (error) {
+        // Network crash/Internet error
         const el = document.getElementById(typId);
-        if (el) el.innerHTML = "⚠️ Wait for 2 minutes i'm attending a phone call.";
+        if (el) el.innerHTML = "⚠️ Connection lost. Please check your internet.";
     }
 }
-function sendQuickReply(text) {
+    function sendQuickReply(text) {
   const inp = document.getElementById('aiInput');
   if (inp) {
     inp.value = text;
