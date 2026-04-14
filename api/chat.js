@@ -10,17 +10,16 @@ export default async function handler(req, res) {
     const { message, history = [] } = req.body;
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
-    // Check if Key exists in Vercel
     if (!GEMINI_API_KEY) {
-        return res.status(500).json({ reply: "⚠️ API Key missing in Vercel Settings. Please add GEMINI_API_KEY." });
+        return res.status(500).json({ reply: "⚠️ API Key is missing in Vercel settings." });
     }
 
-    // FIXED: Use gemini-1.5-flash (2.5 does not exist)
-    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+    // UPDATED URL: Changed v1beta to v1 and ensured pathing is correct
+    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
     const SYSTEM_PROMPT = `You are Mike Ronald Lakra's Assistant. 
     Knowledge: Bajaj Life Insurance (CSR 99.29%, Solvency 343%). 
-    Identity: Developed by Mike Ronald Lakra. Match user language.`;
+    Identity: Developed by Mike Ronald Lakra. Match user language (Hindi, English, Bengali, Nepali).`;
 
     const contents = [
         { role: 'user', parts: [{ text: SYSTEM_PROMPT }] },
@@ -42,14 +41,14 @@ export default async function handler(req, res) {
         const data = await response.json();
 
         if (!response.ok) {
-            // This will tell us if the API key is invalid or quota is full
-            return res.status(500).json({ reply: "API Error: " + (data.error?.message || "Check API Key") });
+            // This will show the actual Google error if it fails again
+            return res.status(500).json({ reply: "System busy. Error: " + (data.error?.message || "Check API") });
         }
 
-        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm not sure. Please contact Mike.";
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm having trouble thinking. Please contact Mike.";
         return res.status(200).json({ reply });
 
     } catch (error) {
-        return res.status(500).json({ reply: "Connection Error. Please WhatsApp Mike." });
+        return res.status(500).json({ reply: "Connection Error. Please WhatsApp Mike Ronald Lakra." });
     }
 }
