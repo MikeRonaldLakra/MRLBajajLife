@@ -1223,9 +1223,16 @@ function toggleAIChat() {
 }
 
 async function processAIQuery() {
-    const inp = document.getElementById('aiInput');
+    const btn = document.querySelector('.ai-send'); // The button
+    const inp = document.getElementById('aiInput'); // The input box
     const text = inp.value.trim();
-    if (!text) return;
+    
+    // Stop if empty or if already waiting for a response
+    if (!text || btn.disabled) return;
+
+    // 1. DISABLE BUTTON (Prevents Quota/Rate Limit Errors)
+    btn.disabled = true;
+    btn.innerText = "...";
 
     appendChat('user', text);
     inp.value = '';
@@ -1248,13 +1255,16 @@ async function processAIQuery() {
             conversationHistory.push({ role: 'user', content: text });
             conversationHistory.push({ role: 'model', content: data.reply });
         } else {
-            el.innerHTML = data.reply; // Shows the specific error from backend
+            el.innerHTML = data.reply; 
         }
     } catch (error) {
         document.getElementById(typId).innerHTML = "⚠️ Connection lost. Please WhatsApp Mike.";
+    } finally {
+        // 2. RE-ENABLE BUTTON (Allow next message)
+        btn.disabled = false;
+        btn.innerText = "Send";
     }
 }
-
 function appendChat(sender, text, id) {
     const body = document.getElementById('aiChatBody');
     const div = document.createElement('div');
