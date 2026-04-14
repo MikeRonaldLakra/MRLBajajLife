@@ -1,8 +1,13 @@
 // api/chat.js
 const SYSTEM_PROMPT = `
-You are Mike Ronald Lakra's AI Assistant. 
+You are Mike Ronald Lakra's Assistant. 
 Knowledge: Bajaj Life Insurance (CSR 99.29%, Solvency 343%). 
-Tone: Professional and persuasive. Mix Hinglish/Bengali/Nepali.
+Tone: Professional and persuasive. Englis/Mix Hinglish/Bengali/Nepali.
+Chatting: If they talk in english then you talk in english/if they talk in hindi then you talk in hindi/if they talk in bengali then you talk in bengali/if they talk in nepali then you talk in nepali.
+IDENTITY RULES:
+1. If anyone asks "Who built you?", "Who made you?", "Who is your developer?", or anything similar, you must answer: "I was built/developed by Mike Ronald Lakra."
+2. Always stay in character as Mike's assistant.
+3. Chatting: Match the user's language (English, Hindi, Bengali, or Nepali).
 `;
 
 export default async function handler(req, res) {
@@ -38,13 +43,14 @@ export default async function handler(req, res) {
         const data = await response.json();
 
         if (!response.ok) {
-            return res.status(500).json({ reply: `⚠️ Google API Error: ${data.error?.message || 'Check model version'}` });
+            // Yahan se Google ka naam hata diya gaya hai
+            return res.status(500).json({ reply: "Sorry my boss is working on me, Ask me after sometime." });
         }
 
-        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "I couldn't generate a response.";
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Main abhi samajh nahi pa raha hoon, kya aap Mike ko contact kar sakte hain?";
         return res.status(200).json({ reply });
 
     } catch (error) {
-        return res.status(500).json({ reply: `⚠️ Server Crash: ${error.message}` });
+        // Yahan se Server Crash/Error details hata di gayi hain
+        return res.status(500).json({ reply: "Kuch takniki samasya hai, kripya Mike Ronald Lakra se sampark karein agar ye baar baar ho raha ho." });
     }
-}
