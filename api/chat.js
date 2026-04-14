@@ -1,30 +1,61 @@
-// Replace the block starting from the 'try' keyword
+// api/chat.js
+export default async function handler(req, res) {
+    // 1. ADDED CORS HEADERS (Essential to fix "Could not connect")
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Method not allowed' });
+    }
+
+    const { message, history = [] } = req.body;
+    const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+
+    if (!GEMINI_API_KEY) {
+        return res.status(500).json({ reply: "⚠️ Config Error: GEMINI_API_KEY is missing in Vercel." });
+    }
+
+    const SYSTEM_PROMPT = `You are Mike Ronald Lakra's Assistant. 
+    Knowledge: Bajaj Life Insurance (CSR 99.29%, Solvency 343%). 
+    Tone: Professional and persuasive. English/Mix Hinglish/Bengali/Nepali.
+    IDENTITY RULES:
+    1. If anyone asks "Who built you?", answer: "I was built/developed by Mike Ronald Lakra."
+    2. Always stay in character as Mike's assistant.`;
+
+    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+    const contents = [
+        { role: 'user', parts: [{ text: SYSTEM_PROMPT }] },
+        { role: 'model', parts: [{ text: 'Ready.' }] },
+        ...history.map(entry => ({
+            role: entry.role === 'user' ? 'user' : 'model',
+            parts: [{ text: entry.content }]
+        })),
+        { role: 'user', parts: [{ text: message }] }
+    ];
+
     try {
-        const response = await fetch('/api/chat', {
+        const response = await fetch(GEMINI_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: text, history: conversationHistory })
+            body: JSON.stringify({ contents })
         });
 
         const data = await response.json();
-        const el = document.getElementById(typId);
-        if (!el) return;
 
-        if (response.ok) {
-            el.innerHTML = data.reply;
-            conversationHistory.push({ role: 'user', content: text });
-            conversationHistory.push({ role: 'model', content: data.reply });
-        } else {
-            // Error from the server
-            if (data.reply && data.reply.includes("high demand")) {
-                el.innerHTML = "🙏 Assistant is busy. **Try again in 1 minute** or WhatsApp Mike!";
-            } else {
-                el.innerHTML = "⚠️ Connection issue. Please try again or WhatsApp Mike.";
-            }
+        if (!response.ok) {
+            return res.status(500).json({ reply: "Sorry my boss is working on me, Ask me after sometime." });
         }
+
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Main abhi samajh nahi pa raha hoon, kya aap Mike ko contact kar sakte hain?";
+        return res.status(200).json({ reply });
+
     } catch (error) {
-        // Network crash/Internet error
-        const el = document.getElementById(typId);
-        if (el) el.innerHTML = "⚠️ Connection lost. Please check your internet.";
+        return res.status(500).json({ reply: "Kuch takniki samasya hai, kripya Mike Ronald Lakra se sampark karein." });
     }
 }
