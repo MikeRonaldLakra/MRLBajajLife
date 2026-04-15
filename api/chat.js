@@ -9,17 +9,14 @@ export default async function handler(req, res) {
     const { message } = req.body;
     const KEY = process.env.GEMINI_API_KEY;
 
-    if (!KEY) return res.status(500).json({ reply: "⚠️ API Key missing." });
-
+    // Use v1beta for widest model compatibility
     const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${KEY}`;
 
-    const SYSTEM_PROMPT = "You are Mike's Assistant for Bajaj Life Insurance. Keep it short.";
-
     const payload = {
-    contents: [{
-        parts: [{ text: "You are Mike's Assistant for Bajaj Life. Help: " + message }]
-    }]
-};
+        contents: [{
+            parts: [{ text: "You are Mike's assistant. Answer this briefly: " + message }]
+        }]
+    };
 
     try {
         const response = await fetch(GEMINI_URL, {
@@ -29,15 +26,14 @@ export default async function handler(req, res) {
         });
 
         const data = await response.json();
-
+        
         if (!response.ok) {
-            console.error("Gemini Error:", data);
-            return res.status(500).json({ reply: "Assistant is updating. Please WhatsApp Mike." });
+            return res.status(500).json({ reply: "API Error: " + (data.error?.message || "Check Key") });
         }
 
-        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Thinking...";
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "I am thinking...";
         return res.status(200).json({ reply });
     } catch (e) {
-        return res.status(500).json({ reply: "Connection error." });
+        return res.status(500).json({ reply: "Connection failed." });
     }
 }
