@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     if (!KEY) return res.status(500).json({ reply: "API Key missing." });
 
     // ✅ FIXED STABLE URL: Using v1 instead of v1beta
-    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${KEY}`;
+    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${KEY}`;
 
     const payload = {
         contents: [{
