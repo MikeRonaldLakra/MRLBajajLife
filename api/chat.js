@@ -6,29 +6,29 @@ export default async function handler(req, res) {
     if (req.method === 'OPTIONS') return res.status(200).end();
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-    const { message } = req.body; // Simple message extract
+    const { message } = req.body;
     const KEY = process.env.GEMINI_API_KEY;
 
     if (!KEY) {
         return res.status(500).json({ reply: "⚠️ API Key missing in Vercel." });
     }
 
-    // Is URL ko dhyan se dekhiye - v1beta use kar rahe hain
+    // Stable v1beta Endpoint
     const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${KEY}`;
 
-    const SYSTEM_PROMPT = `You are Mike Ronald Lakra's Assistant. 
-    Knowledge: Bajaj Life Insurance (CSR 99.29%, Solvency 343%). 
-    Identity: Developed by Mike Ronald Lakra. Match user language (Hindi, English, Bengali, Nepali).`;
+    const SYSTEM_PROMPT = `You are Mike Ronald Lakra's Assistant. Knowledge: Bajaj Life Insurance (CSR 99.29%, Solvency 343%). Developed by Mike Ronald Lakra. Match user language (Hindi, English, Bengali, Nepali).`;
 
-    // Sabse simple structure jo kabhi fail nahi hota
+    // Sabse stable payload format
     const payload = {
-        contents: [{
-            role: "user",
-            parts: [{ text: SYSTEM_PROMPT + "\n\nUser Question: " + message }]
-        }],
+        contents: [
+            {
+                role: "user",
+                parts: [{ text: "SYSTEM INSTRUCTION: " + SYSTEM_PROMPT + "\n\nUSER QUESTION: " + message }]
+            }
+        ],
         generationConfig: {
             temperature: 0.7,
-            maxOutputTokens: 500
+            maxOutputTokens: 600
         }
     };
 
@@ -42,17 +42,18 @@ export default async function handler(req, res) {
         const data = await response.json();
 
         if (!response.ok) {
-            // Agar abhi bhi error aaye toh console mein detail dikhegi
-            console.error("Gemini Error Detail:", JSON.stringify(data));
-            return res.status(500).json({ 
-                reply: "Assistant is resting. Please WhatsApp Mike directly at +919382181126." 
-            });
+            console.error("Gemini Error:", data);
+            // Agar API key galat hai toh ye error dikhega
+            if (data.error?.status === "UNAUTHENTICATED") {
+                return res.status(401).json({ reply: "Invalid API Key. Please update it in Vercel settings." });
+            }
+            return res.status(500).json({ reply: "Assistant is updating. Please WhatsApp Mike at +919382181126." });
         }
 
-        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm thinking... please contact Mike.";
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "I am thinking... please contact Mike.";
         return res.status(200).json({ reply });
 
     } catch (error) {
-        return res.status(500).json({ reply: "Network Error. Please try again later." });
+        return res.status(500).json({ reply: "Connection timeout. Please try again." });
     }
 }
