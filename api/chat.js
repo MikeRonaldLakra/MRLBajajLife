@@ -9,16 +9,12 @@ export default async function handler(req, res) {
     const { message } = req.body;
     const KEY = process.env.GEMINI_API_KEY;
 
-    if (!KEY) {
-        return res.status(500).json({ reply: "⚠️ API Key missing in Vercel." });
-    }
+    if (!KEY) return res.status(500).json({ reply: "⚠️ API Key missing." });
 
-    // Is URL ko dhyan se dekhiye - v1beta version
     const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${KEY}`;
 
-    const SYSTEM_PROMPT = `You are Mike Ronald Lakra's Assistant. Identity: Developed by Mike Ronald Lakra. Knowledge: Bajaj Life Insurance (CSR 99.29%, Solvency 343%). Language: Match user language (Hindi/English). Keep it short.`;
+    const SYSTEM_PROMPT = "You are Mike's Assistant for Bajaj Life Insurance. Keep it short.";
 
-    // Simple payload format jo stable hai
     const payload = {
         contents: [{
             parts: [{ text: SYSTEM_PROMPT + "\n\nUser Question: " + message }]
@@ -36,15 +32,12 @@ export default async function handler(req, res) {
 
         if (!response.ok) {
             console.error("Gemini Error:", data);
-            return res.status(500).json({ 
-                reply: "Service is updating (API Error). Please WhatsApp Mike at +919382181126." 
-            });
+            return res.status(500).json({ reply: "Assistant is updating. Please WhatsApp Mike." });
         }
 
-        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm having trouble thinking. Please contact Mike.";
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Thinking...";
         return res.status(200).json({ reply });
-
-    } catch (error) {
-        return res.status(500).json({ reply: "Network Error. Please try again." });
+    } catch (e) {
+        return res.status(500).json({ reply: "Connection error." });
     }
 }
