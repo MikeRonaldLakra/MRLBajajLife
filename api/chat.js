@@ -13,23 +13,16 @@ export default async function handler(req, res) {
         return res.status(500).json({ reply: "⚠️ API Key missing in Vercel." });
     }
 
-    // Stable v1beta Endpoint
+    // Is URL ko dhyan se dekhiye - v1beta version
     const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${KEY}`;
 
-    const SYSTEM_PROMPT = `You are Mike Ronald Lakra's Assistant. Knowledge: Bajaj Life Insurance (CSR 99.29%, Solvency 343%). Developed by Mike Ronald Lakra. Match user language (Hindi, English, Bengali, Nepali).`;
+    const SYSTEM_PROMPT = `You are Mike Ronald Lakra's Assistant. Identity: Developed by Mike Ronald Lakra. Knowledge: Bajaj Life Insurance (CSR 99.29%, Solvency 343%). Language: Match user language (Hindi/English). Keep it short.`;
 
-    // Sabse stable payload format
+    // Simple payload format jo stable hai
     const payload = {
-        contents: [
-            {
-                role: "user",
-                parts: [{ text: "SYSTEM INSTRUCTION: " + SYSTEM_PROMPT + "\n\nUSER QUESTION: " + message }]
-            }
-        ],
-        generationConfig: {
-            temperature: 0.7,
-            maxOutputTokens: 600
-        }
+        contents: [{
+            parts: [{ text: SYSTEM_PROMPT + "\n\nUser Question: " + message }]
+        }]
     };
 
     try {
@@ -43,17 +36,15 @@ export default async function handler(req, res) {
 
         if (!response.ok) {
             console.error("Gemini Error:", data);
-            // Agar API key galat hai toh ye error dikhega
-            if (data.error?.status === "UNAUTHENTICATED") {
-                return res.status(401).json({ reply: "Invalid API Key. Please update it in Vercel settings." });
-            }
-            return res.status(500).json({ reply: "Assistant is updating. Please WhatsApp Mike at +919382181126." });
+            return res.status(500).json({ 
+                reply: "Service is updating (API Error). Please WhatsApp Mike at +919382181126." 
+            });
         }
 
-        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "I am thinking... please contact Mike.";
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm having trouble thinking. Please contact Mike.";
         return res.status(200).json({ reply });
 
     } catch (error) {
-        return res.status(500).json({ reply: "Connection timeout. Please try again." });
+        return res.status(500).json({ reply: "Network Error. Please try again." });
     }
 }
