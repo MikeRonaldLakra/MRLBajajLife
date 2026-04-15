@@ -1,5 +1,4 @@
 export default async function handler(req, res) {
-    // 1. Mandatory CORS Headers
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -7,62 +6,53 @@ export default async function handler(req, res) {
     if (req.method === 'OPTIONS') return res.status(200).end();
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-    const { message, history = [] } = req.body;
+    const { message } = req.body; // Simple message extract
     const KEY = process.env.GEMINI_API_KEY;
 
     if (!KEY) {
-        return res.status(500).json({ reply: "⚠️ API Key missing in Vercel settings." });
+        return res.status(500).json({ reply: "⚠️ API Key missing in Vercel." });
     }
 
-    // ✅ FIXED ENDPOINT: Models list se 'gemini-1.5-flash' stable version
+    // Is URL ko dhyan se dekhiye - v1beta use kar rahe hain
     const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${KEY}`;
 
     const SYSTEM_PROMPT = `You are Mike Ronald Lakra's Assistant. 
     Knowledge: Bajaj Life Insurance (CSR 99.29%, Solvency 343%). 
     Identity: Developed by Mike Ronald Lakra. Match user language (Hindi, English, Bengali, Nepali).`;
 
-    // ✅ FIXED CONTENTS: Logic ko clean kiya gaya hai
-    const contents = [
-        { role: 'user', parts: [{ text: SYSTEM_PROMPT }] },
-        { role: 'model', parts: [{ text: 'Understood. I am Mike Ronald Lakra\'s Assistant.' }] }
-    ];
-
-    // History ko safe tarike se add kar rahe hain
-    if (history && history.length > 0) {
-        history.forEach(entry => {
-            if (entry.content && entry.content.trim() !== "") {
-                contents.push({
-                    role: entry.role === 'user' ? 'user' : 'model',
-                    parts: [{ text: entry.content }]
-                });
-            }
-        });
-    }
-
-    // Last user message add karein
-    contents.push({ role: 'user', parts: [{ text: message }] });
+    // Sabse simple structure jo kabhi fail nahi hota
+    const payload = {
+        contents: [{
+            role: "user",
+            parts: [{ text: SYSTEM_PROMPT + "\n\nUser Question: " + message }]
+        }],
+        generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 500
+        }
+    };
 
     try {
         const response = await fetch(GEMINI_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ contents })
+            body: JSON.stringify(payload)
         });
 
         const data = await response.json();
 
         if (!response.ok) {
-            console.error("Gemini Error:", JSON.stringify(data));
+            // Agar abhi bhi error aaye toh console mein detail dikhegi
+            console.error("Gemini Error Detail:", JSON.stringify(data));
             return res.status(500).json({ 
-                reply: "Service is updating (API Error). Please try again or WhatsApp Mike." 
+                reply: "Assistant is resting. Please WhatsApp Mike directly at +919382181126." 
             });
         }
 
-        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm thinking... please contact Mike directly.";
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm thinking... please contact Mike.";
         return res.status(200).json({ reply });
 
     } catch (error) {
-        console.error("Server Catch:", error);
-        return res.status(500).json({ reply: "Connection Error. Please WhatsApp Mike Ronald Lakra." });
+        return res.status(500).json({ reply: "Network Error. Please try again later." });
     }
 }
