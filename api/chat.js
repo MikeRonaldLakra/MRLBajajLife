@@ -11,7 +11,8 @@ export default async function handler(req, res) {
 
     // ✅ SABSE STABLE COMBINATION: v1 version + gemini-pro
     // Flash models free tier mein baar-baar "Not Found" ho rahe hain
-    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${KEY}`;
+    // Is URL ko replace kijiye (v1 ki jagah v1beta aur gemini-pro ki jagah 1.5-flash)
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${KEY}`;
 
     const payload = {
         contents: [{
