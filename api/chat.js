@@ -15,18 +15,19 @@ export default async function handler(req, res) {
     }
 
     // ✅ FIXED ENDPOINT: Models list se 'gemini-1.5-flash' stable version use kar rahe hain
-    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${KEY}`;
+    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${KEY}`;
 
     const SYSTEM_PROMPT = `You are Mike Ronald Lakra's Assistant. 
     Knowledge: Bajaj Life Insurance (CSR 99.29%, Solvency 343%). 
     Identity: Developed by Mike Ronald Lakra. Match user language (Hindi, English, Bengali, Nepali).`;
 
-    const contents = [
+ const contents = [
         { role: 'user', parts: [{ text: SYSTEM_PROMPT }] },
-        { role: 'model', parts: [{ text: 'Ready.' }] },
+        { role: 'model', parts: [{ text: 'Understood. I am Mike Ronald Lakra\'s Assistant.' }] },
         ...history.map(entry => ({
+            // Sirf 'user' aur 'model' role hi allow hote hain
             role: entry.role === 'user' ? 'user' : 'model',
-            parts: [{ text: entry.content }]
+            parts: [{ text: entry.content || entry.parts[0].text }]
         })),
         { role: 'user', parts: [{ text: message }] }
     ];
