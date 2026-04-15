@@ -1014,81 +1014,60 @@ function contextQRs(msg) {
 // ═══════════════════════════════════════════════════
 // MAIN QUERY PROCESSOR
 // ═══════════════════════════════════════════════════
-function processAIQuery() {
+
+  function processAIQuery() {
   if (isTyping) return;
   var inp = document.getElementById('aiInput');
   var sendBtn = document.getElementById('aiSendBtn');
-  if (!inp) return;
   var text = inp.value.trim();
   if (!text) return;
 
   inp.value = '';
   addMsg('user', text);
   isTyping = true;
+  
+  // UI buttons disable karein
   if (inp) inp.disabled = true;
   if (sendBtn) sendBtn.disabled = true;
 
-  var hasKey = GEMINI_API_KEY && GEMINI_API_KEY.length > 20 && GEMINI_API_KEY !== "AIzaSy";
-
-  if (!hasKey) {
-    var typId = showTyping();
-    setTimeout(function() {
-      removeTyping(typId);
-      addMsg('bot', fallback(text));
-      renderQRs(contextQRs(text));
-      isTyping = false;
-      if (inp) inp.disabled = false;
-      if (sendBtn) sendBtn.disabled = false;
-      inp.focus();
-    }, 800 + Math.random()*600);
-    return;
-  }
-
-  // Add to history
-  chatHistory.push({role:"user", parts:[{text:text}]});
-  if (chatHistory.length > 30) chatHistory = chatHistory.slice(-30);
-
   var typId = showTyping();
 
-  var body = {
-    system_instruction: {parts:[{text:SYSTEM_PROMPT}]},
-    contents: chatHistory,
-    generationConfig: {temperature:0.85, topK:40, topP:0.95, maxOutputTokens:500},
-    safetySettings:[
-      {category:"HARM_CATEGORY_HARASSMENT",threshold:"BLOCK_NONE"},
-      {category:"HARM_CATEGORY_HATE_SPEECH",threshold:"BLOCK_MEDIUM_AND_ABOVE"},
-      {category:"HARM_CATEGORY_SEXUALLY_EXPLICIT",threshold:"BLOCK_MEDIUM_AND_ABOVE"},
-      {category:"HARM_CATEGORY_DANGEROUS_CONTENT",threshold:"BLOCK_MEDIUM_AND_ABOVE"}
-    ]
-  };
-
-  fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=' + GEMINI_API_KEY, {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify(body)
+  // API Call to your Vercel Backend
+  fetch('/api/chat', { 
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ 
+      message: text,
+      history: chatHistory.map(h => ({ 
+        role: h.role, 
+        content: h.parts[0].text 
+      }))
+    })
   })
-  .then(function(r){ return r.json(); })
+  .then(function(r) { return r.json(); })
   .then(function(data) {
     removeTyping(typId);
-    var reply = '';
-    if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0]) {
-      reply = data.candidates[0].content.parts[0].text || '';
-    }
-    if (!reply) { reply = fallback(text); }
-    chatHistory.push({role:"model", parts:[{text:reply}]});
+    
+    // Backend se 'reply' key aayegi
+    var reply = data.reply || "I'm having trouble thinking. Please contact Mike.";
+    
+    // History update karein (taaki AI ko pichli baatein yaad rahein)
+    chatHistory.push({role: "user", parts: [{text: text}]});
+    chatHistory.push({role: "model", parts: [{text: reply}]});
+    
     addMsg('bot', fmtReply(reply));
-    renderQRs(contextQRs(text));
+    renderQRs(contextQRs(text)); // Agar aapne contextQRs banaya hai
+    
     isTyping = false;
     if (inp) { inp.disabled = false; inp.focus(); }
     if (sendBtn) sendBtn.disabled = false;
   })
   .catch(function(err) {
-    console.error('Gemini error:', err);
+    console.error("Fetch Error:", err);
     removeTyping(typId);
-    addMsg('bot', fallback(text));
-    renderQRs(contextQRs(text));
+    addMsg('bot', "Connection Error. Please WhatsApp Mike Ronald Lakra.");
     isTyping = false;
-    if (inp) { inp.disabled = false; inp.focus(); }
+    if (inp) inp.disabled = false;
     if (sendBtn) sendBtn.disabled = false;
   });
 }
