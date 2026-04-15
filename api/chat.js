@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     if (!KEY) return res.status(500).json({ reply: "API Key missing in Vercel." });
 
     // ✅ Version v1beta (Fixed Claude's mistake)
-    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${KEY}`;
+   const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${KEY}`;
 
     const SYSTEM_PROMPT = `You are Mike's Assistant for Bajaj Life Insurance (CSR 99.29%, Solvency 343%). Help users with plans briefly.`;
 
