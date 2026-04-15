@@ -1,5 +1,4 @@
 export default async function handler(req, res) {
-    // 1. Mandatory CORS Headers
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -8,16 +7,14 @@ export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
     const { message, history = [] } = req.body;
-    
-    // Yahan galti thi (Variable name mismatch)
     const KEY = process.env.GEMINI_API_KEY;
 
     if (!KEY) {
         return res.status(500).json({ reply: "⚠️ API Key missing in Vercel settings." });
     }
 
-    // Yahan URL ko theek kiya gaya hai
-    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${KEY}`;
+    // ✅ FIXED: Stable V1 URL (v1beta error solve karne ke liye)
+    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${KEY}`;
 
     const SYSTEM_PROMPT = `You are Mike Ronald Lakra's Assistant. 
     Knowledge: Bajaj Life Insurance (CSR 99.29%, Solvency 343%). 
@@ -26,6 +23,7 @@ export default async function handler(req, res) {
     const contents = [
         { role: 'user', parts: [{ text: SYSTEM_PROMPT }] },
         { role: 'model', parts: [{ text: 'Ready.' }] },
+        // ✅ FIXED: Role mapping for Gemini compatibility
         ...history.map(entry => ({
             role: entry.role === 'user' ? 'user' : 'model',
             parts: [{ text: entry.content }]
