@@ -1001,11 +1001,10 @@ function contextQRs(msg) {
   return null;
 }
 
+ // ═══════════════════════════════════════════════════
+// MAIN QUERY PROCESSOR (UPDATED FOR GROQ / LLAMA 3)
 // ═══════════════════════════════════════════════════
-// MAIN QUERY PROCESSOR
-// ═══════════════════════════════════════════════════
-
-  function processAIQuery() {
+function processAIQuery() {
   if (isTyping) return;
   var inp = document.getElementById('aiInput');
   var sendBtn = document.getElementById('aiSendBtn');
@@ -1016,37 +1015,38 @@ function contextQRs(msg) {
   addMsg('user', text);
   isTyping = true;
   
-  // UI buttons disable karein
+  // Disable UI
   if (inp) inp.disabled = true;
   if (sendBtn) sendBtn.disabled = true;
 
   var typId = showTyping();
 
-  // API Call to your Vercel Backend
+  // Send the query AND the history to Vercel
   fetch('/api/chat', { 
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ 
       message: text,
-      history: chatHistory.map(h => ({ 
-        role: h.role, 
-        content: h.parts[0].text 
-      }))
+      history: chatHistory // Sending clean Groq-compatible history
     })
   })
   .then(function(r) { return r.json(); })
   .then(function(data) {
     removeTyping(typId);
     
-    // Backend se 'reply' key aayegi
-    var reply = data.reply || "I'm having trouble thinking. Please contact Mike.";
+    var reply = data.reply || "I am analyzing the data, please contact Mike directly.";
     
-    // History update karein (taaki AI ko pichli baatein yaad rahein)
-    chatHistory.push({role: "user", parts: [{text: text}]});
-    chatHistory.push({role: "model", parts: [{text: reply}]});
+    // Save conversation to memory (Groq format)
+    chatHistory.push({ role: "user", content: text });
+    chatHistory.push({ role: "assistant", content: reply });
+    
+    // Keep memory size manageable (last 10 messages) to save bandwidth
+    if (chatHistory.length > 10) {
+        chatHistory = chatHistory.slice(chatHistory.length - 10);
+    }
     
     addMsg('bot', fmtReply(reply));
-    renderQRs(contextQRs(text)); // Agar aapne contextQRs banaya hai
+    renderQRs(contextQRs(text)); 
     
     isTyping = false;
     if (inp) { inp.disabled = false; inp.focus(); }
@@ -1061,7 +1061,6 @@ function contextQRs(msg) {
     if (sendBtn) sendBtn.disabled = false;
   });
 }
-
 // ═══════════════════════════════════════════════════
 // ENTER KEY
 // ═══════════════════════════════════════════════════
