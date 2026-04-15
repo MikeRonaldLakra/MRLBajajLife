@@ -12,7 +12,8 @@ export default async function handler(req, res) {
     if (!KEY) return res.status(500).json({ reply: "API Key missing in Vercel settings." });
 
     // ✅ FIXED: Using 1.5-flash for higher free limits
-    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${KEY}`;
+    // Is URL ko update karein (flash ke aage -latest lagayein)
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${KEY}`;
 
     const payload = {
         contents: [{
