@@ -16,10 +16,10 @@ export default async function handler(req, res) {
     const SYSTEM_PROMPT = "You are Mike's Assistant for Bajaj Life Insurance. Keep it short.";
 
     const payload = {
-        contents: [{
-            parts: [{ text: SYSTEM_PROMPT + "\n\nUser Question: " + message }]
-        }]
-    };
+    contents: [{
+        parts: [{ text: "You are Mike's Assistant for Bajaj Life. Help: " + message }]
+    }]
+};
 
     try {
         const response = await fetch(GEMINI_URL, {
