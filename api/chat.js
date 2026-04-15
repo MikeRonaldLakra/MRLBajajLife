@@ -14,7 +14,7 @@ export default async function handler(req, res) {
 
     // ✅ Version v1beta (Fixed Claude's mistake)
   // Is URL ko dhyan se replace karein (v1beta + gemini-1.5-flash)
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${KEY}`;
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${KEY}`;
 
     const SYSTEM_PROMPT = `You are Mike's Assistant for Bajaj Life Insurance (CSR 99.29%, Solvency 343%). Help users with plans briefly.`;
 
