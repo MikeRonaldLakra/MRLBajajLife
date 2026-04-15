@@ -1,4 +1,5 @@
 export default async function handler(req, res) {
+    // CORS Headers
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -13,7 +14,7 @@ export default async function handler(req, res) {
         return res.status(500).json({ reply: "⚠️ API Key missing in Vercel settings." });
     }
 
-    // ✅ FIXED: Stable V1 URL (v1beta error solve karne ke liye)
+    // ✅ FIXED ENDPOINT: Models list se 'gemini-1.5-flash' stable version use kar rahe hain
     const GEMINI_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${KEY}`;
 
     const SYSTEM_PROMPT = `You are Mike Ronald Lakra's Assistant. 
@@ -23,7 +24,6 @@ export default async function handler(req, res) {
     const contents = [
         { role: 'user', parts: [{ text: SYSTEM_PROMPT }] },
         { role: 'model', parts: [{ text: 'Ready.' }] },
-        // ✅ FIXED: Role mapping for Gemini compatibility
         ...history.map(entry => ({
             role: entry.role === 'user' ? 'user' : 'model',
             parts: [{ text: entry.content }]
@@ -40,14 +40,15 @@ export default async function handler(req, res) {
 
         const data = await response.json();
 
+        // Agar model nahi milta toh fallback logic
         if (!response.ok) {
-            console.error("Gemini API Error:", data);
+            console.error("Gemini Error:", data);
             return res.status(500).json({ 
-                reply: "System busy. Error: " + (data.error?.message || "Check API Settings") 
+                reply: "Service is updating. Please try again in a minute or WhatsApp Mike." 
             });
         }
 
-        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm having trouble thinking. Please contact Mike.";
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm thinking... please contact Mike directly.";
         return res.status(200).json({ reply });
 
     } catch (error) {
