@@ -9,12 +9,14 @@ export default async function handler(req, res) {
     const { message } = req.body;
     const KEY = process.env.GEMINI_API_KEY;
 
-    // Use v1beta for widest model compatibility
-    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${KEY}`;
+    if (!KEY) return res.status(500).json({ reply: "API Key missing in Vercel settings." });
+
+    // ✅ FIXED: Using v1 stable endpoint with gemini-1.5-flash
+    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${KEY}`;
 
     const payload = {
         contents: [{
-            parts: [{ text: "You are Mike's assistant. Answer this briefly: " + message }]
+            parts: [{ text: "You are Mike's Assistant for Bajaj Life. Answer this briefly: " + message }]
         }]
     };
 
@@ -26,14 +28,15 @@ export default async function handler(req, res) {
         });
 
         const data = await response.json();
-        
+
         if (!response.ok) {
-            return res.status(500).json({ reply: "API Error: " + (data.error?.message || "Check Key") });
+            console.error("Gemini Error:", data);
+            return res.status(500).json({ reply: "Assistant is updating. Error: " + (data.error?.message || "Check Key") });
         }
 
-        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "I am thinking...";
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Thinking...";
         return res.status(200).json({ reply });
     } catch (e) {
-        return res.status(500).json({ reply: "Connection failed." });
+        return res.status(500).json({ reply: "Connection failed. Please WhatsApp Mike." });
     }
 }
