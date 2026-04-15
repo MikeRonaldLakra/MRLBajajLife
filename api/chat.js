@@ -9,15 +9,12 @@ export default async function handler(req, res) {
     const { message } = req.body;
     const KEY = process.env.GEMINI_API_KEY;
 
-    if (!KEY) return res.status(500).json({ reply: "API Key missing in Vercel settings." });
-
-    // ✅ FIXED: Using v1 stable endpoint with gemini-1.5-flash
-    // Is URL ko replace karein (v1 ki jagah v1beta karein)
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${KEY}`;
+    // ✅ FIXED: Using v1 stable endpoint (v1beta error fix)
+    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${KEY}`;
 
     const payload = {
         contents: [{
-            parts: [{ text: "You are Mike's Assistant for Bajaj Life. Answer this briefly: " + message }]
+            parts: [{ text: "You are Mike's Assistant. Answer briefly: " + message }]
         }]
     };
 
@@ -29,15 +26,14 @@ const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemi
         });
 
         const data = await response.json();
-
+        
         if (!response.ok) {
-            console.error("Gemini Error:", data);
-            return res.status(500).json({ reply: "Assistant is updating. Error: " + (data.error?.message || "Check Key") });
+            return res.status(500).json({ reply: "API Error: " + (data.error?.message || "Check Key") });
         }
 
         const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Thinking...";
         return res.status(200).json({ reply });
     } catch (e) {
-        return res.status(500).json({ reply: "Connection failed. Please WhatsApp Mike." });
+        return res.status(500).json({ reply: "Connection failed." });
     }
 }
