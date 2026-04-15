@@ -1,5 +1,4 @@
 export default async function handler(req, res) {
-    // CORS Headers
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -10,17 +9,14 @@ export default async function handler(req, res) {
     const { message } = req.body;
     const KEY = process.env.GEMINI_API_KEY;
 
-    if (!KEY) return res.status(500).json({ reply: "API Key missing in Vercel." });
+    if (!KEY) return res.status(500).json({ reply: "API Key missing in Vercel settings." });
 
-    // ✅ Version v1beta (Fixed Claude's mistake)
-  // Is URL ko dhyan se replace karein (v1beta + gemini-1.5-flash)
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${KEY}`;
-
-    const SYSTEM_PROMPT = `You are Mike's Assistant for Bajaj Life Insurance (CSR 99.29%, Solvency 343%). Help users with plans briefly.`;
+    // ✅ FIXED: Using 1.5-flash for higher free limits
+    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${KEY}`;
 
     const payload = {
         contents: [{
-            parts: [{ text: SYSTEM_PROMPT + "\n\nUser Question: " + message }]
+            parts: [{ text: "You are Mike's Assistant for Bajaj Life. Answer briefly: " + message }]
         }]
     };
 
@@ -34,13 +30,12 @@ const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemi
         const data = await response.json();
 
         if (!response.ok) {
-            console.error("Gemini Error:", data);
-            return res.status(500).json({ reply: "Assistant is updating. Error: " + (data.error?.message || "Check Key") });
+            return res.status(500).json({ reply: "Assistant is resting. " + (data.error?.message || "") });
         }
 
         const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Thinking...";
         return res.status(200).json({ reply });
     } catch (e) {
-        return res.status(500).json({ reply: "Connection failed. Please WhatsApp Mike." });
+        return res.status(500).json({ reply: "Connection failed. WhatsApp Mike." });
     }
 }
