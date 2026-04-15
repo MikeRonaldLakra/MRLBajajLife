@@ -9,14 +9,12 @@ export default async function handler(req, res) {
     const { message } = req.body;
     const KEY = process.env.GEMINI_API_KEY;
 
-    if (!KEY) return res.status(500).json({ reply: "API Key missing." });
-
-    // ✅ FIXED STABLE URL: Using v1 instead of v1beta
-    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${KEY}`;
+    // ✅ NEW MODEL: Using Flash-8B which has different access rules
+    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-8b:generateContent?key=${KEY}`;
 
     const payload = {
         contents: [{
-            parts: [{ text: "You are Mike's Assistant for Bajaj Life. Answer briefly: " + message }]
+            parts: [{ text: "You are Mike's Assistant. Answer briefly: " + message }]
         }]
     };
 
@@ -30,15 +28,13 @@ export default async function handler(req, res) {
         const data = await response.json();
         
         if (!response.ok) {
-            console.error("Gemini Error:", data);
-            return res.status(500).json({ 
-                reply: "Assistant is updating. Error: " + (data.error?.message || "Check API Key") 
-            });
+            // Agar ye bhi fail ho, toh humein pata chal jayega ki problem KEY mein hai
+            return res.status(500).json({ reply: "Assistant is updating. Reason: " + (data.error?.message || "Model issue") });
         }
 
         const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Thinking...";
         return res.status(200).json({ reply });
     } catch (e) {
-        return res.status(500).json({ reply: "Connection failed. Please WhatsApp Mike." });
+        return res.status(500).json({ reply: "Connection failed." });
     }
 }
