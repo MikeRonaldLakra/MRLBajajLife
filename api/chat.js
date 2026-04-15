@@ -8,15 +8,16 @@ export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
     const { message, history = [] } = req.body;
+    
+    // Yahan galti thi (Variable name mismatch)
     const KEY = process.env.GEMINI_API_KEY;
 
     if (!KEY) {
         return res.status(500).json({ reply: "⚠️ API Key missing in Vercel settings." });
     }
 
-    // ✅ UPDATED FOR 2026: Using Gemini 2.0 Flash (Fastest & Latest)
-   // ✅ Switch to 1.5-flash for higher free limits
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+    // Yahan URL ko theek kiya gaya hai
+    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${KEY}`;
 
     const SYSTEM_PROMPT = `You are Mike Ronald Lakra's Assistant. 
     Knowledge: Bajaj Life Insurance (CSR 99.29%, Solvency 343%). 
@@ -33,7 +34,7 @@ const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemi
     ];
 
     try {
-        const response = await fetch(URL, {
+        const response = await fetch(GEMINI_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ contents })
@@ -42,7 +43,6 @@ const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemi
         const data = await response.json();
 
         if (!response.ok) {
-            // Detailed error reporting
             console.error("Gemini API Error:", data);
             return res.status(500).json({ 
                 reply: "System busy. Error: " + (data.error?.message || "Check API Settings") 
