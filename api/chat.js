@@ -9,15 +9,13 @@ export default async function handler(req, res) {
     const { message } = req.body;
     const KEY = process.env.GEMINI_API_KEY;
 
-    if (!KEY) return res.status(500).json({ reply: "API Key missing in Vercel settings." });
-
-    // ✅ FIXED: Using 1.5-flash for higher free limits
-    // Is URL ko update karein (flash ke aage -latest lagayein)
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${KEY}`;
+    // ✅ SABSE STABLE COMBINATION: v1 version + gemini-pro
+    // Flash models free tier mein baar-baar "Not Found" ho rahe hain
+    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${KEY}`;
 
     const payload = {
         contents: [{
-            parts: [{ text: "You are Mike's Assistant for Bajaj Life. Answer briefly: " + message }]
+            parts: [{ text: "You are Mike's Assistant. Answer briefly: " + message }]
         }]
     };
 
@@ -29,14 +27,14 @@ const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemi
         });
 
         const data = await response.json();
-
+        
         if (!response.ok) {
-            return res.status(500).json({ reply: "Assistant is resting. " + (data.error?.message || "") });
+            return res.status(500).json({ reply: "Assistant is updating. " + (data.error?.message || "") });
         }
 
-        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Thinking...";
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "I am thinking...";
         return res.status(200).json({ reply });
     } catch (e) {
-        return res.status(500).json({ reply: "Connection failed. WhatsApp Mike." });
+        return res.status(500).json({ reply: "Connection failed." });
     }
 }
