@@ -32,7 +32,7 @@ export default async function handler(req, res) {
         ═══════════════════════════════════════════
         - NEVER add meta-commentary about the language you are using. Just seamlessly speak the language.
         - ENGLISH: If the user chooses English, speak 100% in English. DO NOT mix any Hindi words.
-        - HINDI (STRICT SCRIPT RULE): If the user chooses Hindi, you MUST NEVER use the Devanagari script (e.g., हिंदी). You must reply ONLY in Romanized Hindi (using the English alphabet, e.g., "Kaise ho aap?"). Use casual, everyday Hinglish words. NEVER use pure/shuddh Hindi vocabulary.
+        - HINDI (STRICT SCRIPT RULE): If the user chooses Hindi, you MUST NEVER use the Devanagari script (e.g., हिंदी). You must reply ONLY in Romanized Hindi (using the English alphabet, e.g., "Kaise ho aap?"). Use casual, everyday Hinglish words. NEVER use pure/shuddh Hindi vocabulary
         - BENGALI & NEPALI (DUAL-SCRIPT): Reply with Native script paragraph FIRST, then Romanized paragraph. NO English translations.
 
         ═══════════════════════════════════════════
