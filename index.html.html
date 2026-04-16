@@ -568,6 +568,48 @@ footer{background:#0d1117;color:rgba(255,255,255,0.55);padding:50px 4%;text-alig
       <div class="btn-trust-line"> IRDAI Certified · Zero GST · Direct Policy</div>
     </div>
   </div>
+  <!-- AWG PLATINUM -->
+  <div class="article-card reveal" style="border-left-color:var(--purple);margin-top:-0.5rem;">
+    <div class="article-content">
+      <h3>AWG Platinum — Early Income Even During Premium Payment</h3>
+      <p>AWG Platinum mein <strong>Early Guaranteed Payouts (EGP)</strong> milti hain — premium pay karte waqt hi income shuru! ₹1L/yr × 10yr → ₹1,00,800/yr for 30 yrs. UIN: 116N170V12</p>
+      <ul class="article-features"><li>Early Payouts During PPT</li><li>~1.008x Annual Income (10yr)</li><li>Enhanced 115% ROP</li><li>Lumpsum Commutation Option</li></ul>
+    </div>
+    <div class="action-box">
+      <div class="calc-container">
+        <div style="font-size:0.73rem;font-weight:700;color:var(--purple);margin-bottom:8px;text-align:center;">AWG PLATINUM CALCULATOR</div>
+        <div class="variant-tabs">
+          <button class="vtab active" onclick="switchPT('smart',this)">Smart Income (Opt 1)</button>
+          <button class="vtab" onclick="switchPT('regular',this)">Regular Income (Opt 2)</button>
+        </div>
+        <div id="pt-smart" class="variant-panel active">
+          <label class="calc-label">Annual Premium (₹)</label><input type="number" id="ps_p" value="100000" class="calc-input">
+          <label class="calc-label">PPT</label><select id="ps_ppt" class="calc-input"><option value="7">7 Yrs</option><option value="10" selected>10 Yrs</option><option value="12">12 Yrs</option></select>
+          <label class="calc-label">EGP Period (yrs during PPT)</label><select id="ps_egp" class="calc-input"><option value="3">3 Yrs</option><option value="5" selected>5 Yrs</option><option value="7">7 Yrs</option></select>
+          <button class="btn-calc" style="background:var(--purple);" onclick="calcPS()">Calculate</button>
+          <div id="ps_res" class="res-box" style="background:var(--purple-light);border:1px solid var(--purple);">
+            <div class="res-row"><span class="res-label">Early Payouts (p.a.)</span><span class="res-value" id="ps_egp_o" style="color:var(--purple);"></span></div>
+            <div class="res-row"><span class="res-label">Regular Income (p.a.)</span><span class="res-value" id="ps_ri" style="color:var(--green);"></span></div>
+            <div class="res-row"><span class="res-label">Monthly (post-PPT)</span><span class="res-value" id="ps_mon" style="color:var(--blue-dark);"></span></div>
+          </div>
+        </div>
+        <div id="pt-regular" class="variant-panel">
+          <label class="calc-label">Annual Premium (₹)</label><input type="number" id="pr_p" value="100000" class="calc-input">
+          <label class="calc-label">PPT</label><select id="pr_ppt" class="calc-input"><option value="7">7 Yrs</option><option value="10" selected>10 Yrs</option><option value="12">12 Yrs</option></select>
+          <label class="calc-label">Income Period</label><select id="pr_ip" class="calc-input"><option value="20">20 Yrs</option><option value="25">25 Yrs</option><option value="30" selected>30 Yrs</option></select>
+          <button class="btn-calc" style="background:var(--purple);" onclick="calcPR()">Calculate</button>
+          <div id="pr_res" class="res-box" style="background:var(--purple-light);border:1px solid var(--purple);">
+            <div class="res-row"><span class="res-label">Annual Income</span><span class="res-value" id="pr_inc" style="color:var(--green);"></span></div>
+            <div class="res-row"><span class="res-label">Monthly</span><span class="res-value" id="pr_mon" style="color:var(--blue-dark);"></span></div>
+            <div class="res-row"><span class="res-label">Total Income</span><span class="res-value" id="pr_tot" style="color:var(--blue);"></span></div>
+            <div class="res-row"><span class="res-label">Enhanced ROP (~115%)</span><span class="res-value" id="pr_rop" style="color:var(--red);"></span></div>
+          </div>
+        </div>
+      </div>
+      <a href="https://wa.me/+919382181126?text=Hi Mike, AWG Platinum chahiye" target="_blank" class="btn-whatsapp">📄 AWG Platinum PDF</a>
+      <a href="https://blsht.in/BAJLIF/pSGzzg" class="btn-protect awg">Get AWG Platinum</a>
+    </div>
+  </div>
 
   <h2 class="category-header reveal" style="border-bottom-color:var(--red);"> 2. Smart Protect Goal — Term Insurance</h2>
   <div class="article-card reveal" style="border-left-color:var(--red);">
