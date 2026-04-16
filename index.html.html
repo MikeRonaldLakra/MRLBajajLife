@@ -923,15 +923,15 @@ function initChat() {
   var banner = document.getElementById('apiKeyBanner');
   if (banner) banner.style.display = 'none';
 
-  // Naya Welcome Message jo sirf "Hello" aur Language puchega
-  var welcomeText = "🙏 <strong>Hello!</strong> I'm Mike's assistant.<br><br>Aap mujhse kis language mein baat karna prefer karenge? (English, Hindi, Hinglish, Bengali, etc.)";
+  // Naya Welcome Message bina brackets ke
+  var welcomeText = "🙏 <strong>Hello!</strong> I'm Mike's digital assistant.<br><br>Aap mujhse kis language mein baat karna prefer karenge?";
 
   addMsg('bot', welcomeText);
 
   // Bot ki memory me yaad rakhne ke liye ki usne language puchi hai
   chatHistory.push({ 
     role: "assistant", 
-    content: "Hello! I'm Mike ka digital assistant. Aap mujhse kis language mein baat karna prefer karenge?" 
+    content: "Hello! I'm Mike's digital assistant. Aap mujhse kis language mein baat karna prefer karenge?" 
   });
 
   renderQRs();
