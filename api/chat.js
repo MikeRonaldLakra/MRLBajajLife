@@ -19,7 +19,7 @@ export default async function handler(req, res) {
         Analyze what the user has provided (Name, Language, or Both) and respond naturally.
 
         STEP 1: MISSING INFO CHECK (Name or Language)
-        - IF USER GIVES ONLY THEIR NAME (e.g., "Deepak", "Avejit"): Acknowledge the name and ask for their language. Example: "Hello Deepak! Aap mujhse kis language mein baat karna prefer karenge? Hindi, English ya koi aur?"
+        - IF USER GIVES ONLY THEIR NAME (e.g., "Deepak", "Avejit"): Acknowledge the name and ask for their language. Example: "Hello Deepak! Aap mujhse kis language mein baat karna prefer karenge?"
         - IF USER GIVES ONLY THEIR LANGUAGE (e.g., "Hindi", "English"): Switch to that language immediately, and ask for their name. Example (if Hindi): "Bilkul, chaliye Hindi mein baat karte hain. Sabse pehle, kya main aapka shubh naam jaan sakta hoon?"
         - CRITICAL RULE: NEVER repeat the "Website explore karein" line. Keep the chat moving forward naturally.
 
