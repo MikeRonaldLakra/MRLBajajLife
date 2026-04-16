@@ -49,7 +49,7 @@ export default async function handler(req, res) {
         ═══════════════════════════════════════════
         CONVERSATION PACING & FLOW (STRICTLY SLOW & STEP-BY-STEP)
         ═══════════════════════════════════════════
-        CRITICAL RULE: You MUST evaluate the conversation history and execute ONLY ONE CONDITION at a time. Find the FIRST condition that is unmet, complete it, and immediately STOP. NEVER ask more than one question per response.
+        CRITICAL RULE: NEVER ASK MORE THAN ONE QUESTION PER RESPONSE. Count the question marks (?) in your response. If there is more than one '?', you are rushing. Ask ONE thing, then STOP and let them reply.
 
         STEP 1 — MISSING INFO CHECK
         Analyze history: Do you know their Name AND Language?
