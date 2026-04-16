@@ -455,14 +455,14 @@ footer{background:#0d1117;color:rgba(255,255,255,0.55);padding:50px 4%;text-alig
 <div class="blog-section" id="plans">
   <div class="section-intro reveal"><h2>Complete Insurance Plan Portfolio</h2><p>Every plan — fully transparent, with live calculators.</p></div>
 
-  <h2 class="category-header reveal" style="border-bottom-color:var(--blue);">💸 1. Assured Wealth Goal (AWG) — 6 Variants</h2>
-  <div class="article-card reveal" style="border-left-color:var(--blue);">
+   <h2 class="category-header" style="border-bottom-color:var(--blue);"> 1. Assured Wealth Goal (AWG) — 6 Variants</h2>
+  <div class="article-card" style="border-left-color:var(--blue);">
     <div class="article-content">
       <h3>Bajaj Life Assured Wealth Goal — Guaranteed Income for Every Goal</h3>
-      <p><strong>Zero market risk, 100% guaranteed returns.</strong> 6 variants — Second Income, Lifelong, Step-Up, Wealth Creation, Assured, Extra. Policy mein sab kuch likha hota hai. UIN: 116N170V12</p>
-      <div class="plan-highlight"><strong>Key:</strong> Non-Linked, Non-Participating, IRDAI regulated. Zero GST since Sept 2025.</div>
+      <p><strong>Zero market risk, 100% guaranteed returns.</strong> AWG plan 6 alag variants mein available hai. Pay premium, aur phir life ke har goal ke anusaar guaranteed income pao. Sab kuch policy mein likha hota hai — koi hidden condition nahi.</p>
+      <div class="plan-highlight"><strong>🔑 Key:</strong> Non-Linked, Non-Participating, IRDAI regulated guaranteed plan. UIN: 116N170V12</div>
       <div style="margin-top:14px;">
-        <div class="variant-tabs">
+        <div class="variant-tabs" id="awg-desc-tabs">
           <button class="vtab active" onclick="switchDesc('awg-desc',['second','lifelong','stepup','wealth','assured','extra'],0,this)">2nd Income</button>
           <button class="vtab" onclick="switchDesc('awg-desc',['second','lifelong','stepup','wealth','assured','extra'],1,this)">Lifelong</button>
           <button class="vtab" onclick="switchDesc('awg-desc',['second','lifelong','stepup','wealth','assured','extra'],2,this)">Step-Up</button>
@@ -470,117 +470,124 @@ footer{background:#0d1117;color:rgba(255,255,255,0.55);padding:50px 4%;text-alig
           <button class="vtab" onclick="switchDesc('awg-desc',['second','lifelong','stepup','wealth','assured','extra'],4,this)">Assured</button>
           <button class="vtab" onclick="switchDesc('awg-desc',['second','lifelong','stepup','wealth','assured','extra'],5,this)">Extra</button>
         </div>
-        <div id="awg-desc-second" class="variant-panel active" style="background:var(--blue-light);border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:var(--blue-dark);">Second Income</strong> — PPT ke baad 25/30 saal guaranteed income + 110% ROP. ₹1L/yr × 10yr PPT → ₹1,81,500/yr for 30 yrs + ₹11L back.</div>
-        <div id="awg-desc-lifelong" class="variant-panel" style="background:var(--blue-light);border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:var(--blue-dark);">Lifelong Income</strong> — Age 99 tak guaranteed income + 110% ROP. ₹1L × 10yr → ₹89,500/yr till 99.</div>
-        <div id="awg-desc-stepup" class="variant-panel" style="background:var(--blue-light);border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:var(--blue-dark);">Step-Up Income</strong> — Har 5 saal mein 10% income increase. 100% ROP. ₹80K→₹88K→₹96K→₹1.04L.</div>
-        <div id="awg-desc-wealth" class="variant-panel" style="background:var(--blue-light);border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:var(--blue-dark);">Wealth Creation</strong> — No income, guaranteed lumpsum at maturity. ₹1.5L × 8yr → GMB ≈ ₹19.2L+.</div>
-        <div id="awg-desc-assured" class="variant-panel" style="background:var(--blue-light);border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:var(--blue-dark);">Assured Income</strong> — Regular income + 100% ROP. ₹1L × 8yr → ₹74,500/yr for 30 yrs.</div>
-        <div id="awg-desc-extra" class="variant-panel" style="background:var(--blue-light);border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:var(--blue-dark);">Extra Income</strong> — Highest payout, no ROP. IRR ~7.2%. ₹1L × 10yr → ₹2,05,000/yr for 25 yrs.</div>
+        <div id="awg-desc-second" class="variant-panel active" style="background:var(--blue-light);border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:var(--blue-dark);">Second Income</strong> — PPT ke baad 25 ya 30 saal tak regular guaranteed payouts. End mein 110% ROP. Brochure: ₹1L/yr × 10yr PPT → ₹1,81,500/yr for 30 yrs + ₹11L ROP.</div>
+        <div id="awg-desc-lifelong" class="variant-panel" style="background:var(--blue-light);border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:var(--blue-dark);">Lifelong Income</strong> — Age 99 tak guaranteed income. Ram (51 yrs): ₹1L/yr × 10yr → ₹89,500/yr till 99 + 110% ROP.</div>
+        <div id="awg-desc-stepup" class="variant-panel" style="background:var(--blue-light);border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:var(--blue-dark);">Step-Up Income</strong> — Har 5 saal mein 10% income increase. 20yr period. 100% ROP. Vinod (35): ₹80K→₹88K→₹96K→₹1.04L.</div>
+        <div id="awg-desc-wealth" class="variant-panel" style="background:var(--blue-light);border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:var(--blue-dark);">Wealth Creation</strong> — No income, guaranteed lumpsum at maturity. Rajesh (30): ₹1.5L/yr × 8yr → GMB ≈ ₹19.2L+.</div>
+        <div id="awg-desc-assured" class="variant-panel" style="background:var(--blue-light);border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:var(--blue-dark);">Assured Income</strong> — PPT baad regular income + 100% ROP. ₹1L/yr × PPT 8yr → ₹74,500/yr for 30 yrs.</div>
+        <div id="awg-desc-extra" class="variant-panel" style="background:var(--blue-light);border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:var(--blue-dark);">Extra Income</strong> — Highest annual payout, no ROP. Death par nominee ko 5yr equated monthly instalments.</div>
       </div>
-      <ul class="article-features" style="margin-top:12px;"><li>100% Guaranteed</li><li>6 Variants</li><li>110% ROP</li><li>Tax-Free 10(10D)</li><li>Life Cover</li><li>Joint Life Option</li><li>Zero GST</li></ul>
+      <ul class="article-features" style="margin-top:12px;">
+        <li>100% Guaranteed Returns</li><li>6 Variants</li><li>110% ROP Option</li><li>Tax-Free u/s 10(10D)</li><li>Life Cover Included</li><li>Joint Life Option</li><li>Zero GST (Sept 2025+)</li>
+      </ul>
+      <a href="https://www.bajajlifeinsurance.com/savings-plans/assured-wealth-goal.html" target="_blank" class="btn-brochure" style="display:inline-flex;width:auto;padding:6px 14px;font-size:0.75rem;margin-top:4px;border-radius:6px;">📥 Official Brochure (Bajaj Website)</a>
     </div>
     <div class="action-box">
       <button class="btn-video" onclick="openVideo('YC2FRaqRnWk')">▶ AWG Video Guide</button>
       <div class="calc-container">
-        <div style="font-size:0.73rem;font-weight:700;color:var(--blue);margin-bottom:8px;text-align:center;">AWG CALCULATOR</div>
-        <div class="variant-tabs">
-          <button class="vtab active" onclick="switchCalcTab('awg',['second','lifelong','stepup','wealth','assured','extra'],0,this)">2nd</button>
-          <button class="vtab" onclick="switchCalcTab('awg',['second','lifelong','stepup','wealth','assured','extra'],1,this)">Life</button>
-          <button class="vtab" onclick="switchCalcTab('awg',['second','lifelong','stepup','wealth','assured','extra'],2,this)">Step</button>
+        <div style="font-size:0.73rem;font-weight:700;color:var(--blue);margin-bottom:8px;text-align:center;">AWG VARIANT CALCULATOR</div>
+        <div class="variant-tabs" id="awg-calc-tabs">
+          <button class="vtab active" onclick="switchCalcTab('awg',['second','lifelong','stepup','wealth','assured','extra'],0,this)">2nd Inc</button>
+          <button class="vtab" onclick="switchCalcTab('awg',['second','lifelong','stepup','wealth','assured','extra'],1,this)">Lifelong</button>
+          <button class="vtab" onclick="switchCalcTab('awg',['second','lifelong','stepup','wealth','assured','extra'],2,this)">Step-Up</button>
           <button class="vtab" onclick="switchCalcTab('awg',['second','lifelong','stepup','wealth','assured','extra'],3,this)">Wealth</button>
-          <button class="vtab" onclick="switchCalcTab('awg',['second','lifelong','stepup','wealth','assured','extra'],4,this)">Asrd</button>
+          <button class="vtab" onclick="switchCalcTab('awg',['second','lifelong','stepup','wealth','assured','extra'],4,this)">Assured</button>
           <button class="vtab" onclick="switchCalcTab('awg',['second','lifelong','stepup','wealth','assured','extra'],5,this)">Extra</button>
         </div>
-        <div id="awg-second-calc" class="variant-panel active">
+        <div id="awg-second" class="variant-panel active">
           <label class="calc-label">Annual Premium (₹)</label><input type="number" id="si_prem" value="100000" class="calc-input" min="25000">
-          <label class="calc-label">PPT</label><select id="si_ppt" class="calc-input"><option value="7">7 Yrs</option><option value="8">8 Yrs</option><option value="10" selected>10 Yrs</option><option value="12">12 Yrs</option><option value="15">15 Yrs</option></select>
+          <label class="calc-label">Premium Pay Term</label><select id="si_ppt" class="calc-input"><option value="7">7 Yrs</option><option value="8">8 Yrs</option><option value="10" selected>10 Yrs</option><option value="12">12 Yrs</option><option value="15">15 Yrs</option></select>
           <label class="calc-label">Income Period</label><select id="si_ip" class="calc-input"><option value="25">25 Yrs</option><option value="30" selected>30 Yrs</option></select>
-          <button class="btn-calc" style="background:var(--blue);" onclick="calcSI()">Calculate</button>
+          <button class="btn-calc" style="background:var(--blue);" onclick="calcSI()">Calculate Benefits</button>
           <div id="si_res" class="res-box" style="background:var(--blue-light);border:1px solid #b3d4f7;">
-            <div class="res-row"><span class="res-label">Annual Income</span><span class="res-value" id="si_inc" style="color:var(--green);"></span></div>
+            <div class="res-row"><span class="res-label">Annual Guaranteed Income</span><span class="res-value" id="si_inc" style="color:var(--green);"></span></div>
             <div class="res-row"><span class="res-label">Monthly Income</span><span class="res-value" id="si_mon" style="color:var(--blue-dark);"></span></div>
-            <div class="res-row"><span class="res-label">Total Income</span><span class="res-value" id="si_tot" style="color:var(--blue);"></span></div>
-            <div class="res-row"><span class="res-label">110% ROP</span><span class="res-value" id="si_rop" style="color:var(--red);"></span></div>
+            <div class="res-row"><span class="res-label">Total Income (period)</span><span class="res-value" id="si_tot" style="color:var(--blue);"></span></div>
+            <div class="res-row"><span class="res-label">Return of Premium (110%)</span><span class="res-value" id="si_rop" style="color:var(--red);"></span></div>
+            <button class="btn-whatsapp" id="share_si_quote" style="display:none; margin-top:10px; background:#25D366; color:white; border:none;" onclick="shareAWGQuote('si')">📲 Share Quote to Client</button>
           </div>
         </div>
-        <div id="awg-lifelong-calc" class="variant-panel">
-          <label class="calc-label">Annual Premium (₹)</label><input type="number" id="ll_prem" value="100000" class="calc-input">
-          <label class="calc-label">PPT</label><select id="ll_ppt" class="calc-input"><option value="7">7 Yrs</option><option value="10" selected>10 Yrs</option><option value="12">12 Yrs</option><option value="15">15 Yrs</option></select>
-          <label class="calc-label">Current Age</label><input type="number" id="ll_age" value="40" class="calc-input">
+        <div id="awg-lifelong" class="variant-panel">
+          <label class="calc-label">Annual Premium (₹)</label><input type="number" id="ll_prem" value="100000" class="calc-input" min="25000">
+          <label class="calc-label">Premium Pay Term</label><select id="ll_ppt" class="calc-input"><option value="7">7 Yrs</option><option value="10" selected>10 Yrs</option><option value="12">12 Yrs</option><option value="15">15 Yrs</option></select>
+          <label class="calc-label">Current Age</label><input type="number" id="ll_age" value="40" min="18" max="65" class="calc-input">
           <button class="btn-calc" style="background:var(--blue);" onclick="calcLL()">Calculate</button>
           <div id="ll_res" class="res-box" style="background:var(--blue-light);border:1px solid #b3d4f7;">
             <div class="res-row"><span class="res-label">Annual Income</span><span class="res-value" id="ll_inc" style="color:var(--green);"></span></div>
-            <div class="res-row"><span class="res-label">Monthly</span><span class="res-value" id="ll_mon"></span></div>
-            <div class="res-row"><span class="res-label">Income Years</span><span class="res-value" id="ll_yrs" style="color:var(--blue);"></span></div>
-            <div class="res-row"><span class="res-label">Total Lifetime</span><span class="res-value" id="ll_tot" style="color:var(--orange);"></span></div>
-            <div class="res-row"><span class="res-label">110% ROP</span><span class="res-value" id="ll_rop" style="color:var(--red);"></span></div>
+            <div class="res-row"><span class="res-label">Monthly Income</span><span class="res-value" id="ll_mon" style="color:var(--blue-dark);"></span></div>
+            <div class="res-row"><span class="res-label">Income Years (till age 99)</span><span class="res-value" id="ll_yrs" style="color:var(--blue);"></span></div>
+            <div class="res-row"><span class="res-label">Total Lifetime Income (est.)</span><span class="res-value" id="ll_tot" style="color:var(--orange);"></span></div>
+            <div class="res-row"><span class="res-label">110% Return of Premium</span><span class="res-value" id="ll_rop" style="color:var(--red);"></span></div>
+            <button class="btn-whatsapp" id="share_ll_quote" style="display:none; margin-top:10px; background:#25D366; color:white; border:none;" onclick="shareAWGQuote('ll')">📲 Share Quote to Client</button>
           </div>
         </div>
-        <div id="awg-stepup-calc" class="variant-panel">
-          <label class="calc-label">Annual Premium (₹)</label><input type="number" id="su_prem" value="100000" class="calc-input">
-          <label class="calc-label">PPT</label><select id="su_ppt" class="calc-input"><option value="7">7 Yrs</option><option value="10" selected>10 Yrs</option><option value="12">12 Yrs</option></select>
+        <div id="awg-stepup" class="variant-panel">
+          <label class="calc-label">Annual Premium (₹)</label><input type="number" id="su_prem" value="100000" class="calc-input" min="25000">
+          <label class="calc-label">Premium Pay Term</label><select id="su_ppt" class="calc-input"><option value="7">7 Yrs</option><option value="10" selected>10 Yrs</option><option value="12">12 Yrs</option></select>
           <button class="btn-calc" style="background:var(--blue);" onclick="calcSU()">Calculate</button>
           <div id="su_res" class="res-box" style="background:var(--blue-light);border:1px solid #b3d4f7;">
-            <div class="res-row"><span class="res-label">Yr 1–5</span><span class="res-value" id="su_y1" style="color:var(--green);"></span></div>
-            <div class="res-row"><span class="res-label">Yr 6–10</span><span class="res-value" id="su_y2" style="color:var(--blue);"></span></div>
-            <div class="res-row"><span class="res-label">Yr 11–15</span><span class="res-value" id="su_y3" style="color:var(--blue-dark);"></span></div>
-            <div class="res-row"><span class="res-label">Yr 16–20</span><span class="res-value" id="su_y4" style="color:var(--orange);"></span></div>
-            <div class="res-row"><span class="res-label">100% ROP</span><span class="res-value" id="su_rop" style="color:var(--red);"></span></div>
+            <div class="res-row"><span class="res-label">Yr 1–5 Income (p.a.)</span><span class="res-value" id="su_y1" style="color:var(--green);"></span></div>
+            <div class="res-row"><span class="res-label">Yr 6–10 Income (p.a.)</span><span class="res-value" id="su_y2" style="color:var(--blue);"></span></div>
+            <div class="res-row"><span class="res-label">Yr 11–15 Income (p.a.)</span><span class="res-value" id="su_y3" style="color:var(--blue-dark);"></span></div>
+            <div class="res-row"><span class="res-label">Yr 16–20 Income (p.a.)</span><span class="res-value" id="su_y4" style="color:var(--orange);"></span></div>
+            <div class="res-row"><span class="res-label">Total Income (20 yrs)</span><span class="res-value" id="su_tot" style="color:var(--blue);"></span></div>
+            <div class="res-row"><span class="res-label">100% Return of Premium</span><span class="res-value" id="su_rop" style="color:var(--red);"></span></div>
           </div>
         </div>
-        <div id="awg-wealth-calc" class="variant-panel">
-          <label class="calc-label">Annual Premium (₹)</label><input type="number" id="wc_prem" value="150000" class="calc-input">
-          <label class="calc-label">PPT</label><select id="wc_ppt" class="calc-input"><option value="5">5 Yrs</option><option value="7">7 Yrs</option><option value="8" selected>8 Yrs</option><option value="10">10 Yrs</option><option value="12">12 Yrs</option></select>
+        <div id="awg-wealth" class="variant-panel">
+          <label class="calc-label">Annual Premium (₹)</label><input type="number" id="wc_prem" value="150000" class="calc-input" min="25000">
+          <label class="calc-label">Premium Pay Term</label><select id="wc_ppt" class="calc-input"><option value="5">5 Yrs</option><option value="7">7 Yrs</option><option value="8" selected>8 Yrs</option><option value="10">10 Yrs</option><option value="12">12 Yrs</option></select>
           <button class="btn-calc" style="background:var(--blue);" onclick="calcWC()">Calculate Corpus</button>
           <div id="wc_res" class="res-box" style="background:var(--blue-light);border:1px solid #b3d4f7;">
-            <div class="res-row"><span class="res-label">Total Premiums</span><span class="res-value" id="wc_paid"></span></div>
-            <div class="res-row"><span class="res-label">Guaranteed Maturity</span><span class="res-value" id="wc_gmb" style="color:var(--green);"></span></div>
-            <div class="res-row"><span class="res-label">% of Premiums</span><span class="res-value" id="wc_pct" style="color:var(--blue-dark);"></span></div>
+            <div class="res-row"><span class="res-label">Total Premiums Paid</span><span class="res-value" id="wc_paid"></span></div>
+            <div class="res-row"><span class="res-label">Guaranteed Maturity Benefit</span><span class="res-value" id="wc_gmb" style="color:var(--green);font-size:1rem;"></span></div>
+            <div class="res-row"><span class="res-label">GMB (% of premiums)</span><span class="res-value" id="wc_pct" style="color:var(--blue-dark);"></span></div>
           </div>
         </div>
-        <div id="awg-assured-calc" class="variant-panel">
-          <label class="calc-label">Annual Premium (₹)</label><input type="number" id="ai_prem" value="100000" class="calc-input">
-          <label class="calc-label">PPT</label><select id="ai_ppt" class="calc-input"><option value="7">7 Yrs</option><option value="8" selected>8 Yrs</option><option value="10">10 Yrs</option><option value="12">12 Yrs</option></select>
+        <div id="awg-assured" class="variant-panel">
+          <label class="calc-label">Annual Premium (₹)</label><input type="number" id="ai_prem" value="100000" class="calc-input" min="25000">
+          <label class="calc-label">Premium Pay Term</label><select id="ai_ppt" class="calc-input"><option value="7">7 Yrs</option><option value="8" selected>8 Yrs</option><option value="10">10 Yrs</option><option value="12">12 Yrs</option></select>
           <label class="calc-label">Income Period</label><select id="ai_ip" class="calc-input"><option value="20">20 Yrs</option><option value="25">25 Yrs</option><option value="30" selected>30 Yrs</option></select>
           <button class="btn-calc" style="background:var(--blue);" onclick="calcAI()">Calculate</button>
           <div id="ai_res" class="res-box" style="background:var(--blue-light);border:1px solid #b3d4f7;">
             <div class="res-row"><span class="res-label">Annual Income</span><span class="res-value" id="ai_inc" style="color:var(--green);"></span></div>
-            <div class="res-row"><span class="res-label">Monthly</span><span class="res-value" id="ai_mon"></span></div>
+            <div class="res-row"><span class="res-label">Monthly Income</span><span class="res-value" id="ai_mon" style="color:var(--blue-dark);"></span></div>
             <div class="res-row"><span class="res-label">Total Income</span><span class="res-value" id="ai_tot" style="color:var(--blue);"></span></div>
-            <div class="res-row"><span class="res-label">100% ROP</span><span class="res-value" id="ai_rop" style="color:var(--red);"></span></div>
+            <div class="res-row"><span class="res-label">100% Return of Premium</span><span class="res-value" id="ai_rop" style="color:var(--red);"></span></div>
           </div>
         </div>
-        <div id="awg-extra-calc" class="variant-panel">
-          <label class="calc-label">Annual Premium (₹)</label><input type="number" id="ei_prem" value="100000" class="calc-input">
-          <label class="calc-label">PPT</label><select id="ei_ppt" class="calc-input"><option value="7">7 Yrs</option><option value="10" selected>10 Yrs</option><option value="12">12 Yrs</option><option value="15">15 Yrs</option></select>
+        <div id="awg-extra" class="variant-panel">
+          <label class="calc-label">Annual Premium (₹)</label><input type="number" id="ei_prem" value="100000" class="calc-input" min="25000">
+          <label class="calc-label">Premium Pay Term</label><select id="ei_ppt" class="calc-input"><option value="7">7 Yrs</option><option value="10" selected>10 Yrs</option><option value="12">12 Yrs</option><option value="15">15 Yrs</option></select>
           <label class="calc-label">Income Period</label><select id="ei_ip" class="calc-input"><option value="20">20 Yrs</option><option value="25" selected>25 Yrs</option><option value="30">30 Yrs</option></select>
           <button class="btn-calc" style="background:var(--blue);" onclick="calcEI()">Calculate</button>
           <div id="ei_res" class="res-box" style="background:var(--blue-light);border:1px solid #b3d4f7;">
-            <div class="res-row"><span class="res-label">Annual Income</span><span class="res-value" id="ei_inc" style="color:var(--green);"></span></div>
-            <div class="res-row"><span class="res-label">Monthly</span><span class="res-value" id="ei_mon"></span></div>
+            <div class="res-row"><span class="res-label">Annual Income (Max Payout)</span><span class="res-value" id="ei_inc" style="color:var(--green);"></span></div>
+            <div class="res-row"><span class="res-label">Monthly Income</span><span class="res-value" id="ei_mon" style="color:var(--blue-dark);"></span></div>
             <div class="res-row"><span class="res-label">Total Income</span><span class="res-value" id="ei_tot" style="color:var(--blue);"></span></div>
+            <div class="res-row"><span class="res-label">ROP</span><span class="res-value" style="color:var(--muted);font-size:0.78rem;">Not available (higher income tradeoff)</span></div>
           </div>
         </div>
         <p class="calc-note">Based on official Bajaj Life AWG brochure. Actual benefits vary by age & underwriting.</p>
       </div>
-      <a href="https://wa.me/+919382181126?text=Hi Mike, AWG plan PDF chahiye" target="_blank" class="btn-whatsapp">📄 Get AWG PDF on WhatsApp</a>
-      <a href="https://blsht.in/BAJLIF/pSGzzg" target="_blank" class="btn-protect awg">🔒 Apply for AWG Now</a>
-      <div class="btn-trust-line"> IRDAI Certified · Zero GST · Direct Policy</div>
+      <a href="https://wa.me/+919382181126?text=Hi Mike, AWG plan ke baare mein PDF chahiye" target="_blank" class="btn-whatsapp">📄 Get AWG PDF on WhatsApp</a>
+      <a href="https://blsht.in/BAJLIF/pSGzzg" class="btn-protect awg">🔒 Apply for AWG Now</a>
+      <div class="btn-trust-line"> IRDAI Certified &nbsp;·&nbsp; Zero GST &nbsp;·&nbsp; Direct Policy</div>
     </div>
   </div>
-  <!-- AWG PLATINUM -->
-  <div class="article-card reveal" style="border-left-color:var(--purple);margin-top:-0.5rem;">
+
+  <div class="article-card" style="border-left-color:var(--purple);margin-top:-0.5rem;">
     <div class="article-content">
-      <h3>AWG Platinum — Early Income Even During Premium Payment</h3>
-      <p>AWG Platinum mein <strong>Early Guaranteed Payouts (EGP)</strong> milti hain — premium pay karte waqt hi income shuru! ₹1L/yr × 10yr → ₹1,00,800/yr for 30 yrs. UIN: 116N170V12</p>
-      <ul class="article-features"><li>Early Payouts During PPT</li><li>~1.008x Annual Income (10yr)</li><li>Enhanced 115% ROP</li><li>Lumpsum Commutation Option</li></ul>
+      <h3> AWG Platinum — Smart Income & Regular Income (Premium Variant)</h3>
+      <p>AWG Platinum mein <strong>Early Guaranteed Payouts (EGP)</strong> milti hain — premium pay karte waqt hi income shuru! Brochure: ₹1L/yr × 10yr → ₹1,00,800/yr for 30 yrs (Option 2). UIN: 116N170V12</p>
+      <ul class="article-features"><li>Early Payouts During PPT (Option 1)</li><li>~1.008x Annual Income (10yr)</li><li>Enhanced ROP</li><li>Lumpsum Commutation Option</li></ul>
     </div>
     <div class="action-box">
       <div class="calc-container">
         <div style="font-size:0.73rem;font-weight:700;color:var(--purple);margin-bottom:8px;text-align:center;">AWG PLATINUM CALCULATOR</div>
         <div class="variant-tabs">
-          <button class="vtab active" onclick="switchPT('smart',this)">Smart Income (Opt 1)</button>
-          <button class="vtab" onclick="switchPT('regular',this)">Regular Income (Opt 2)</button>
+          <button class="vtab active" id="pt1" onclick="switchPT('smart',this)">Smart Income (Opt 1)</button>
+          <button class="vtab" id="pt2" onclick="switchPT('regular',this)">Regular Income (Opt 2)</button>
         </div>
         <div id="pt-smart" class="variant-panel active">
           <label class="calc-label">Annual Premium (₹)</label><input type="number" id="ps_p" value="100000" class="calc-input">
@@ -588,8 +595,8 @@ footer{background:#0d1117;color:rgba(255,255,255,0.55);padding:50px 4%;text-alig
           <label class="calc-label">EGP Period (yrs during PPT)</label><select id="ps_egp" class="calc-input"><option value="3">3 Yrs</option><option value="5" selected>5 Yrs</option><option value="7">7 Yrs</option></select>
           <button class="btn-calc" style="background:var(--purple);" onclick="calcPS()">Calculate</button>
           <div id="ps_res" class="res-box" style="background:var(--purple-light);border:1px solid var(--purple);">
-            <div class="res-row"><span class="res-label">Early Payouts (p.a.)</span><span class="res-value" id="ps_egp_o" style="color:var(--purple);"></span></div>
-            <div class="res-row"><span class="res-label">Regular Income (p.a.)</span><span class="res-value" id="ps_ri" style="color:var(--green);"></span></div>
+            <div class="res-row"><span class="res-label">Early Payouts during PPT (p.a.)</span><span class="res-value" id="ps_egp_o" style="color:var(--purple);"></span></div>
+            <div class="res-row"><span class="res-label">Regular Income after PPT (p.a.)</span><span class="res-value" id="ps_ri" style="color:var(--green);"></span></div>
             <div class="res-row"><span class="res-label">Monthly (post-PPT)</span><span class="res-value" id="ps_mon" style="color:var(--blue-dark);"></span></div>
           </div>
         </div>
@@ -599,31 +606,44 @@ footer{background:#0d1117;color:rgba(255,255,255,0.55);padding:50px 4%;text-alig
           <label class="calc-label">Income Period</label><select id="pr_ip" class="calc-input"><option value="20">20 Yrs</option><option value="25">25 Yrs</option><option value="30" selected>30 Yrs</option></select>
           <button class="btn-calc" style="background:var(--purple);" onclick="calcPR()">Calculate</button>
           <div id="pr_res" class="res-box" style="background:var(--purple-light);border:1px solid var(--purple);">
-            <div class="res-row"><span class="res-label">Annual Income</span><span class="res-value" id="pr_inc" style="color:var(--green);"></span></div>
-            <div class="res-row"><span class="res-label">Monthly</span><span class="res-value" id="pr_mon" style="color:var(--blue-dark);"></span></div>
+            <div class="res-row"><span class="res-label">Annual Income (p.a.)</span><span class="res-value" id="pr_inc" style="color:var(--green);"></span></div>
+            <div class="res-row"><span class="res-label">Monthly Income</span><span class="res-value" id="pr_mon" style="color:var(--blue-dark);"></span></div>
             <div class="res-row"><span class="res-label">Total Income</span><span class="res-value" id="pr_tot" style="color:var(--blue);"></span></div>
             <div class="res-row"><span class="res-label">Enhanced ROP (~115%)</span><span class="res-value" id="pr_rop" style="color:var(--red);"></span></div>
           </div>
         </div>
+        <p class="calc-note">Ajay example: ₹1L×10yr → ₹1,00,800/yr for 30yr. EGP during PPT additional.</p>
       </div>
-      <a href="https://wa.me/+919382181126?text=Hi Mike, AWG Platinum chahiye" target="_blank" class="btn-whatsapp">📄 AWG Platinum PDF</a>
-      <a href="https://blsht.in/BAJLIF/pSGzzg" class="btn-protect awg">Get AWG Platinum</a>
+      <a href="https://wa.me/+919382181126?text=Hi Mike, AWG Platinum plan chahiye" target="_blank" class="btn-whatsapp">📄 AWG Platinum PDF</a>
+      <a href="https://blsht.in/BAJLIF/pSGzzg" class="btn-protect awg"> Get AWG Platinum</a>
     </div>
   </div>
 
-  <h2 class="category-header reveal" style="border-bottom-color:var(--red);"> 2. Smart Protect Goal — Term Insurance</h2>
-  <div class="article-card reveal" style="border-left-color:var(--red);">
+  <h2 class="category-header" style="border-bottom-color:var(--red);">🛡️ 2. Smart Protect Goal — Term Insurance</h2>
+  <div class="article-card" style="border-left-color:var(--red);">
     <div class="article-content">
-      <h3>Smart Protect Goal — Pure Term Life Cover</h3>
-      <p><strong>₹651/month mein ₹1 Crore life cover</strong> (30yr male, non-smoker). 99.29% claim settlement ratio FY 2024-25. Cover till age 99.</p>
-      <ul class="article-features"><li>₹651/mo for 1 Cr (Age 30)</li><li>ROP Option</li><li>55 Critical Illnesses</li><li>Cover till Age 99</li><li>Income Payout Option</li><li>99.29% CSR FY25</li></ul>
+      <h3>Smart Protect Goal — Pure Term Life Cover (All Variants)</h3>
+      <p><strong>₹651/month mein ₹1 Crore life cover</strong> (30yr male, non-smoker, 25yr term — Bajaj official data). 4 variants available hain. 99.29% claim settlement ratio FY 2024-25.</p>
+      <div style="margin-top:12px;">
+        <div class="variant-tabs" id="term-desc-tabs">
+          <button class="vtab active" onclick="switchDesc('term-desc',['basic','rop','ci','income'],0,this)">Life Only</button>
+          <button class="vtab" onclick="switchDesc('term-desc',['basic','rop','ci','income'],1,this)">With ROP</button>
+          <button class="vtab" onclick="switchDesc('term-desc',['basic','rop','ci','income'],2,this)">Critical Illness</button>
+          <button class="vtab" onclick="switchDesc('term-desc',['basic','rop','ci','income'],3,this)">Income Payout</button>
+        </div>
+        <div id="term-desc-basic" class="variant-panel active" style="background:#fff0f0;border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:var(--red-dark);">Life Only (Basic)</strong> — Sabse affordable, pure death benefit. ₹651/mo for ₹1 Cr (age 30, male).</div>
+        <div id="term-desc-rop" class="variant-panel" style="background:#fff0f0;border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:var(--red-dark);">Return of Premium</strong> — Survive karo to sara premium maturity par wapas. Premium ~2.3x basic.</div>
+        <div id="term-desc-ci" class="variant-panel" style="background:#fff0f0;border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:var(--red-dark);">Critical Illness Rider (55 CI)</strong> — Cancer, heart attack, stroke including 55 CI covered.</div>
+        <div id="term-desc-income" class="variant-panel" style="background:#fff0f0;border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:var(--red-dark);">Income Payout</strong> — Death benefit monthly income ke roop mein (10-20 yr) milta hai.</div>
+      </div>
+      <ul class="article-features" style="margin-top:12px;"><li>₹651/mo for 1 Cr (Age 30)</li><li>ROP Option</li><li>55 Critical Illnesses</li><li>Cover till Age 99</li><li>Income Payout Option</li><li>99.29% CSR FY25</li></ul>
     </div>
     <div class="action-box">
       <button class="btn-video" onclick="openVideo('d1FTR2af11Q')">▶ Term Plan Video</button>
       <div class="calc-container">
         <div style="font-size:0.73rem;font-weight:700;color:var(--red);margin-bottom:8px;text-align:center;">TERM INSURANCE CALCULATOR</div>
         <label class="calc-label">Life Cover</label><select id="t_sa" class="calc-input"><option value="5000000">₹50 Lakhs</option><option value="10000000" selected>₹1 Crore</option><option value="15000000">₹1.5 Crore</option><option value="20000000">₹2 Crore</option><option value="50000000">₹5 Crore</option></select>
-        <label class="calc-label">Your Age</label><input type="number" id="t_age" value="30" class="calc-input">
+        <label class="calc-label">Your Age</label><input type="number" id="t_age" value="30" min="18" max="65" class="calc-input">
         <label class="calc-label">Gender</label><select id="t_gender" class="calc-input"><option value="male">Male</option><option value="female">Female (~15% lower)</option></select>
         <label class="calc-label">Variant</label><select id="t_variant" class="calc-input"><option value="basic">Life Only (Lowest)</option><option value="rop">With Return of Premium</option><option value="ci">With Critical Illness Rider</option><option value="income">Income Payout Option</option></select>
         <label class="calc-label">Smoker?</label><select id="t_smoke" class="calc-input"><option value="no">Non-Smoker</option><option value="yes">Smoker (~25% higher)</option></select>
@@ -634,99 +654,159 @@ footer{background:#0d1117;color:rgba(255,255,255,0.55);padding:50px 4%;text-alig
           <div class="res-row"><span class="res-label">Life Cover</span><span class="res-value" id="t_cov" style="color:var(--green);"></span></div>
           <div class="res-row"><span class="res-label">Variant</span><span class="res-value" id="t_var" style="color:var(--muted);font-size:0.78rem;"></span></div>
         </div>
+        <p class="calc-note">Official Bajaj rates basis. Non-smoker standard life. Exact premium from Bajaj portal.</p>
       </div>
       <a href="https://wa.me/+919382181126?text=Hi Mike, Smart Protect Goal ka exact quote chahiye" target="_blank" class="btn-whatsapp">📋 Exact Quote on WhatsApp</a>
-      <a href="https://blsht.in/BAJLIF/pSGzzg" target="_blank" class="btn-protect term"> Protect My Family Now</a>
+      <a href="https://blsht.in/BAJLIF/pSGzzg" class="btn-protect term"> Protect My Family Now</a>
+      <div class="btn-trust-line"> 1 Crore from ₹651/mo &nbsp;·&nbsp; 99.29% CSR &nbsp;·&nbsp; Instant</div>
     </div>
   </div>
 
-  <h2 class="category-header reveal" style="border-bottom-color:var(--green);">📈 3. Smart Wealth Goal V — ULIP</h2>
-  <div class="article-card reveal" style="border-left-color:var(--green);">
+  <h2 class="category-header" style="border-bottom-color:var(--green);">📈 3. Smart Wealth Goal V — ULIP</h2>
+  <div class="article-card" style="border-left-color:var(--green);">
     <div class="article-content">
-      <h3>Smart Wealth Goal V — Market-Linked Wealth (Zero Allocation Charges)</h3>
-      <p><strong>Zero Premium Allocation Charges</strong> — poora paisa invest hota hai. ROMC at maturity. 15 funds, 5 portfolio strategies, Fund Boosters at 10yr+.</p>
-      <ul class="article-features"><li>Zero Allocation Charges</li><li>ROMC at Maturity</li><li>Fund Boosters</li><li>15 Funds</li><li>5 Strategies</li><li>Tax Benefit 80C</li></ul>
+      <h3>Smart Wealth Goal V — Market-Linked Wealth Creation (Zero Allocation Charges)</h3>
+      <p><strong>Zero Premium Allocation Charges</strong> — poora paisa invest hota hai. Maturity par ROMC bhi milta hai. 15 funds, 5 portfolio strategies, Fund Boosters at 10th year+.</p>
+      <ul class="article-features" style="margin-top:12px;"><li>Zero Allocation Charges (ROAC at 15yr)</li><li>ROMC at Maturity</li><li>Fund Boosters</li><li>15 Funds Available</li><li>5 Portfolio Strategies</li><li>Tax Benefit 80C</li></ul>
     </div>
     <div class="action-box">
       <button class="btn-video" onclick="openVideo('tw5pCZc3Adw')">▶ ULIP Video Guide</button>
       <div class="calc-container">
-        <div style="font-size:0.73rem;font-weight:700;color:var(--green);margin-bottom:8px;text-align:center;">ULIP WEALTH CALCULATOR</div>
-        <label class="calc-label">Annual Premium (₹)</label><input type="number" id="u_amt" value="100000" class="calc-input">
-        <label class="calc-label">PPT</label><select id="u_ppt" class="calc-input"><option value="5">5 Yrs</option><option value="10" selected>10 Yrs</option><option value="15">15 Yrs</option></select>
+        <div style="font-size:0.73rem;font-weight:700;color:var(--green);margin-bottom:8px;text-align:center;">ULIP WEALTH CALCULATOR (IRDAI Illustration)</div>
+        <label class="calc-label">Annual Premium (₹)</label><input type="number" id="u_amt" value="100000" min="12000" class="calc-input">
+        <label class="calc-label">Premium Pay Term (PPT)</label><select id="u_ppt" class="calc-input"><option value="5">5 Yrs</option><option value="10" selected>10 Yrs</option><option value="15">15 Yrs</option></select>
         <label class="calc-label">Policy Term</label><select id="u_pt" class="calc-input"><option value="10">10 Yrs</option><option value="15">15 Yrs</option><option value="20" selected>20 Yrs</option><option value="25">25 Yrs</option><option value="30">30 Yrs</option></select>
         <button class="btn-calc" style="background:var(--green);" onclick="calcULIP()">Estimate Wealth</button>
         <div id="u_res" class="res-box" style="background:var(--green-light);border:1px solid #a8d5b5;">
           <div class="res-row"><span class="res-label">Total Invested</span><span class="res-value" id="u_inv"></span></div>
-          <div class="res-row"><span class="res-label">@8% CAGR (Illustrative)</span><span class="res-value" id="u_8" style="color:var(--green);"></span></div>
-          <div class="res-row"><span class="res-label">@4% CAGR (Conservative)</span><span class="res-value" id="u_4" style="color:var(--orange);"></span></div>
-          <div class="res-row"><span class="res-label">Est. Fund Booster @10yr</span><span class="res-value" id="u_bst" style="color:var(--blue);"></span></div>
+          <div class="res-row"><span class="res-label">@ 8% CAGR (Illustrative)</span><span class="res-value" id="u_8" style="color:var(--green);font-size:1rem;"></span></div>
+          <div class="res-row"><span class="res-label">@ 4% CAGR (Illustrative)</span><span class="res-value" id="u_4" style="color:var(--orange);"></span></div>
+          <div class="res-row"><span class="res-label">Est. Fund Booster (10yr mark)</span><span class="res-value" id="u_bst" style="color:var(--blue);"></span></div>
         </div>
-        <p class="calc-note">IRDAI mandated illustration. Returns NOT guaranteed.</p>
+        <p class="calc-note">IRDAI mandates 8% & 4% illustration. Market returns NOT guaranteed.</p>
       </div>
-      <a href="https://wa.me/+919382181126?text=ULIP ke baare mein jaanna hai" target="_blank" class="btn-whatsapp">Ask About ULIP</a>
-      <a href="https://blsht.in/BAJLIF/pSGzzg" target="_blank" class="btn-protect ulip">📈 Start Growing Wealth</a>
+      <a href="https://wa.me/+919382181126?text=Hi Mike, Smart Wealth Goal V ke baare mein jaanna hai" target="_blank" class="btn-whatsapp"> Ask About ULIP</a>
+      <a href="https://blsht.in/BAJLIF/pSGzzg" class="btn-protect ulip">📈 Start Growing Wealth</a>
+      <div class="btn-trust-line"> Zero Alloc. Charges &nbsp;·&nbsp; ROMC &nbsp;·&nbsp; Fund Boosters</div>
     </div>
   </div>
 
-  <h2 class="category-header reveal" style="border-bottom-color:var(--orange);">🏖️ 4. Guaranteed Pension Goal II</h2>
-  <div class="article-card reveal" style="border-left-color:var(--orange);">
+  <h2 class="category-header" style="border-bottom-color:var(--orange);">🏖️ 4. Guaranteed Pension Goal II — Lifetime Income</h2>
+  <div class="article-card" style="border-left-color:var(--orange);">
     <div class="article-content">
-      <h3>Guaranteed Pension Goal II — Zindagi Bhar Pension</h3>
-      <p>Ek lumpsum invest karo aur <strong>lifetime guaranteed pension</strong> pao. Age 60 par ~<strong>9.0%</strong> annuity rate. Joint life option available.</p>
-      <ul class="article-features"><li>Lifetime Pension</li><li>~8.5–10.4% Rate</li><li>Joint Life Option</li><li>Return of Purchase Price</li><li>Zero Market Risk</li></ul>
+      <h3>Guaranteed Pension Goal II — Zindagi Bhar Pension (All Annuity Options)</h3>
+      <p>Ek lumpsum invest karo aur <strong>lifetime guaranteed pension</strong> pao. Age 60 par single life annuity rate approximately <strong>9.0%</strong>. Immediate annuity — next period se income shuru.</p>
+      <div style="margin-top:12px;">
+        <div class="variant-tabs" id="pen-desc-tabs">
+          <button class="vtab active" onclick="switchDesc('pen-desc',['life','rop','joint','g10','g20'],0,this)">Life Only</button>
+          <button class="vtab" onclick="switchDesc('pen-desc',['life','rop','joint','g10','g20'],1,this)">Life + ROP</button>
+          <button class="vtab" onclick="switchDesc('pen-desc',['life','rop','joint','g10','g20'],2,this)">Joint Life</button>
+          <button class="vtab" onclick="switchDesc('pen-desc',['life','rop','joint','g10','g20'],3,this)">Guar. 10yr</button>
+          <button class="vtab" onclick="switchDesc('pen-desc',['life','rop','joint','g10','g20'],4,this)">Guar. 20yr</button>
+        </div>
+        <div id="pen-desc-life" class="variant-panel active" style="background:var(--orange-light);border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:#c46800;">Single Life — Life Only</strong> — Highest rate (~9.0% at 60). Jab tak jeete ho income milti hai.</div>
+        <div id="pen-desc-rop" class="variant-panel" style="background:var(--orange-light);border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:#c46800;">Life + Return of Purchase Price</strong> — Lifetime income + death par full investment nominee ko wapas.</div>
+        <div id="pen-desc-joint" class="variant-panel" style="background:var(--orange-light);border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:#c46800;">Joint Life (With Spouse)</strong> — Dono ko income milti hai jab tak dono mein se koi ek jeeta hai.</div>
+        <div id="pen-desc-g10" class="variant-panel" style="background:var(--orange-light);border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:#c46800;">Guaranteed 10 Years + Lifelong</strong> — 10 saal guaranteed, uske baad lifelong.</div>
+        <div id="pen-desc-g20" class="variant-panel" style="background:var(--orange-light);border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:#c46800;">Guaranteed 20 Years + Lifelong</strong> — 20 saal guaranteed, phir lifelong. Legacy + income dono.</div>
+      </div>
+      <ul class="article-features" style="margin-top:12px;"><li>Lifetime Pension</li><li>~8.5–10.4% Rate</li><li>Joint Life Option</li><li>Return of Purchase Price</li><li>Guaranteed Period Options</li><li>Zero Market Risk</li></ul>
     </div>
     <div class="action-box">
       <button class="btn-video" onclick="openVideo('4Et_v0EC2hU')">▶ Pension Plan Guide</button>
       <div class="calc-container">
         <div style="font-size:0.73rem;font-weight:700;color:var(--orange);margin-bottom:8px;text-align:center;">PENSION GOAL II CALCULATOR</div>
-        <label class="calc-label">Lumpsum Investment (₹)</label><input type="number" id="p_amt" value="1000000" class="calc-input">
+        <label class="calc-label">Lumpsum Investment (₹)</label><input type="number" id="p_amt" value="1000000" min="100000" class="calc-input">
         <label class="calc-label">Age at Annuity Start</label><select id="p_age" class="calc-input"><option value="45">45 yrs</option><option value="50">50 yrs</option><option value="55">55 yrs</option><option value="60" selected>60 yrs</option><option value="65">65 yrs</option><option value="70">70 yrs</option></select>
-        <label class="calc-label">Annuity Option</label><select id="p_opt" class="calc-input"><option value="life">Single Life Only (Max Rate)</option><option value="rop">Life + Return of Purchase Price</option><option value="joint">Joint Life (With Spouse)</option><option value="g10">Guaranteed 10 Yrs + Lifelong</option><option value="g20">Guaranteed 20 Yrs + Lifelong</option></select>
+        <label class="calc-label">Annuity Option</label><select id="p_opt" class="calc-input"><option value="life">Single Life Only (Max Rate)</option><option value="rop">Single Life + Return of Purchase Price</option><option value="joint">Joint Life (With Spouse)</option><option value="g10">Guaranteed 10 Yrs + Lifelong</option><option value="g20">Guaranteed 20 Yrs + Lifelong</option></select>
         <button class="btn-calc" style="background:var(--orange);" onclick="calcPension()">Calculate Pension</button>
         <div id="p_res" class="res-box" style="background:var(--orange-light);border:1px solid #f5c470;">
           <div class="res-row"><span class="res-label">Yearly Pension</span><span class="res-value" id="p_yr" style="color:var(--orange);font-size:1rem;"></span></div>
           <div class="res-row"><span class="res-label">Monthly Pension</span><span class="res-value" id="p_mon" style="color:var(--blue-dark);"></span></div>
-          <div class="res-row"><span class="res-label">Annuity Rate</span><span class="res-value" id="p_rate" style="color:var(--green);"></span></div>
+          <div class="res-row"><span class="res-label">Annuity Rate Applied</span><span class="res-value" id="p_rate" style="color:var(--green);"></span></div>
           <div class="res-row"><span class="res-label">Nominee Benefit</span><span class="res-value" id="p_nom" style="color:var(--muted);font-size:0.78rem;"></span></div>
         </div>
+        <p class="calc-note">Rates indicative per Bajaj GPG II structure. Actual rate at issuance.</p>
       </div>
-      <a href="https://wa.me/+919382181126?text=Pension Goal II ke baare mein jaanna hai" target="_blank" class="btn-whatsapp">Retirement Planning Help</a>
-      <a href="https://blsht.in/BAJLIF/pSGzzg" target="_blank" class="btn-protect pension">🏖️ Secure My Retirement</a>
+      <a href="https://wa.me/+919382181126?text=Hi Mike, Pension Goal II ke baare mein jaanna hai" target="_blank" class="btn-whatsapp"> Retirement Planning Help</a>
+      <a href="https://blsht.in/BAJLIF/pSGzzg" class="btn-protect pension">🏖️ Secure My Retirement</a>
+      <div class="btn-trust-line">Lifetime Income &nbsp;·&nbsp; Joint Life &nbsp;·&nbsp; Zero Market Risk</div>
     </div>
   </div>
 
-  <h2 class="category-header reveal" style="border-bottom-color:var(--gold);"> 5. Bajaj Life ACE — Design Your Own Plan</h2>
-  <div class="article-card reveal" style="border-left-color:var(--gold);">
+  <h2 class="category-header" style="border-bottom-color:var(--gold);"> 5. Bajaj Life ACE — Design Your Own Plan</h2>
+  <div class="article-card" style="border-left-color:var(--gold);">
     <div class="article-content">
-      <h3>Bajaj Life ACE — India's First Modular Income Plan 🏆 Product of Year 2024</h3>
-      <p><strong>Aap khud design karo apna plan!</strong> Non-Linked, Participating — Guaranteed Income + Cash Bonus. PPT 5–12 saal. Cover till age 100.</p>
-      <ul class="article-features"><li>Modular Design</li><li>GI + Cash Bonus</li><li>PPT 5–12 Yrs</li><li>Level or Increasing</li><li>Cover till Age 100</li><li>Product of Year 2024</li><li>Tax 80C + 10(10D)</li></ul>
+      <h3>Bajaj Life ACE — India's First Modular Income Plan (Product of Year 2024 🏆)</h3>
+      <p><strong>Aap khud design karo apna plan!</strong> Non-Linked, Participating — Guaranteed Income + Cash Bonus. PPT 5-12 saal. 3 options: SISO, SIDO, Lumpsum. Cover till age 100.</p>
+      <div style="margin-top:12px;">
+        <div class="variant-tabs" id="ace-desc-tabs">
+          <button class="vtab active" onclick="switchDesc('ace-desc',['siso','sido','ls'],0,this)">SISO</button>
+          <button class="vtab" onclick="switchDesc('ace-desc',['siso','sido','ls'],1,this)">SIDO</button>
+          <button class="vtab" onclick="switchDesc('ace-desc',['siso','sido','ls'],2,this)">Lumpsum</button>
+        </div>
+        <div id="ace-desc-siso" class="variant-panel active" style="background:var(--gold-light);border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:var(--gold);">SISO — Start Income Shortly</strong> — PPT ke immediately baad income shuru. GI + Cash Bonus. Level ya Increasing income.</div>
+        <div id="ace-desc-sido" class="variant-panel" style="background:var(--gold-light);border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:var(--gold);">SIDO — Start Income with Deferment</strong> — PPT ke baad kuch saal rukko, phir zyada income.</div>
+        <div id="ace-desc-ls" class="variant-panel" style="background:var(--gold-light);border-radius:8px;padding:12px;font-size:0.87rem;color:var(--muted);"><strong style="color:var(--gold);">Lumpsum Option</strong> — Maturity par guaranteed corpus + accumulated bonuses.</div>
+      </div>
+      <ul class="article-features" style="margin-top:12px;"><li>Modular — Design Yourself</li><li>Guaranteed Income + Bonus</li><li>PPT 5–12 Yrs</li><li>Level or Increasing Income</li><li>Cover till Age 100</li><li>Product of Year 2024</li><li>Tax 80C + 10(10D)</li></ul>
     </div>
     <div class="action-box">
       <button class="btn-video" onclick="openVideo('mjEoNGv3rGY')">▶ Bajaj ACE Guide</button>
       <div class="calc-container">
         <div style="font-size:0.73rem;font-weight:700;color:var(--gold);margin-bottom:8px;text-align:center;">BAJAJ LIFE ACE CALCULATOR</div>
-        <label class="calc-label">Annual Premium (₹)</label><input type="number" id="as_p" value="100000" class="calc-input">
-        <label class="calc-label">PPT</label><select id="as_ppt" class="calc-input"><option value="5">5 Yrs</option><option value="7">7 Yrs</option><option value="10" selected>10 Yrs</option><option value="12">12 Yrs</option></select>
-        <label class="calc-label">Income Type</label><select id="as_t" class="calc-input"><option value="level">Level Income</option><option value="inc">Increasing Income</option></select>
-        <button class="btn-calc" style="background:var(--gold);color:#1b2a47;" onclick="calcASISO()">Estimate</button>
-        <div id="as_res" class="res-box" style="background:var(--gold-light);border:1px solid #e0c070;">
-          <div class="res-row"><span class="res-label">Guaranteed Income (p.a.)</span><span class="res-value" id="as_gi" style="color:var(--gold);"></span></div>
-          <div class="res-row"><span class="res-label">Est. Cash Bonus* (p.a.)</span><span class="res-value" id="as_cb" style="color:var(--green);"></span></div>
-          <div class="res-row"><span class="res-label">Total Est. (p.a.)</span><span class="res-value" id="as_tot" style="color:var(--blue-dark);"></span></div>
-          <div class="res-row"><span class="res-label">Monthly (GI only)</span><span class="res-value" id="as_mon" style="color:var(--muted);"></span></div>
+        <div class="variant-tabs" id="ace-calc-tabs">
+          <button class="vtab active" onclick="switchCalcTab('ace',['siso','sido','ls'],0,this)">SISO</button>
+          <button class="vtab" onclick="switchCalcTab('ace',['siso','sido','ls'],1,this)">SIDO</button>
+          <button class="vtab" onclick="switchCalcTab('ace',['siso','sido','ls'],2,this)">Lumpsum</button>
         </div>
-        <p class="calc-note">Cash Bonus NOT guaranteed. GI is fixed & guaranteed.</p>
+        <div id="ace-siso" class="variant-panel active">
+          <label class="calc-label">Annual Premium (₹)</label><input type="number" id="as_p" value="100000" class="calc-input">
+          <label class="calc-label">PPT</label><select id="as_ppt" class="calc-input"><option value="5">5 Yrs</option><option value="7">7 Yrs</option><option value="10" selected>10 Yrs</option><option value="12">12 Yrs</option></select>
+          <label class="calc-label">Income Type</label><select id="as_t" class="calc-input"><option value="level">Level Income</option><option value="inc">Increasing Income</option></select>
+          <button class="btn-calc" style="background:var(--gold);" onclick="calcASISO()">Estimate</button>
+          <div id="as_res" class="res-box" style="background:var(--gold-light);border:1px solid #e0c070;">
+            <div class="res-row"><span class="res-label">Guaranteed Income (p.a.)</span><span class="res-value" id="as_gi" style="color:var(--gold);font-size:1rem;"></span></div>
+            <div class="res-row"><span class="res-label">Est. Cash Bonus* (p.a.)</span><span class="res-value" id="as_cb" style="color:var(--green);"></span></div>
+            <div class="res-row"><span class="res-label">Total Est. Income (p.a.)</span><span class="res-value" id="as_tot" style="color:var(--blue-dark);"></span></div>
+            <div class="res-row"><span class="res-label">Monthly (GI only)</span><span class="res-value" id="as_mon" style="color:var(--muted);"></span></div>
+          </div>
+        </div>
+        <div id="ace-sido" class="variant-panel">
+          <label class="calc-label">Annual Premium (₹)</label><input type="number" id="ad_p" value="100000" class="calc-input">
+          <label class="calc-label">PPT</label><select id="ad_ppt" class="calc-input"><option value="5">5 Yrs</option><option value="7">7 Yrs</option><option value="10" selected>10 Yrs</option><option value="12">12 Yrs</option></select>
+          <label class="calc-label">Deferment (yrs after PPT)</label><select id="ad_def" class="calc-input"><option value="2">2 Yrs</option><option value="5" selected>5 Yrs</option><option value="10">10 Yrs</option><option value="15">15 Yrs</option></select>
+          <button class="btn-calc" style="background:var(--gold);" onclick="calcASIDO()">Estimate</button>
+          <div id="ad_res" class="res-box" style="background:var(--gold-light);border:1px solid #e0c070;">
+            <div class="res-row"><span class="res-label">Income Starts After</span><span class="res-value" id="ad_st" style="color:var(--blue);"></span></div>
+            <div class="res-row"><span class="res-label">Guaranteed Income (p.a.)</span><span class="res-value" id="ad_gi" style="color:var(--gold);font-size:1rem;"></span></div>
+            <div class="res-row"><span class="res-label">Est. Cash Bonus* (p.a.)</span><span class="res-value" id="ad_cb" style="color:var(--green);"></span></div>
+            <div class="res-row"><span class="res-label">Total Est. Income (p.a.)</span><span class="res-value" id="ad_tot" style="color:var(--blue-dark);"></span></div>
+          </div>
+        </div>
+        <div id="ace-ls" class="variant-panel">
+          <label class="calc-label">Annual Premium (₹)</label><input type="number" id="al_p" value="100000" class="calc-input">
+          <label class="calc-label">PPT</label><select id="al_ppt" class="calc-input"><option value="5">5 Yrs</option><option value="7">7 Yrs</option><option value="10" selected>10 Yrs</option><option value="12">12 Yrs</option></select>
+          <label class="calc-label">Policy Term</label><select id="al_pt" class="calc-input"><option value="15">15 Yrs</option><option value="20" selected>20 Yrs</option><option value="25">25 Yrs</option></select>
+          <button class="btn-calc" style="background:var(--gold);" onclick="calcALS()">Estimate Corpus</button>
+          <div id="al_res" class="res-box" style="background:var(--gold-light);border:1px solid #e0c070;">
+            <div class="res-row"><span class="res-label">Total Premiums Paid</span><span class="res-value" id="al_paid"></span></div>
+            <div class="res-row"><span class="res-label">Guaranteed Maturity Benefit</span><span class="res-value" id="al_gmb" style="color:var(--gold);font-size:1rem;"></span></div>
+            <div class="res-row"><span class="res-label">Est. Bonuses* (if declared)</span><span class="res-value" id="al_bon" style="color:var(--green);"></span></div>
+            <div class="res-row"><span class="res-label">Total Est. Corpus</span><span class="res-value" id="al_tot" style="color:var(--blue-dark);"></span></div>
+          </div>
+        </div>
+        <p class="calc-note">*Cash Bonus NOT guaranteed — depends on company performance. GI is fixed & guaranteed.</p>
       </div>
-      <a href="https://wa.me/+919382181126?text=Bajaj Life ACE plan design karna hai" target="_blank" class="btn-whatsapp">Design My ACE Plan</a>
-      <a href="https://blsht.in/BAJLIF/pSGzzg" target="_blank" class="btn-protect ace">Get My Custom ACE Plan</a>
+      <a href="https://wa.me/+919382181126?text=Hi Mike, Bajaj Life ACE plan design karna hai" target="_blank" class="btn-whatsapp"> Design My ACE Plan</a>
+      <a href="https://blsht.in/BAJLIF/pSGzzg" class="btn-protect ace"> Get My Custom ACE Plan</a>
+      <div class="btn-trust-line"> Product of Year 2024 &nbsp;·&nbsp; Cover till 100 &nbsp;·&nbsp; Modular</div>
     </div>
   </div>
 </div>
-
-<div class="compare-section reveal" id="compare">
+  <div class="compare-section" id="compare">
   <div class="compare-inner">
-    <h2 class="compare-title">All Plans at a Glance</h2>
+    <h2 class="compare-title"> All Plans at a Glance — Comparison</h2>
     <div class="compare-wrapper">
       <table class="compare-table">
         <thead><tr><th>Plan</th><th>Type</th><th>Market Risk</th><th>Regular Income</th><th>Life Cover</th><th>ROP Option</th><th>Best For</th></tr></thead>
@@ -734,8 +814,10 @@ footer{background:#0d1117;color:rgba(255,255,255,0.55);padding:50px 4%;text-alig
           <tr><td class="plan-name">AWG – Second Income<span class="best-badge">POPULAR</span></td><td>Guaranteed</td><td class="yes">Zero</td><td class="yes">✅ Guaranteed</td><td class="yes">✅</td><td class="yes">110%</td><td>Second income + capital</td></tr>
           <tr><td class="plan-name">AWG – Lifelong Income</td><td>Guaranteed</td><td class="yes">Zero</td><td class="yes">✅ Till 99</td><td class="yes">✅</td><td class="yes">110%</td><td>Retirement — lifetime</td></tr>
           <tr><td class="plan-name">AWG – Step-Up</td><td>Guaranteed</td><td class="yes">Zero</td><td class="yes">✅ Increasing</td><td class="yes">✅</td><td class="yes">100%</td><td>Rising expenses</td></tr>
-          <tr><td class="plan-name">Smart Protect Goal</td><td>Term Insurance</td><td class="yes">Zero</td><td class="no">❌ Death benefit</td><td class="yes">✅ Up to 99</td><td class="yes">Optional</td><td>Family protection</td></tr>
-          <tr><td class="plan-name">Smart Wealth Goal V</td><td>ULIP</td><td style="color:var(--orange);font-weight:700;">Market-Linked</td><td>Partial Withdrawal</td><td class="yes">✅</td><td class="no">❌</td><td>Long-term wealth</td></tr>
+          <tr><td class="plan-name">AWG – Wealth Creation</td><td>Guaranteed</td><td class="yes">Zero</td><td class="no">❌ Lumpsum only</td><td class="yes">✅</td><td class="yes">GMB</td><td>Child education / goal</td></tr>
+          <tr><td class="plan-name">AWG Platinum<span class="best-badge">PREMIUM</span></td><td>Guaranteed</td><td class="yes">Zero</td><td class="yes">✅ + Early Payouts</td><td class="yes">✅</td><td class="yes">115%</td><td>Income during PPT also</td></tr>
+          <tr><td class="plan-name">Smart Protect Goal</td><td>Term Insurance</td><td class="yes">Zero</td><td class="no">❌ (death benefit)</td><td class="yes">✅ Up to 99</td><td class="yes">Optional</td><td>Pure family protection</td></tr>
+          <tr><td class="plan-name">Smart Wealth Goal V</td><td>ULIP</td><td style="color:var(--orange);font-weight:700;">Market-Linked</td><td>Partial Withdrawal</td><td class="yes">✅</td><td class="no">❌</td><td>Long-term wealth growth</td></tr>
           <tr><td class="plan-name">Guaranteed Pension II</td><td>Annuity</td><td class="yes">Zero</td><td class="yes">✅ Lifetime</td><td class="no">❌</td><td class="yes">On death</td><td>Retirement pension</td></tr>
           <tr><td class="plan-name">Bajaj Life ACE<span class="best-badge">2024 AWARD</span></td><td>Participating</td><td class="yes">Zero (GI)</td><td class="yes">✅ GI + Bonus</td><td class="yes">✅ Till 100</td><td>Variant-based</td><td>Custom design</td></tr>
         </tbody>
