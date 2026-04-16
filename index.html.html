@@ -923,15 +923,15 @@ function initChat() {
   var banner = document.getElementById('apiKeyBanner');
   if (banner) banner.style.display = 'none';
 
-  // Naya Welcome Message bina brackets ke
-  var welcomeText = "🙏 <strong>Hello!</strong> I'm Mike's digital assistant.<br><br>Aap mujhse kis language mein baat karna prefer karenge?";
+  // Ekdum Clean Welcome Message (Bina kisi extra brackets ke)
+  var welcomeText = "🙏 <strong>Hello!</strong> Main Mike ka digital assistant hoon.<br><br>Aap mujhse kis language mein baat karna prefer karenge?";
 
   addMsg('bot', welcomeText);
 
-  // Bot ki memory me yaad rakhne ke liye ki usne language puchi hai
+  // Sync memory so AI knows what it just asked
   chatHistory.push({ 
     role: "assistant", 
-    content: "Hello! I'm Mike's digital assistant. Aap mujhse kis language mein baat karna prefer karenge?" 
+    content: "Hello! Main Mike ka digital assistant hoon. Aap mujhse kis language mein baat karna prefer karenge?" 
   });
 
   renderQRs();
