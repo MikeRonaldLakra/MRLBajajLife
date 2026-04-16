@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -455,7 +454,7 @@ footer{background:#0d1117;color:rgba(255,255,255,0.55);padding:50px 4%;text-alig
 <div class="blog-section" id="plans">
   <div class="section-intro reveal"><h2>Complete Insurance Plan Portfolio</h2><p>Every plan — fully transparent, with live calculators.</p></div>
 
-   <h2 class="category-header" style="border-bottom-color:var(--blue);"> 1. Assured Wealth Goal (AWG) — 6 Variants</h2>
+  <h2 class="category-header" style="border-bottom-color:var(--blue);"> 1. Assured Wealth Goal (AWG) — 6 Variants</h2>
   <div class="article-card" style="border-left-color:var(--blue);">
     <div class="article-content">
       <h3>Bajaj Life Assured Wealth Goal — Guaranteed Income for Every Goal</h3>
@@ -504,7 +503,6 @@ footer{background:#0d1117;color:rgba(255,255,255,0.55);padding:50px 4%;text-alig
             <div class="res-row"><span class="res-label">Monthly Income</span><span class="res-value" id="si_mon" style="color:var(--blue-dark);"></span></div>
             <div class="res-row"><span class="res-label">Total Income (period)</span><span class="res-value" id="si_tot" style="color:var(--blue);"></span></div>
             <div class="res-row"><span class="res-label">Return of Premium (110%)</span><span class="res-value" id="si_rop" style="color:var(--red);"></span></div>
-            <button class="btn-whatsapp" id="share_si_quote" style="display:none; margin-top:10px; background:#25D366; color:white; border:none;" onclick="shareAWGQuote('si')">📲 Share Quote to Client</button>
           </div>
         </div>
         <div id="awg-lifelong" class="variant-panel">
@@ -518,7 +516,6 @@ footer{background:#0d1117;color:rgba(255,255,255,0.55);padding:50px 4%;text-alig
             <div class="res-row"><span class="res-label">Income Years (till age 99)</span><span class="res-value" id="ll_yrs" style="color:var(--blue);"></span></div>
             <div class="res-row"><span class="res-label">Total Lifetime Income (est.)</span><span class="res-value" id="ll_tot" style="color:var(--orange);"></span></div>
             <div class="res-row"><span class="res-label">110% Return of Premium</span><span class="res-value" id="ll_rop" style="color:var(--red);"></span></div>
-            <button class="btn-whatsapp" id="share_ll_quote" style="display:none; margin-top:10px; background:#25D366; color:white; border:none;" onclick="shareAWGQuote('ll')">📲 Share Quote to Client</button>
           </div>
         </div>
         <div id="awg-stepup" class="variant-panel">
@@ -576,11 +573,12 @@ footer{background:#0d1117;color:rgba(255,255,255,0.55);padding:50px 4%;text-alig
     </div>
   </div>
 
+  <!-- AWG PLATINUM CARD — CALCULATOR FULLY FIXED FROM V1 -->
   <div class="article-card" style="border-left-color:var(--purple);margin-top:-0.5rem;">
     <div class="article-content">
       <h3> AWG Platinum — Smart Income & Regular Income (Premium Variant)</h3>
       <p>AWG Platinum mein <strong>Early Guaranteed Payouts (EGP)</strong> milti hain — premium pay karte waqt hi income shuru! Brochure: ₹1L/yr × 10yr → ₹1,00,800/yr for 30 yrs (Option 2). UIN: 116N170V12</p>
-      <ul class="article-features"><li>Early Payouts During PPT (Option 1)</li><li>~1.008x Annual Income (10yr)</li><li>Enhanced ROP</li><li>Lumpsum Commutation Option</li></ul>
+      <ul class="article-features"><li>Early Payouts During PPT (Option 1)</li><li>~1.008x Annual Income (10yr)</li><li>Enhanced ROP (~115%)</li><li>Lumpsum Commutation Option</li></ul>
     </div>
     <div class="action-box">
       <div class="calc-container">
@@ -804,7 +802,8 @@ footer{background:#0d1117;color:rgba(255,255,255,0.55);padding:50px 4%;text-alig
     </div>
   </div>
 </div>
-  <div class="compare-section" id="compare">
+
+<div class="compare-section" id="compare">
   <div class="compare-inner">
     <h2 class="compare-title"> All Plans at a Glance — Comparison</h2>
     <div class="compare-wrapper">
@@ -952,9 +951,7 @@ footer{background:#0d1117;color:rgba(255,255,255,0.55);padding:50px 4%;text-alig
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════
-     AI CHATBOT — FLOATING BUTTON + WINDOW
-════════════════════════════════════════ -->
+<!-- AI CHATBOT -->
 <button class="ai-fab" id="aiFab" onclick="toggleAIChat()" title="Ask Mike's AI Assistant">
   <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/Woman%20Office%20Worker.png" alt="AI Assistant" onerror="this.style.display='none'">
   <div class="ai-fab-label">🤷‍♀️ Ask Mike's Assistant</div>
@@ -968,9 +965,7 @@ footer{background:#0d1117;color:rgba(255,255,255,0.55);padding:50px 4%;text-alig
     </div>
     <button class="ai-header-close" onclick="toggleAIChat()">✕</button>
   </div>
-  <div class="api-key-banner" id="apiKeyBanner">
-    ⚠️ Add your Gemini API key in the script below to enable AI responses.
-  </div>
+  <div class="api-key-banner" id="apiKeyBanner"></div>
   <div class="ai-body" id="aiChatBody"></div>
   <div class="ai-quick-replies" id="aiQuickReplies"></div>
   <div class="ai-input-area">
@@ -980,236 +975,8 @@ footer{background:#0d1117;color:rgba(255,255,255,0.55);padding:50px 4%;text-alig
 </div>
 
 <script>
-
 // ═══════════════════════════════════════════════════
-// CHAT STATE
-// ═══════════════════════════════════════════════════
-var chatHistory = [];
-var isTyping = false;
-
-// ═══════════════════════════════════════════════════
-// QUICK REPLIES
-// ═══════════════════════════════════════════════════
-var defaultQRs = [
-  {l:"🏆 Best Plan for Me", m:"Mujhe best plan suggest karo — age 35, married"},
-  {l:"💰 AWG vs FD", m:"AWG aur Bank FD mein kya fark hai?"},
-  {l:"🛡️ Term Quote", m:"₹1 Crore term plan ka quote do"},
-  {l:"🏖️ Retirement", m:"Retirement ke liye best plan kaunsa hai?"},
-  {l:"👩 Women Plan", m:"Women ke liye best plan kaunsa hai?"},
-  {l:"📊 vs LIC", m:"Bajaj vs LIC — kaun better hai?"}
-];
-
-function renderQRs(qrs) {
-  var c = document.getElementById('aiQuickReplies');
-  if (!c) return;
-  c.innerHTML = '';
-  (qrs||defaultQRs).slice(0,5).forEach(function(q) {
-    var b = document.createElement('button');
-    b.className = 'qr-btn';
-    b.textContent = q.l;
-    b.onclick = function() { sendQR(q.m); };
-    c.appendChild(b);
-  });
-}
-
-function sendQR(text) {
-  var inp = document.getElementById('aiInput');
-  if (inp) { inp.value = text; processAIQuery(); }
-}
-
-// ═══════════════════════════════════════════════════
-// TOGGLE CHAT WINDOW
-// ═══════════════════════════════════════════════════
-function toggleAIChat() {
-  var win = document.getElementById('aiWindow');
-  if (!win) return;
-  var isOpen = win.classList.contains('open');
-  if (!isOpen) {
-    win.classList.add('open');
-    if (document.getElementById('aiChatBody').children.length === 0) {
-      initChat();
-    }
-    setTimeout(function() {
-      var inp = document.getElementById('aiInput');
-      if (inp) inp.focus();
-    }, 300);
-  } else {
-    win.classList.remove('open');
-  }
-}
-
-// ═══════════════════════════════════════════════════
-// INIT CHAT WITH WELCOME MESSAGE
-// ═══════════════════════════════════════════════════
-// Naya Updated Code:
-function initChat() {
-  var hasKey = true; 
-  var banner = document.getElementById('apiKeyBanner');
-  if (banner) banner.style.display = 'none';
-
-  // Ekdum Clean Welcome Message (Bina kisi extra brackets ke)
-  var welcomeText = "🙏 <strong>Hello!</strong> Main Mike ka digital assistant hoon.<br><br>Aap mujhse kis language mein baat karna prefer karenge?";
-
-  addMsg('bot', welcomeText);
-
-  // Sync memory so AI knows what it just asked
-  chatHistory.push({ 
-    role: "assistant", 
-    content: "Hello! Main Mike ka digital assistant hoon. Aap mujhse kis language mein baat karna prefer karenge?" 
-  });
-
-  renderQRs();
-}
-
-// ═══════════════════════════════════════════════════
-// ADD MESSAGE TO CHAT
-// ═══════════════════════════════════════════════════
-function addMsg(sender, html, id) {
-  var body = document.getElementById('aiChatBody');
-  if (!body) return null;
-  var div = document.createElement('div');
-  div.className = 'ai-msg ai-' + sender;
-  if (id) div.id = id;
-  div.innerHTML = html;
-  body.appendChild(div);
-  body.scrollTop = body.scrollHeight;
-  return div;
-}
-
-// ═══════════════════════════════════════════════════
-// TYPING INDICATOR
-// ═══════════════════════════════════════════════════
-function showTyping() {
-  var id = 'typ' + Date.now();
-  addMsg('bot', '<div class="typing-dots"><span></span><span></span><span></span></div>', id);
-  return id;
-}
-function removeTyping(id) {
-  var el = document.getElementById(id);
-  if (el) el.remove();
-}
-
-// ═══════════════════════════════════════════════════
-// FORMAT GEMINI RESPONSE (markdown to HTML)
-// ═══════════════════════════════════════════════════
-function fmtReply(t) {
-  return t
-    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g,'<em>$1</em>')
-    .replace(/\n\n/g,'<br><br>')
-    .replace(/\n/g,'<br>')
-    .replace(/https:\/\/wa\.me\/[^\s<"]+/g,function(u){
-      return '<a href="'+u+'" target="_blank" class="wa-link">💬 WhatsApp Mike</a>';
-    });
-}
-
-// ═══════════════════════════════════════════════════
-// FALLBACK (when no API key or error)
-// ═══════════════════════════════════════════════════
-function fallback(msg) {
-  var m = msg.toLowerCase();
-  if (/term|protect|cover|death|life cover/i.test(m))
-    return '🛡️ <strong>Smart Protect Goal</strong> — ₹1 Crore cover at just <strong>₹651/month</strong> (Age 30, male)!<br><br>99.29% claim settlement — private sector BEST.<br><br><a href="https://wa.me/+919382181126?text=Term plan exact quote chahiye" target="_blank" class="wa-link">💬 Get Quote from Mike</a>';
-  if (/pension|retire|annuity/i.test(m))
-    return '🏖️ <strong>Guaranteed Pension Goal II</strong><br><br>₹10L invest at age 60 = <strong>₹7,500/month guaranteed LIFETIME!</strong><br><br><a href="https://wa.me/+919382181126?text=Pension plan details chahiye" target="_blank" class="wa-link">💬 WhatsApp Mike</a>';
-  if (/awg|guaranteed|second income/i.test(m))
-    return '💰 <strong>AWG Second Income</strong> — ₹1L/yr × 10yr → <strong>₹1,81,500/yr × 30yrs guaranteed!</strong><br>+ ₹11L back at end (110% ROP)<br>Zero tax. Zero market risk.<br><br><a href="https://wa.me/+919382181126?text=AWG plan details chahiye" target="_blank" class="wa-link">💬 Get AWG PDF from Mike</a>';
-  if (/lic|compare|better|vs/i.test(m))
-    return '⚔️ <strong>Bajaj vs LIC:</strong><br>• Bajaj CSR: 99.29% | LIC: 98.3%<br>• Bajaj AWG IRR: ~6.8% | LIC endowment: ~4.3%<br>• Bajaj: Zero GST | LIC: GST applicable<br>• Bajaj: 96% claims in 1 day | LIC: 3-7 days<br><br><strong>Data speaks — Bajaj wins! 🏆</strong>';
-  return '🙏 Main aapki madad karne ke liye ready hoon!<br><br>Directly Mike se baat karo:<br><a href="https://wa.me/+919382181126?text=Hi Mike, I need advice on Bajaj Life plans" target="_blank" class="wa-link">💬 WhatsApp Mike Now</a><br><br><em>Or ask me: AWG plan, Term plan, Pension, Tax saving, Retirement</em>';
-}
-
-// ═══════════════════════════════════════════════════
-// CONTEXTUAL QUICK REPLIES
-// ═══════════════════════════════════════════════════
-function contextQRs(msg) {
-  var m = msg.toLowerCase();
-  if (/awg|second income|guaranteed income/i.test(m)) {
-    return [{l:"⭐ AWG Platinum",m:"AWG Platinum kya hai?"},{l:"📈 Step-Up Income",m:"AWG Step-Up Income batao"},{l:"💰 AWG vs FD",m:"AWG vs FD compare karo"},{l:"📲 Get PDF",m:"AWG ka PDF chahiye"}];
-  }
-  if (/term|protect|cover/i.test(m)) {
-    return [{l:"🎗️ CI Rider",m:"Critical illness rider kya hota hai?"},{l:"👩 Female Rate",m:"Female term plan rate kya hai?"},{l:"🔄 ROP Option",m:"Return of Premium term plan kya hai?"},{l:"📋 Exact Quote",m:"Exact term quote Mike se chahiye"}];
-  }
-  if (/pension|retire/i.test(m)) {
-    return [{l:"👫 Joint Life",m:"Joint life pension option batao"},{l:"💸 Min Amount",m:"Minimum investment kitna hai pension mein?"},{l:"📊 vs NPS",m:"Bajaj Pension vs NPS kaun better?"},{l:"📲 Discuss",m:"Retirement plan discuss karna hai Mike se"}];
-  }
-  return null;
-}
-
- // ═══════════════════════════════════════════════════
-// MAIN QUERY PROCESSOR (UPDATED FOR GROQ / LLAMA 3)
-// ═══════════════════════════════════════════════════
-function processAIQuery() {
-  if (isTyping) return;
-  var inp = document.getElementById('aiInput');
-  var sendBtn = document.getElementById('aiSendBtn');
-  var text = inp.value.trim();
-  if (!text) return;
-
-  inp.value = '';
-  addMsg('user', text);
-  isTyping = true;
-  
-  // Disable UI
-  if (inp) inp.disabled = true;
-  if (sendBtn) sendBtn.disabled = true;
-
-  var typId = showTyping();
-
-  // Send the query AND the history to Vercel
-  fetch('/api/chat', { 
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ 
-      message: text,
-      history: chatHistory // Sending clean Groq-compatible history
-    })
-  })
-  .then(function(r) { return r.json(); })
-  .then(function(data) {
-    removeTyping(typId);
-    
-    var reply = data.reply || "I am analyzing the data, please contact Mike directly.";
-    
-    // Save conversation to memory (Groq format)
-    chatHistory.push({ role: "user", content: text });
-    chatHistory.push({ role: "assistant", content: reply });
-    
-    // Keep memory size manageable (last 10 messages) to save bandwidth
-    if (chatHistory.length > 10) {
-        chatHistory = chatHistory.slice(chatHistory.length - 10);
-    }
-    
-    addMsg('bot', fmtReply(reply));
-    renderQRs(contextQRs(text)); 
-    
-    isTyping = false;
-    if (inp) { inp.disabled = false; inp.focus(); }
-    if (sendBtn) sendBtn.disabled = false;
-  })
-  .catch(function(err) {
-    console.error("Fetch Error:", err);
-    removeTyping(typId);
-    addMsg('bot', "Connection Error. Please WhatsApp Mike Ronald Lakra.");
-    isTyping = false;
-    if (inp) inp.disabled = false;
-    if (sendBtn) sendBtn.disabled = false;
-  });
-}
-// ═══════════════════════════════════════════════════
-// ENTER KEY
-// ═══════════════════════════════════════════════════
-document.addEventListener('DOMContentLoaded', function() {
-  var inp = document.getElementById('aiInput');
-  if (inp) {
-    inp.addEventListener('keypress', function(e) {
-      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); processAIQuery(); }
-    });
-  }
-});
-
-// ═══════════════════════════════════════════════════
-// CALCULATORS
+// UTILITIES
 // ═══════════════════════════════════════════════════
 function fmt(n){ return '₹' + Math.round(n).toLocaleString('en-IN'); }
 function val(id){ var el=document.getElementById(id); return el?el.value:''; }
@@ -1219,6 +986,10 @@ function showRes(boxId, data){
   Object.keys(data).forEach(function(k){ var el=document.getElementById(k); if(el) el.innerText=data[k]; });
   box.style.display='block';
 }
+
+// ═══════════════════════════════════════════════════
+// TAB SWITCHERS
+// ═══════════════════════════════════════════════════
 function switchDesc(prefix,ids,idx,btn){
   ids.forEach(function(id){ var el=document.getElementById(prefix+'-'+id); if(el) el.className='variant-panel'; });
   var a=document.getElementById(prefix+'-'+ids[idx]); if(a) a.className='variant-panel active';
@@ -1227,17 +998,28 @@ function switchDesc(prefix,ids,idx,btn){
 }
 function switchCalcTab(prefix,ids,idx,btn){
   ids.forEach(function(id){
-    var e1=document.getElementById(prefix+'-'+id+'-calc');
-    var e2=document.getElementById(prefix+'-'+id);
-    if(e1) e1.className='variant-panel'; else if(e2) e2.className='variant-panel';
+    var e=document.getElementById(prefix+'-'+id);
+    if(e) e.className='variant-panel';
   });
-  var a1=document.getElementById(prefix+'-'+ids[idx]+'-calc');
-  var a2=document.getElementById(prefix+'-'+ids[idx]);
-  if(a1) a1.className='variant-panel active'; else if(a2) a2.className='variant-panel active';
+  var a=document.getElementById(prefix+'-'+ids[idx]);
+  if(a) a.className='variant-panel active';
   btn.closest('.variant-tabs').querySelectorAll('.vtab').forEach(function(b){ b.className='vtab'; });
   btn.className='vtab active';
 }
 
+// ═══════════════════════════════════════════════════
+// AWG PLATINUM TAB SWITCHER — FIXED FROM V1
+// ═══════════════════════════════════════════════════
+function switchPT(v, btn) {
+  ['smart','regular'].forEach(function(x) { var el = document.getElementById('pt-'+x); if(el) el.className='variant-panel'; });
+  var a = document.getElementById('pt-'+v); if(a) a.className='variant-panel active';
+  btn.closest('.variant-tabs').querySelectorAll('.vtab').forEach(function(b) { b.className='vtab'; });
+  btn.className = 'vtab active';
+}
+
+// ═══════════════════════════════════════════════════
+// AWG CALCULATORS
+// ═══════════════════════════════════════════════════
 var SI_F={7:1.52,8:1.62,10:1.815,12:1.98,15:2.35};
 function calcSI(){
   var p=parseFloat(val('si_prem'))||0,ppt=parseInt(val('si_ppt'))||10,ip=parseInt(val('si_ip'))||30;
@@ -1245,6 +1027,7 @@ function calcSI(){
   var ann=Math.round(p*(SI_F[ppt]||1.815));
   showRes('si_res',{si_inc:fmt(ann)+' / year',si_mon:fmt(Math.round(ann/12))+' / month',si_tot:fmt(ann*ip)+' ('+ip+' yrs)',si_rop:fmt(Math.round(p*ppt*1.10))+' (110% ROP)'});
 }
+
 var LL_F={7:0.78,10:0.895,12:0.97,15:1.12};
 function calcLL(){
   var p=parseFloat(val('ll_prem'))||0,ppt=parseInt(val('ll_ppt'))||10,age=parseInt(val('ll_age'))||40;
@@ -1252,6 +1035,7 @@ function calcLL(){
   var ann=Math.round(p*(LL_F[ppt]||0.895)),yrs=Math.max(0,99-age-ppt);
   showRes('ll_res',{ll_inc:fmt(ann)+' / year',ll_mon:fmt(Math.round(ann/12))+' / month',ll_yrs:yrs+' years (till age 99)',ll_tot:fmt(ann*yrs)+' approx.',ll_rop:fmt(Math.round(p*ppt*1.10))+' (110% ROP)'});
 }
+
 var SU_F={7:0.70,10:0.80,12:0.87};
 function calcSU(){
   var p=parseFloat(val('su_prem'))||0,ppt=parseInt(val('su_ppt'))||10;
@@ -1259,6 +1043,7 @@ function calcSU(){
   var b=Math.round(p*(SU_F[ppt]||0.80)),s=Math.round(b*0.10);
   showRes('su_res',{su_y1:fmt(b)+' / year',su_y2:fmt(b+s)+' / year',su_y3:fmt(b+2*s)+' / year',su_y4:fmt(b+3*s)+' / year',su_rop:fmt(p*ppt)+' (100% ROP)'});
 }
+
 var WC_F={5:1.35,7:1.50,8:1.60,10:1.75,12:1.95};
 function calcWC(){
   var p=parseFloat(val('wc_prem'))||0,ppt=parseInt(val('wc_ppt'))||8;
@@ -1266,6 +1051,7 @@ function calcWC(){
   var f=WC_F[ppt]||1.60,total=p*ppt,gmb=Math.round(total*f);
   showRes('wc_res',{wc_paid:fmt(total),wc_gmb:fmt(gmb),wc_pct:Math.round(f*100)+'% of total premiums'});
 }
+
 var AI_F={7:0.68,8:0.745,10:0.85,12:0.92};
 function calcAI(){
   var p=parseFloat(val('ai_prem'))||0,ppt=parseInt(val('ai_ppt'))||8,ip=parseInt(val('ai_ip'))||30;
@@ -1273,6 +1059,7 @@ function calcAI(){
   var ann=Math.round(p*(AI_F[ppt]||0.745));
   showRes('ai_res',{ai_inc:fmt(ann)+' / year',ai_mon:fmt(Math.round(ann/12))+' / month',ai_tot:fmt(ann*ip)+' ('+ip+' yrs)',ai_rop:fmt(p*ppt)+' (100% ROP)'});
 }
+
 var EI_F={7:1.70,10:2.05,12:2.22,15:2.60};
 function calcEI(){
   var p=parseFloat(val('ei_prem'))||0,ppt=parseInt(val('ei_ppt'))||10,ip=parseInt(val('ei_ip'))||25;
@@ -1280,6 +1067,38 @@ function calcEI(){
   var ann=Math.round(p*(EI_F[ppt]||2.05));
   showRes('ei_res',{ei_inc:fmt(ann)+' / year',ei_mon:fmt(Math.round(ann/12))+' / month',ei_tot:fmt(ann*ip)+' ('+ip+' yrs)'});
 }
+
+// ═══════════════════════════════════════════════════
+// AWG PLATINUM CALCULATORS — FIXED FROM V1
+// ═══════════════════════════════════════════════════
+var PT_F={7:0.88,10:1.008,12:1.10};
+
+function calcPS() {
+  var p=parseFloat(val('ps_p'))||0, ppt=parseInt(val('ps_ppt'))||10, egp=parseInt(val('ps_egp'))||5;
+  if(p<1){alert('Premium amount enter karein.');return;}
+  var egpRt={3:0.07,5:0.08,7:0.09};
+  showRes('ps_res',{
+    ps_egp_o: fmt(Math.round(p*(egpRt[egp]||0.08)))+' / yr (during PPT, '+egp+' yrs)',
+    ps_ri:    fmt(Math.round(p*(PT_F[ppt]||1.008)))+' / year (after PPT)',
+    ps_mon:   fmt(Math.round(p*(PT_F[ppt]||1.008)/12))+' / month'
+  });
+}
+
+function calcPR() {
+  var p=parseFloat(val('pr_p'))||0, ppt=parseInt(val('pr_ppt'))||10, ip=parseInt(val('pr_ip'))||30;
+  if(p<1){alert('Premium amount enter karein.');return;}
+  var ann=Math.round(p*(PT_F[ppt]||1.008));
+  showRes('pr_res',{
+    pr_inc: fmt(ann)+' / year',
+    pr_mon: fmt(Math.round(ann/12))+' / month',
+    pr_tot: fmt(ann*ip)+' ('+ip+' yrs)',
+    pr_rop: fmt(Math.round(p*ppt*1.15))+' (~115% enhanced)'
+  });
+}
+
+// ═══════════════════════════════════════════════════
+// TERM INSURANCE CALCULATOR
+// ═══════════════════════════════════════════════════
 var TERM_BASE={18:480,20:500,22:530,25:560,28:610,30:651,32:720,35:820,38:1000,40:1200,42:1450,45:1750,48:2200,50:2700,52:3400,55:4200,58:5500,60:6800,65:9500};
 function calcTerm(){
   var sa=parseInt(val('t_sa'))||10000000,age=parseInt(val('t_age'))||30,gender=val('t_gender')||'male',variant=val('t_variant')||'basic',smoke=val('t_smoke')||'no';
@@ -1296,6 +1115,10 @@ function calcTerm(){
   var vMap={basic:'Life Only',rop:'With Return of Premium',ci:'With 55 CI Rider',income:'Income Payout to Nominee'};
   showRes('t_res',{t_mon:'₹'+mo.toLocaleString('en-IN')+' / month',t_ann:'₹'+(mo*12).toLocaleString('en-IN')+' / year',t_cov:'₹'+(sa/100000)+' Lakhs',t_var:vMap[variant]||variant});
 }
+
+// ═══════════════════════════════════════════════════
+// ULIP CALCULATOR
+// ═══════════════════════════════════════════════════
 function calcULIP(){
   var p=parseFloat(val('u_amt'))||0,ppt=parseInt(val('u_ppt'))||10,pt=parseInt(val('u_pt'))||20;
   if(!p){alert('Premium enter karein.');return;}
@@ -1303,6 +1126,10 @@ function calcULIP(){
   var fv8=fvA(p,0.08,ppt)*Math.pow(1.08,pt-ppt),fv4=fvA(p,0.04,ppt)*Math.pow(1.04,pt-ppt);
   showRes('u_res',{u_inv:fmt(p*ppt),u_8:fmt(Math.round(fv8))+' (@8% illus.)',u_4:fmt(Math.round(fv4))+' (@4% illus.)',u_bst:fmt(Math.round(fv8*0.025))+' approx.'});
 }
+
+// ═══════════════════════════════════════════════════
+// PENSION CALCULATOR
+// ═══════════════════════════════════════════════════
 var PEN_BASE={45:7.2,50:7.9,55:8.4,60:9.0,65:9.6,70:10.4};
 function calcPension(){
   var inv=parseFloat(val('p_amt'))||0,age=parseInt(val('p_age'))||60,opt=val('p_opt')||'life';
@@ -1317,7 +1144,14 @@ function calcPension(){
   var yr=Math.round(inv*rate/100);
   showRes('p_res',{p_yr:fmt(yr)+' / year',p_mon:fmt(Math.round(yr/12))+' / month',p_rate:rate.toFixed(1)+'% annuity rate',p_nom:nom});
 }
+
+// ═══════════════════════════════════════════════════
+// ACE CALCULATORS
+// ═══════════════════════════════════════════════════
 var ACE_GI={5:0.10,7:0.12,10:0.14,12:0.15};
+var DEF_MULT={2:1.08,5:1.20,10:1.40,15:1.65};
+var ACE_GMB={5:1.30,7:1.48,10:1.72,12:1.92};
+
 function calcASISO(){
   var p=parseFloat(val('as_p'))||0,ppt=parseInt(val('as_ppt'))||10,t=val('as_t')||'level';
   if(!p){alert('Premium enter karein.');return;}
@@ -1325,6 +1159,20 @@ function calcASISO(){
   if(t==='inc') gi=Math.round(gi*0.85);
   var cb=Math.round(p*ppt*0.04);
   showRes('as_res',{as_gi:fmt(gi)+' / year (Guaranteed)',as_cb:fmt(cb)+' / year (NOT guaranteed)',as_tot:fmt(gi+cb)+' / year (est.)',as_mon:fmt(Math.round(gi/12))+' / month (GI only)'});
+}
+
+function calcASIDO(){
+  var p=parseFloat(val('ad_p'))||0,ppt=parseInt(val('ad_ppt'))||10,def=parseInt(val('ad_def'))||5;
+  if(!p){alert('Premium enter karein.');return;}
+  var gi=Math.round(p*(ACE_GI[ppt]||0.14)*(DEF_MULT[def]||1.20)),cb=Math.round(p*ppt*0.05);
+  showRes('ad_res',{ad_st:(ppt+def)+' years from policy start',ad_gi:fmt(gi)+' / year (Guaranteed)',ad_cb:fmt(cb)+' / year (NOT guaranteed)',ad_tot:fmt(gi+cb)+' / year (estimated)'});
+}
+
+function calcALS(){
+  var p=parseFloat(val('al_p'))||0,ppt=parseInt(val('al_ppt'))||10,pt=parseInt(val('al_pt'))||20;
+  if(!p){alert('Premium enter karein.');return;}
+  var paid=p*ppt,gmb=Math.round(paid*(ACE_GMB[ppt]||1.72)),bon=Math.round(p*ppt*10*0.04*pt*0.55);
+  showRes('al_res',{al_paid:fmt(paid),al_gmb:fmt(gmb)+' (Guaranteed)',al_bon:fmt(bon)+' (NOT guaranteed)',al_tot:fmt(gmb+bon)+' estimated'});
 }
 
 // ═══════════════════════════════════════════════════
@@ -1396,6 +1244,162 @@ document.addEventListener('DOMContentLoaded',function(){
     els.forEach(function(el){obs.observe(el);});
   } else {
     els.forEach(function(el){el.classList.add('active');});
+  }
+});
+
+// ═══════════════════════════════════════════════════
+// AI CHATBOT
+// ═══════════════════════════════════════════════════
+var chatHistory = [];
+var isTyping = false;
+
+var defaultQRs = [
+  {l:"🏆 Best Plan for Me", m:"Mujhe best plan suggest karo — age 35, married"},
+  {l:"💰 AWG vs FD", m:"AWG aur Bank FD mein kya fark hai?"},
+  {l:"🛡️ Term Quote", m:"₹1 Crore term plan ka quote do"},
+  {l:"🏖️ Retirement", m:"Retirement ke liye best plan kaunsa hai?"},
+  {l:"👩 Women Plan", m:"Women ke liye best plan kaunsa hai?"},
+  {l:"📊 vs LIC", m:"Bajaj vs LIC — kaun better hai?"}
+];
+
+function renderQRs(qrs) {
+  var c = document.getElementById('aiQuickReplies');
+  if (!c) return;
+  c.innerHTML = '';
+  (qrs||defaultQRs).slice(0,5).forEach(function(q) {
+    var b = document.createElement('button');
+    b.className = 'qr-btn';
+    b.textContent = q.l;
+    b.onclick = function() { sendQR(q.m); };
+    c.appendChild(b);
+  });
+}
+
+function sendQR(text) {
+  var inp = document.getElementById('aiInput');
+  if (inp) { inp.value = text; processAIQuery(); }
+}
+
+function toggleAIChat() {
+  var win = document.getElementById('aiWindow');
+  if (!win) return;
+  var isOpen = win.classList.contains('open');
+  if (!isOpen) {
+    win.classList.add('open');
+    if (document.getElementById('aiChatBody').children.length === 0) {
+      initChat();
+    }
+    setTimeout(function() {
+      var inp = document.getElementById('aiInput');
+      if (inp) inp.focus();
+    }, 300);
+  } else {
+    win.classList.remove('open');
+  }
+}
+
+function initChat() {
+  var banner = document.getElementById('apiKeyBanner');
+  if (banner) banner.style.display = 'none';
+  var welcomeText = "🙏 <strong>Hello!</strong> Main Mike ka digital assistant hoon.<br><br>Aap mujhse kis language mein baat karna prefer karenge?";
+  addMsg('bot', welcomeText);
+  chatHistory.push({ role: "assistant", content: "Hello! Main Mike ka digital assistant hoon. Aap mujhse kis language mein baat karna prefer karenge?" });
+  renderQRs();
+}
+
+function addMsg(sender, html, id) {
+  var body = document.getElementById('aiChatBody');
+  if (!body) return null;
+  var div = document.createElement('div');
+  div.className = 'ai-msg ai-' + sender;
+  if (id) div.id = id;
+  div.innerHTML = html;
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
+  return div;
+}
+
+function showTyping() {
+  var id = 'typ' + Date.now();
+  addMsg('bot', '<div class="typing-dots"><span></span><span></span><span></span></div>', id);
+  return id;
+}
+function removeTyping(id) {
+  var el = document.getElementById(id);
+  if (el) el.remove();
+}
+
+function fmtReply(t) {
+  return t
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g,'<em>$1</em>')
+    .replace(/\n\n/g,'<br><br>')
+    .replace(/\n/g,'<br>')
+    .replace(/https:\/\/wa\.me\/[^\s<"]+/g,function(u){
+      return '<a href="'+u+'" target="_blank" class="wa-link">💬 WhatsApp Mike</a>';
+    });
+}
+
+function contextQRs(msg) {
+  var m = msg.toLowerCase();
+  if (/awg|second income|guaranteed income/i.test(m)) {
+    return [{l:"⭐ AWG Platinum",m:"AWG Platinum kya hai?"},{l:"📈 Step-Up Income",m:"AWG Step-Up Income batao"},{l:"💰 AWG vs FD",m:"AWG vs FD compare karo"},{l:"📲 Get PDF",m:"AWG ka PDF chahiye"}];
+  }
+  if (/term|protect|cover/i.test(m)) {
+    return [{l:"🎗️ CI Rider",m:"Critical illness rider kya hota hai?"},{l:"👩 Female Rate",m:"Female term plan rate kya hai?"},{l:"🔄 ROP Option",m:"Return of Premium term plan kya hai?"},{l:"📋 Exact Quote",m:"Exact term quote Mike se chahiye"}];
+  }
+  if (/pension|retire/i.test(m)) {
+    return [{l:"👫 Joint Life",m:"Joint life pension option batao"},{l:"💸 Min Amount",m:"Minimum investment kitna hai pension mein?"},{l:"📊 vs NPS",m:"Bajaj Pension vs NPS kaun better?"},{l:"📲 Discuss",m:"Retirement plan discuss karna hai Mike se"}];
+  }
+  return null;
+}
+
+function processAIQuery() {
+  if (isTyping) return;
+  var inp = document.getElementById('aiInput');
+  var sendBtn = document.getElementById('aiSendBtn');
+  var text = inp.value.trim();
+  if (!text) return;
+  inp.value = '';
+  addMsg('user', text);
+  isTyping = true;
+  if (inp) inp.disabled = true;
+  if (sendBtn) sendBtn.disabled = true;
+  var typId = showTyping();
+  fetch('/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: text, history: chatHistory })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    removeTyping(typId);
+    var reply = data.reply || "I am analyzing the data, please contact Mike directly.";
+    chatHistory.push({ role: "user", content: text });
+    chatHistory.push({ role: "assistant", content: reply });
+    if (chatHistory.length > 10) { chatHistory = chatHistory.slice(chatHistory.length - 10); }
+    addMsg('bot', fmtReply(reply));
+    renderQRs(contextQRs(text));
+    isTyping = false;
+    if (inp) { inp.disabled = false; inp.focus(); }
+    if (sendBtn) sendBtn.disabled = false;
+  })
+  .catch(function(err) {
+    console.error("Fetch Error:", err);
+    removeTyping(typId);
+    addMsg('bot', "Connection Error. Please WhatsApp Mike Ronald Lakra.");
+    isTyping = false;
+    if (inp) inp.disabled = false;
+    if (sendBtn) sendBtn.disabled = false;
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var inp = document.getElementById('aiInput');
+  if (inp) {
+    inp.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); processAIQuery(); }
+    });
   }
 });
 </script>
