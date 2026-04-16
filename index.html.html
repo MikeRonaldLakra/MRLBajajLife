@@ -917,12 +917,16 @@ function toggleAIChat() {
 // ═══════════════════════════════════════════════════
 // INIT CHAT WITH WELCOME MESSAGE
 // ═══════════════════════════════════════════════════
+// Naya Updated Code:
 function initChat() {
   var hasKey = true; 
   var banner = document.getElementById('apiKeyBanner');
   if (banner) banner.style.display = 'none';
 
-  addMsg('bot', '🙏 <strong>Hello!</strong> Main Mike ke Assistant hun!...');
+  // Naya full welcome message (HTML formatting ke sath)
+  var welcomeText = "🙏 <strong>Namaste!</strong> Main Mike ka digital assistant hoon. Aap mujhse kisi bhi language mein baat kar sakte hain!<br><br>Meri aapse request hai ki humare Bajaj Life plans ko aur behtar samajhne ke liye ek baar is website ko zaroor explore karein. Agar aapne already kar liya hai, toh chaliye chat start karte hain!<br><br><strong>Sabse pehle, kya main aapka shubh naam jaan sakta hoon?</strong>";
+
+  addMsg('bot', welcomeText);
   renderQRs();
 }
 
