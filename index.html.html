@@ -1299,9 +1299,9 @@ function toggleAIChat() {
 function initChat() {
   var banner = document.getElementById('apiKeyBanner');
   if (banner) banner.style.display = 'none';
-  var welcomeText = "🙏 <strong>Hello!</strong> Main Mike ka digital assistant hoon.<br><br>Aap mujhse kis language mein baat karna prefer karenge?";
+  var welcomeText = "🙏 <strong>Hello!</strong> I'm Mike's Assistant.<br><br>Aap mujhse kis language mein baat karna prefer karenge?";
   addMsg('bot', welcomeText);
-  chatHistory.push({ role: "assistant", content: "Hello! Main Mike ka digital assistant hoon. Aap mujhse kis language mein baat karna prefer karenge?" });
+  chatHistory.push({ role: "assistant", content: "Hello! I'm Mike's Assistant. Aap mujhse kis language mein baat karna prefer karenge?" });
   renderQRs();
 }
 
