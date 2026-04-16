@@ -923,10 +923,17 @@ function initChat() {
   var banner = document.getElementById('apiKeyBanner');
   if (banner) banner.style.display = 'none';
 
-  // Naya full welcome message (HTML formatting ke sath)
-  var welcomeText = "🙏 <strong>Hello!</strong> I'm Mike's digital assistant. Aap mujhse kisi bhi language mein baat kar sakte hain!<br><br>Meri aapse request hai ki humare Bajaj Life plans ko aur behtar samajhne ke liye ek baar is website ko zaroor explore karein. Agar aapne already kar liya hai, toh chaliye chat start karte hain!<br><br><strong>Sabse pehle, kya main aapka shubh naam jaan sakta hoon?</strong>";
+  // Naya Welcome Message jo sirf "Hello" aur Language puchega
+  var welcomeText = "🙏 <strong>Hello!</strong> I'm Mike's assistant.<br><br>Aap mujhse kis language mein baat karna prefer karenge? (English, Hindi, Hinglish, Bengali, etc.)";
 
   addMsg('bot', welcomeText);
+
+  // Bot ki memory me yaad rakhne ke liye ki usne language puchi hai
+  chatHistory.push({ 
+    role: "assistant", 
+    content: "Hello! I'm Mike ka digital assistant. Aap mujhse kis language mein baat karna prefer karenge?" 
+  });
+
   renderQRs();
 }
 
