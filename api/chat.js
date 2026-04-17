@@ -92,7 +92,6 @@ export default async function handler(req, res) {
         -> Reply normally: "Thank you so much! . My expert, Mike Ronald Lakra, will create a customized mathematical illustration for you. You can also WhatsApp him directly at +91 93821 81126."
         -> AT THE VERY END OF YOUR RESPONSE, you MUST append this exact secret string on a new line:
         ||LEAD: [User Name] | [Phone Number] | [City] | [Plan Name] | [Budget Amount]||
-        (Example: ||LEAD: Rahul | Phone Number | Siliguri | AWG | 50000||)
         STOP HERE. Do not ask any more questions.
 
         ═══════════════════════════════════════════
