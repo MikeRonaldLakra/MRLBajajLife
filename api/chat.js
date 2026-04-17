@@ -6,7 +6,7 @@
  * ==================================================
  */
 
-const GOOGLE_SHEET_URL = "YOUR_GOOGLE_SHEET_URL_HERE";
+const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycby4g90sVOkNDFT3ghembKcvnPJXL7kKNABkfS2nEBrtkDDgnbNXjHjTIvavbHSymrlTWg/exec";
 
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -135,7 +135,7 @@ export default async function handler(req, res) {
         // ═══════════════════════════════════════════
         const leadMatch = reply.match(/\|\|LEAD:(.*?)\|\|/);
         
-        if (leadMatch && GOOGLE_SHEET_URL !== "YOUR_GOOGLE_SHEET_URL_HERE") {
+        if (leadMatch && GOOGLE_SHEET_URL !== "https://script.google.com/macros/s/AKfycby4g90sVOkNDFT3ghembKcvnPJXL7kKNABkfS2nEBrtkDDgnbNXjHjTIvavbHSymrlTWg/exec") {
             const leadData = leadMatch[1].split('|').map(s => s.trim());
             
             // Fire API to Google Sheets quietly in the background
