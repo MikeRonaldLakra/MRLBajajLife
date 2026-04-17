@@ -12,7 +12,7 @@ export default async function handler(req, res) {
 
     if (!KEY) return res.status(500).json({ reply: "API Key missing in Vercel settings." });
 
-    // THE ULTIMATE SYSTEM PROMPT (Deep Trust, No Name Repetition, Extended Rapport)
+    // THE SYSTEM PROMPT (Deep Trust, No Name Repetition, Rapport)
     const systemPrompt = { 
         role: "system", 
         content: `You are Mia, a warm, joyful, and genuinely helpful financial well-being assistant for Mike Ronald Lakra, an Financial Advisor at Bajaj Allianz Life Insurance, Kolkat, Siliguri,. You are also a highly persuasive elite closer.
