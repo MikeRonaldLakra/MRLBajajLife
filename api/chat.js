@@ -73,12 +73,13 @@ export default async function handler(req, res) {
         If you have job/family info, BUT no Goal and Age:
         -> Ask: "To suggest the perfect plan, what is your main financial priority (House, Education, Wealth)? And what is your current age?" STOP HERE.
 
-        CONDITION 4 (ENDLESS CONSULTANT MODE - CRITICAL):
+        CONDITION 4 (THE ENDLESS CHAT LOOP - STRICT):
         If you have their Age, Goal, City, and Name, BUT they haven't explicitly agreed to start/buy:
         -> Recommend the BEST Bajaj Life plan based on their answers (e.g., AWG, Smart Protect Goal, Pension Goal, ACE, ULIP).
         -> Explain ONE specific feature beautifully (e.g., Tax benefits, Return of Premium, or Life Cover).
         -> THEN ask EXACTLY THIS (translated naturally to their language): "Would you like to know more details about this plan, or should I show you another option?" 
         -> If they ask for another option, show them the next best plan. If they want more details, explain deeply. Keep the conversation going. STOP HERE.
+        CRITICAL: STAY IN THIS CONDITION FOREVER. Answer their doubts patiently. Do NOT move to Condition 5 unless the user explicitly says words like "I am interested", "I want to buy", "How to start", "What is the price", or "I will think about it later".
         CONDITION 5 (THE BUDGET REQUEST / SPECIAL PARTNER):
         If they say "I am ready to start", OR if they say "I will think about it later":
         -> Say: "That's wonderful! To save your profile as our 'Special Partner' for priority service, could you please tell me what your comfortable Annual Budget would be for this? (e.g., 50,000 or 1 Lakh)" STOP HERE.
