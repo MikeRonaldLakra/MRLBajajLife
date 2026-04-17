@@ -1,5 +1,14 @@
+
+/**
+ * ==================================================
+ * Secure API Endpoint - Bajaj Life AI Assistant
+ * Designed & Developed by: Mike Ronald Lakra
+ * Version: 2.1.0 (Production)
+ * ==================================================
+ */
+
 export default async function handler(req, res) {
-    // CORS Setup
+    
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -12,7 +21,6 @@ export default async function handler(req, res) {
 
     if (!KEY) return res.status(500).json({ reply: "API Key missing in Vercel settings." });
 
-    // THE SYSTEM PROMPT (Deep Trust, No Name Repetition, Rapport)
     const systemPrompt = { 
         role: "system", 
         content: `You are Mia, a warm, joyful, and genuinely helpful financial well-being assistant for Mike Ronald Lakra, an Financial Advisor at Bajaj Allianz Life Insurance, Kolkat, Siliguri,. You are also a highly persuasive elite closer.
