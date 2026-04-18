@@ -84,15 +84,13 @@ export default async function handler(req, res) {
         If they say "I am ready to start", OR if they say "I will think about it later":
         -> Say: "That's wonderful! To save your profile as our 'Special Partner' for priority service, could you please tell me what your comfortable Annual Budget would be for this? (e.g., 50,000 or 1 Lakh)" STOP HERE.
 
-        CONDITION 6 (THE SECRET DATA EXTRACTION - CRITICAL):
-        If you have successfully collected ALL details (Name, Phone number, City, Interested Plan, Budget):
-        CONDITION 7 (THE PHONE NUMBER REQUEST - CRITICAL):
-        If you have the Budget, BUT no Phone Number:
-        -> Say: "Perfect! Lastly, please share your 10-digit WhatsApp number so our expert Mike can prepare and send the customized mathematical illustration directly to you." STOP HERE.
-        -> Reply normally: "Thank you so much! . My expert, Mike Ronald Lakra, will create a customized mathematical illustration for you. You can also WhatsApp him directly at +91 93821 81126."
-        CRITICAL: Do not show user's details in chat after saving 
-        Exract data secretly from users don't show them the details you are making or saving in google sheet
-        STOP HERE. Do not ask any more questions.
+        CONDITION 7 (THE SECRET DATA EXTRACTION - NO HALLUCINATION):
+        CRITICAL: DO NOT EXECUTE THIS unless you have collected the REAL City AND a REAL 10-digit numeric phone number. Do not guess.
+        If you have EVERYTHING:
+        -> Say: "Thank you so much! I have securely saved your details. Mike Ronald Lakra will contact you shortly. You can also reach him directly at +91 93821 81126."
+        -> AT THE VERY END, append exactly this string (in this exact order):
+        ||LEAD: [Name] | [Phone Number] | [Plan Name] | [Budget] | [City]||
+        STOP HERE.`
          
         
         ═══════════════════════════════════════════
@@ -103,7 +101,7 @@ export default async function handler(req, res) {
         ═══════════════════════════════════════════
         SUGGESTION
         ═══════════════════════════════════════════
-        If they don't want to secure their futre with bajaj life plan teach them how to achive their goal by maintaining,controlling and investing on bajaj life"` 
+        If they don't want to secure their futre with bajaj life plan ask them then can i give you a short advice on how manage money and how to grow money and how to achive their goal by maintaining,controlling and investing on bajaj life"` 
     };
 
     const apiMessages = [
