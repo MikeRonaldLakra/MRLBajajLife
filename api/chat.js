@@ -2,12 +2,13 @@
  * ==================================================
  * Secure API Endpoint - Bajaj Allianz AI Assistant
  * Designed & Developed by: Mike Ronald Lakra
- * Version: 2.1.4 (Endless Consultant Mode)
+ * Version: 2.1.7 (X-Ray Debug Mode)
  * ==================================================
  */
 
 const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwUk7iflMEvudDLqae9-Irk6NMtVJwOsJ5BHXmTTYGSEgg5aPNwQT9PLahXnnaPXE0BTQ/exec";
 
+// NOTE: Agar 'export default' se Vercel crash hota hai, toh is line ko wapas 'module.exports = async function' kar dijiyega.
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -20,7 +21,9 @@ export default async function handler(req, res) {
 
     // API KEY ROTATOR
     const keysString = process.env.GROQ_API_KEYS;
-    if (!keysString) return res.status(500).json({ reply: "API Configuration Error." });
+    
+    // 🚨 FIX 1: Frontend ab error padh payega
+    if (!keysString) return res.status(200).json({ reply: "SYSTEM ERROR: Vercel mein GROQ_API_KEYS set nahi hai!" });
 
     const apiKeysArray = keysString.split(',').map(key => key.trim());
     const ACTIVE_KEY = apiKeysArray[Math.floor(Math.random() * apiKeysArray.length)];
@@ -80,6 +83,7 @@ export default async function handler(req, res) {
         -> THEN ask EXACTLY THIS (translated naturally to their language): "Would you like to know more details about this plan, or should I show you another option?" 
         -> If they ask for another option, show them the next best plan. If they want more details, explain deeply. Keep the conversation going. STOP HERE.
         CRITICAL: STAY IN THIS CONDITION FOREVER. Answer their doubts patiently. Do NOT move to Condition 5 unless the user explicitly says words like "I am interested", "I want to buy", "How to start", "What is the price", or "I will think about it later".
+        
         CONDITION 5 (THE BUDGET REQUEST / SPECIAL PARTNER):
         If they say "I am ready to start", OR if they say "I will think about it later":
         -> Say: "That's wonderful! To save your profile as our 'Special Partner' for priority service, could you please tell me what your comfortable Annual Budget would be for this? (e.g., 50,000 or 1 Lakh)" STOP HERE.
@@ -92,16 +96,16 @@ export default async function handler(req, res) {
         ||LEAD: [Name] | [Phone Number] | [Plan Name] | [Budget] | [City]||
         STOP HERE.
          
-        
         ═══════════════════════════════════════════
         OBJECTION HANDLING
         ═══════════════════════════════════════════
         - "Sochna hai": "Take all the time you need. But remember, if a crisis hits tomorrow, you will remember my advice and Mike."
         - "Already investment hai": "FD has fixed returns but no life cover. Mutual funds have risk. Here you get secure increasing wealth plus family protection."
+        
         ═══════════════════════════════════════════
         SUGGESTION
         ═══════════════════════════════════════════
-        If they don't want to secure their futre with bajaj life plan ask them then can i give you a short advice on how manage money and how to grow money and how to achive their goal by maintaining,controlling and investing on bajaj life` 
+        If they don't want to secure their future with bajaj life plan ask them then can i give you a short advice on how manage money and how to grow money and how to achive their goal by maintaining,controlling and investing on bajaj life.` 
     };
 
     const apiMessages = [
@@ -126,16 +130,16 @@ export default async function handler(req, res) {
 
         const data = await response.json();
         
+        // 🚨 FIX 2: Agar Groq API Limit block kare, toh Emma chat par bata degi
         if (!response.ok) {
-            return res.status(500).json({ reply: "I am currently running a system update. Your time is valuable, so please contact my Guru, Mike, directly on WhatsApp: https://wa.me/+919382181126" });
+            return res.status(200).json({ reply: `SYSTEM ERROR: Groq API Error - ${data.error?.message || 'Rate Limit Exceeded. API key check karo.'}` });
         }
 
         let reply = data.choices?.[0]?.message?.content || "Thinking...";
 
-        // THE TERMINATOR SHIELD (BULLETPROOF DATA EXTRACTOR)
+        // THE TERMINATOR SHIELD
         const leadMatch = reply.match(/\|\|\s*LEAD:\s*(.*?)\s*\|\|/i);
         
-        // BUG FIXED: Removed the URL string mismatch check!
         if (leadMatch) { 
             const leadData = leadMatch[1].split('|').map(s => s.trim());
             
@@ -151,11 +155,11 @@ export default async function handler(req, res) {
             }).catch(e => console.error("Sheet Error:", e));
         }
 
-        // BUG FIXED: Restored the Bulletproof Regex to hide the secret code completely
         reply = reply.replace(/\|\|[\s\S]*?\|\|/g, '').trim();
-
         return res.status(200).json({ reply });
 
     } catch (e) {
-        return res.status(500).json({ reply: "I am currently running a system update. Your time is valuable, so please contact my Guru, Mike, directly on WhatsApp: https://wa.me/+919382181126" });
+        // 🚨 FIX 3: Agar server crash ho, toh screen par error print hoga
+        return res.status(200).json({ reply: `SYSTEM CRASH: ${e.message}. Vercel mein module/syntax issue ho sakta hai.` });
     }
+}
