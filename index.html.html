@@ -1162,7 +1162,7 @@ function runSmartProfiler(){
   if(st&&sb){st.innerText=recTitle;sb.classList.add('show');}
 }
 
-var SHEETS_URL="";
+var SHEETS_URL="https://script.google.com/macros/s/AKfycbyzhBrICJY1hG2BQQpsLZK4Mjl-t_ONokfX1f0qYhl2SDDXfQQG8GR-NDGox_PBSNeuQw/exec";
 var MIKE_WA="+919382181126";
 function getLeadData(){return {name:(document.getElementById('lf_name').value||'').trim(),phone:(document.getElementById('lf_phone').value||'').trim(),age:(document.getElementById('lf_age').value||'').trim(),plan:(document.getElementById('lf_plan').value||''),budget:(document.getElementById('lf_budget').value||''),city:(document.getElementById('lf_city').value||'').trim()};}
 function validateLead(d){if(!d.name){alert('Name is required.');return false;}if(!d.phone||d.phone.length<10){alert('Enter valid 10-digit WhatsApp number.');return false;}return true;}
