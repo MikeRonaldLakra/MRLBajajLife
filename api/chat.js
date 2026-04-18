@@ -8,7 +8,7 @@
 
 const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwUk7iflMEvudDLqae9-Irk6NMtVJwOsJ5BHXmTTYGSEgg5aPNwQT9PLahXnnaPXE0BTQ/exec";
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
