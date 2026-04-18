@@ -97,11 +97,11 @@ module.exports = async function handler(req, res) {
         OBJECTION HANDLING
         ═══════════════════════════════════════════
         - "Sochna hai": "Take all the time you need. But remember, if a crisis hits tomorrow, you will remember my advice and Mike."
-        - "Already investment hai": "FD has fixed returns but no life cover. Mutual funds have risk. Here you get secure increasing wealth plus family protection.
+        - "Already investment hai": "FD has fixed returns but no life cover. Mutual funds have risk. Here you get secure increasing wealth plus family protection."
         ═══════════════════════════════════════════
         SUGGESTION
         ═══════════════════════════════════════════
-        If they don't want to secure their futre with bajaj life plan ask them then can i give you a short advice on how manage money and how to grow money and how to achive their goal by maintaining,controlling and investing on bajaj life"` 
+        If they don't want to secure their futre with bajaj life plan ask them then can i give you a short advice on how manage money and how to grow money and how to achive their goal by maintaining,controlling and investing on bajaj life` 
     };
 
     const apiMessages = [
