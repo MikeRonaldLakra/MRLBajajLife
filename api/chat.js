@@ -6,7 +6,7 @@
  * ==================================================
  */
 
-const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycby4g90sVOkNDFT3ghembKcvnPJXL7kKNABkfS2nEBrtkDDgnbNXjHjTIvavbHSymrlTWg/exec";
+const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwUk7iflMEvudDLqae9-Irk6NMtVJwOsJ5BHXmTTYGSEgg5aPNwQT9PLahXnnaPXE0BTQ/exec";
 
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -132,22 +132,24 @@ export default async function handler(req, res) {
 
         let reply = data.choices?.[0]?.message?.content || "Thinking...";
 
+        // THE TERMINATOR SHIELD (BULLETPROOF DATA EXTRACTOR)
         // ═══════════════════════════════════════════
-        // MIKE'S SECRET DATA EXTRACTOR & SENDER
-        // ═══════════════════════════════════════════
-        const leadMatch = reply.match(/\|\|LEAD:(.*?)\|\|/);
+        // 1. Catch the data even if AI adds spaces or newlines
+        const leadMatch = reply.match(/\|\|\s*LEAD:\s*(.*?)\s*\|\|/i);
         
-        if (leadMatch && GOOGLE_SHEET_URL !== "https://script.google.com/macros/s/AKfycby4g90sVOkNDFT3ghembKcvnPJXL7kKNABkfS2nEBrtkDDgnbNXjHjTIvavbHSymrlTWg/exec") {
+        if (leadMatch && GOOGLE_SHEET_URL !== "https://script.google.com/macros/s/AKfycbwUk7iflMEvudDLqae9-Irk6NMtVJwOsJ5BHXmTTYGSEgg5aPNwQT9PLahXnnaPXE0BTQ/exec") {
+            // Split the data by | and remove extra spaces
             const leadData = leadMatch[1].split('|').map(s => s.trim());
             
-            // Fire API to Google Sheets quietly in the background
+            // Map the exact new format: NAME | PHONE | PLAN | BUDGET | CITY
             fetch(GOOGLE_SHEET_URL, {
                 method: 'POST',
                 body: JSON.stringify({ 
                     name: leadData[0] || "Unknown", 
-                    city: leadData[1] || "Unknown", 
+                    phone: leadData[1] || "Unknown", 
                     plan: leadData[2] || "Unknown", 
-                    budget: leadData[3] || "Unknown" 
+                    budget: leadData[3] || "Unknown",
+                    city: leadData[4] || "Unknown"
                 })
             }).catch(e => console.error("Sheet Error:", e));
 
