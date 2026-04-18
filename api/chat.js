@@ -133,15 +133,12 @@ module.exports = async function handler(req, res) {
         let reply = data.choices?.[0]?.message?.content || "Thinking...";
 
         // THE TERMINATOR SHIELD (BULLETPROOF DATA EXTRACTOR)
-        // ═══════════════════════════════════════════
-        // 1. Catch the data even if AI adds spaces or newlines
         const leadMatch = reply.match(/\|\|\s*LEAD:\s*(.*?)\s*\|\|/i);
         
-        if (leadMatch && GOOGLE_SHEET_URL !== "https://script.google.com/macros/s/AKfycbwUk7iflMEvudDLqae9-Irk6NMtVJwOsJ5BHXmTTYGSEgg5aPNwQT9PLahXnnaPXE0BTQ/exec") {
-            // Split the data by | and remove extra spaces
+        // BUG FIXED: Removed the URL string mismatch check!
+        if (leadMatch) { 
             const leadData = leadMatch[1].split('|').map(s => s.trim());
             
-            // Map the exact new format: NAME | PHONE | PLAN | BUDGET | CITY
             fetch(GOOGLE_SHEET_URL, {
                 method: 'POST',
                 body: JSON.stringify({ 
@@ -152,14 +149,13 @@ module.exports = async function handler(req, res) {
                     city: leadData[4] || "Unknown"
                 })
             }).catch(e => console.error("Sheet Error:", e));
-
-            // Clean the secret code from the reply so the user doesn't see it
-            reply = reply.replace(/\|\|LEAD:(.*?)\|\|/, '').trim();
         }
+
+        // BUG FIXED: Restored the Bulletproof Regex to hide the secret code completely
+        reply = reply.replace(/\|\|[\s\S]*?\|\|/g, '').trim();
 
         return res.status(200).json({ reply });
 
     } catch (e) {
         return res.status(500).json({ reply: "I am currently running a system update. Your time is valuable, so please contact my Guru, Mike, directly on WhatsApp: https://wa.me/+919382181126" });
     }
-}
