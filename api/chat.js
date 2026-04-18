@@ -6,7 +6,7 @@
  * ==================================================
  */
 
-const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbyzhBrICJY1hG2BQQpsLZK4Mjl-t_ONokfX1f0qYhl2SDDXfQQG8GR-NDGox_PBSNeuQw/exec";
+const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbzCg9jC2Ybe67f5Up59ZEQzab-_vBqMgLiEV9-9hGbjn4nbJ-9SSySZZh8QhxktPPa6eA/exec";
 
 // NOTE: Agar 'export default' se Vercel crash hota hai, toh is line ko wapas 'module.exports = async function' kar dijiyega.
 export default async function handler(req, res) {
