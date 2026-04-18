@@ -90,7 +90,7 @@ module.exports = async function handler(req, res) {
         -> Say: "Thank you so much! I have securely saved your details. Mike Ronald Lakra will contact you shortly. You can also reach him directly at +91 93821 81126."
         -> AT THE VERY END, append exactly this string (in this exact order):
         ||LEAD: [Name] | [Phone Number] | [Plan Name] | [Budget] | [City]||
-        STOP HERE.`
+        STOP HERE.
          
         
         ═══════════════════════════════════════════
