@@ -10,7 +10,6 @@ const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbzCg9jC2Ybe67f
 
 // NOTE: Agar 'export default' se Vercel crash hota hai, toh is line ko wapas 'module.exports = async function' kar dijiyega.
 module.exports = async function (req, res) {
-    // 1. Set Headers
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -19,9 +18,8 @@ module.exports = async function (req, res) {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
     try {
-        // 2. Destructure with Safety
         const { message, history } = req.body;
-        const chatHistory = Array.isArray(history) ? history : []; // Safety check
+        const chatHistory = Array.isArray(history) ? history : [];
 
         const keysString = process.env.GROQ_API_KEYS;
         if (!keysString) return res.status(200).json({ reply: "SYSTEM ERROR: API Keys missing!" });
@@ -129,13 +127,8 @@ STOP HERE.
         If they don't want to secure their future with bajaj life plan ask them then can i give you a short advice on how manage money and how to grow money and how to achive their goal by maintaining,controlling and investing on bajaj life.` 
     };
 
-    const apiMessages = [
-        systemPrompt,
-        ...chatHistory, 
-        { role: "user", content: message }
-    ];
+    const apiMessages = [systemPrompt, ...chatHistory, { role: "user", content: message }];
 
-    try {
         const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
             method: 'POST',
             headers: {
@@ -150,21 +143,17 @@ STOP HERE.
         });
 
         const data = await response.json();
-        
-        if (!response.ok) {
-            return res.status(200).json({ reply: `Emma is sleeping: ${data.error?.message || 'Rate Limit'}` });
-        }
+        if (!response.ok) return res.status(200).json({ reply: `Emma is sleeping: ${data.error?.message}` });
 
         let reply = data.choices?.[0]?.message?.content || "Thinking...";
 
-        // --- LEAD EXTRACTION & GOOGLE SHEET SYNC ---
+        // --- DATA EXTRACTION ---
         const leadMatch = reply.match(/\|\|\s*LEAD:\s*(.*?)\s*\|\|/i);
-        
         if (leadMatch) { 
             const leadData = leadMatch[1].split('|').map(s => s.trim());
             
-            // Safety: Sirf tabhi save karega jab minimum Name aur Phone mil jaye
             if (leadData.length >= 2) {
+                // Mapping matches the refined prompt order
                 await fetch(GOOGLE_SHEET_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -175,17 +164,15 @@ STOP HERE.
                         plan:   leadData[3] || "Not Provided", 
                         budget: leadData[4] || "Not Provided"
                     })
-                }).catch(e => console.error("Sheet Sync Error:", e.message));
+                }).catch(e => console.error("Sheet Error:", e.message));
             }
         }
 
-        // --- CLEANUP: Customer ko secret tag nahi dikhna chahiye ---
+        // Clean UI
         reply = reply.replace(/\|\|[\s\S]*?\|\|/g, '').trim();
-        
         return res.status(200).json({ reply });
 
     } catch (e) {
-        console.error("CRASH:", e.message);
         return res.status(200).json({ reply: `Emma is out of office (Crash): ${e.message}` });
     }
 }
