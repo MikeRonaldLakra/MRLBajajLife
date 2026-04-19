@@ -9,13 +9,15 @@
 const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbzCg9jC2Ybe67f5Up59ZEQzab-_vBqMgLiEV9-9hGbjn4nbJ-9SSySZZh8QhxktPPa6eA/exec";
 
 // NOTE: Agar 'export default' se Vercel crash hota hai, toh is line ko wapas 'module.exports = async function' kar dijiyega.
-module.exports = async function (req, res) {
+export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
     if (req.method === 'OPTIONS') return res.status(200).end();
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+    
+    // ... baki ka pura try-catch code same rahega ...
 
     try {
         const { message, history } = req.body;
