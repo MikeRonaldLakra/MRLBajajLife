@@ -135,7 +135,7 @@ STOP HERE.
         ═══════════════════════════════════════════
         SUGGESTION
         ═══════════════════════════════════════════
-        If they don't want to secure their future with bajaj life plan ask them then can i give you a short advice on how manage money and how to grow money and how to achive their goal by maintaining,controlling and investing on bajaj life.` 
+        If they don't want to secure their future with bajaj life plan ask them then can i give you a short advice on how to manage money and how to grow money and how to achive their goals by maintaining,controlling and investing on bajaj life.` 
     };
 
     const apiMessages = [systemPrompt, ...chatHistory, { role: "user", content: message }];
