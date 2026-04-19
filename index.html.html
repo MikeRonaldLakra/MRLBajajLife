@@ -327,6 +327,28 @@ footer{background:#0d1117;color:rgba(255,255,255,0.55);padding:50px 4%;text-alig
   .hero-stats{gap:1.2rem;}
   nav{padding:0 3.5%;}
 }
+  /* --- MOBILE RESPONSIVENESS FIX --- */
+@media (max-width: 768px) {
+    .hero {
+        padding: 80px 20px 40px !important;
+        min-height: auto !important;
+    }
+
+    .hero-inner {
+        grid-template-columns: 1fr !important;
+        text-align: center;
+        gap: 2rem;
+    }
+
+    .hero-stats {
+        justify-content: center;
+        gap: 1.5rem;
+    }
+
+    .hero-ctas {
+        justify-content: center;
+    }
+}
 </style>
 </head>
 <body>
