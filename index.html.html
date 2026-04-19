@@ -1348,7 +1348,7 @@ function processAIQuery() {
   if (inp) inp.disabled = true;
   if (sendBtn) sendBtn.disabled = true;
   var typId = showTyping();
-  fetch('https://project3-pi-dun.vercel.app/api/chat', {
+  fetch('https://mrlbajajlife.vercel.app/api/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ message: text, history: chatHistory })
