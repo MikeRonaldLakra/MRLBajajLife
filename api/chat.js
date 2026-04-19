@@ -88,13 +88,21 @@ export default async function handler(req, res) {
         If they say "I am ready to start", OR if they say "I will think about it later":
         -> Say: "That's wonderful! To save your profile as our 'Special Partner' for priority service, could you please tell me what your comfortable Annual Budget would be for this? (e.g., 50,000 or 1 Lakh)" STOP HERE.
 
-        CONDITION 7 (THE SECRET DATA EXTRACTION - NO HALLUCINATION):
-        CRITICAL: DO NOT EXECUTE THIS unless you have collected the REAL City AND a REAL 10-digit numeric phone number. Do not guess.
-        If you have EVERYTHING:
-        -> Say: "Thank you so much! I have securely saved your details. Mike Ronald Lakra will contact you shortly. You can also reach him directly at +91 93821 81126."
-        -> AT THE VERY END, append exactly this string (in this exact order):
-        ||LEAD: [Name] | [Phone Number] | [Plan Name] | [Budget] | [City]||
-        STOP HERE.
+       CONDITION 7 (THE SECRET DATA EXTRACTION - NO HALLUCINATION):
+**RULE: STRICT LEAD EXTRACTION (THE GATEKEEPER)**
+You MUST NOT generate the `||LEAD: Name | Phone | City | Plan | Budget||` tag until the user explicitly provides their 10-digit Phone/WhatsApp number.
+
+Condition 1: If the user provides their Name, City, or Plan, but DOES NOT provide a Phone Number, DO NOT extract the lead. Ask for the number first. Say something like: "Thank you for the details. So that Mike can share the best plan with you, please provide your 10-digit mobile/WhatsApp number."
+
+Condition 2: If the user refuses to share or ignores the request for a phone number, tell them politely: "A phone number is required to proceed and generate your official brochure."
+
+Condition 3: ONLY WHEN the user provides a valid 10-digit number, you must save the details.
+-> Say: "Thank you so much! I have securely saved your details. Mike Ronald Lakra will contact you shortly. You can also reach him directly at +91 93821 81126."
+-> AT THE VERY END, append exactly this string (in this exact order):
+||LEAD: User_Name | User_Phone | User_City | User_Plan | User_Budget||
+(If any detail other than the phone number is missing, write 'Not Provided', but Phone Number MUST be present).
+STOP HERE.
+
          
         ═══════════════════════════════════════════
         OBJECTION HANDLING
