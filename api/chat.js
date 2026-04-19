@@ -9,7 +9,8 @@
 const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbzCg9jC2Ybe67f5Up59ZEQzab-_vBqMgLiEV9-9hGbjn4nbJ-9SSySZZh8QhxktPPa6eA/exec";
 
 // NOTE: Agar 'export default' se Vercel crash hota hai, toh is line ko wapas 'module.exports = async function' kar dijiyega.
-export default async function handler(req, res) {
+module.exports = async function (req, res) {
+    // 1. Set Headers
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -17,16 +18,16 @@ export default async function handler(req, res) {
     if (req.method === 'OPTIONS') return res.status(200).end();
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-    const { message, history = [] } = req.body;
+    try {
+        // 2. Destructure with Safety
+        const { message, history } = req.body;
+        const chatHistory = Array.isArray(history) ? history : []; // Safety check
 
-    // API KEY ROTATOR
-    const keysString = process.env.GROQ_API_KEYS;
-    
-    // 🚨 FIX 1: Frontend ab error padh payega
-    if (!keysString) return res.status(200).json({ reply: "SYSTEM ERROR: Vercel mein GROQ_API_KEYS set nahi hai!" });
+        const keysString = process.env.GROQ_API_KEYS;
+        if (!keysString) return res.status(200).json({ reply: "SYSTEM ERROR: API Keys missing!" });
 
-    const apiKeysArray = keysString.split(',').map(key => key.trim());
-    const ACTIVE_KEY = apiKeysArray[Math.floor(Math.random() * apiKeysArray.length)];
+        const apiKeysArray = keysString.split(',').map(key => key.trim());
+        const ACTIVE_KEY = apiKeysArray[Math.floor(Math.random() * apiKeysArray.length)];
 
     const systemPrompt = { 
         role: "system", 
@@ -129,12 +130,11 @@ STOP HERE.
     };
 
     const apiMessages = [
-        systemPrompt,
-        ...history,
-        { role: "user", content: message }
-    ];
+            systemPrompt,
+            ...chatHistory, // Safe spread
+            { role: "user", content: message }
+        ];
 
-    try {
         const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
             method: 'POST',
             headers: {
@@ -150,27 +150,21 @@ STOP HERE.
 
         const data = await response.json();
         
-        // 🚨 FIX 2: Agar Groq API Limit block kare, toh Emma chat par bata degi
         if (!response.ok) {
-            return res.status(200).json({ reply: `SYSTEM ERROR: Groq API Error - ${data.error?.message || 'Rate Limit Exceeded. API key check karo.'}` });
+            return res.status(200).json({ reply: `Emma is sleeping: ${data.error?.message || 'Rate Limit'}` });
         }
 
         let reply = data.choices?.[0]?.message?.content || "Thinking...";
 
-        // THE TERMINATOR SHIELD
+        // Lead Extraction Logic (Same as yours)
         const leadMatch = reply.match(/\|\|\s*LEAD:\s*(.*?)\s*\|\|/i);
-        
         if (leadMatch) { 
             const leadData = leadMatch[1].split('|').map(s => s.trim());
-            
-            fetch(GOOGLE_SHEET_URL, {
+            await fetch(GOOGLE_SHEET_URL, {
                 method: 'POST',
+                headers: { 'Content-Type': 'application/json' }, // Header added
                 body: JSON.stringify({ 
-                    name: leadData[0] || "Unknown", 
-                    phone: leadData[1] || "Unknown", 
-                    plan: leadData[2] || "Unknown", 
-                    budget: leadData[3] || "Unknown",
-                    city: leadData[4] || "Unknown"
+                    name: leadData[0], phone: leadData[1], city: leadData[2], plan: leadData[3], budget: leadData[4]
                 })
             }).catch(e => console.error("Sheet Error:", e));
         }
@@ -179,7 +173,7 @@ STOP HERE.
         return res.status(200).json({ reply });
 
     } catch (e) {
-        // 🚨 FIX 3: Agar server crash ho, toh screen par error print hoga
-        return res.status(200).json({ reply: `SYSTEM CRASH: ${e.message}. Vercel mein module/syntax issue ho sakta hai.` });
+        console.error("CRASH:", e.message);
+        return res.status(200).json({ reply: `Emma is out of office (Crash): ${e.message}` });
     }
 }
