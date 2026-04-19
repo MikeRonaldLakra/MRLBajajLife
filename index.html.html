@@ -327,29 +327,51 @@ footer{background:#0d1117;color:rgba(255,255,255,0.55);padding:50px 4%;text-alig
   .hero-stats{gap:1.2rem;}
   nav{padding:0 3.5%;}
 }
-  /* --- MOBILE RESPONSIVENESS FIX --- */
+  /* --- MOBILE RESPONSIVENESS FIX (Final Version) --- */
 @media (max-width: 768px) {
+    /* Pure container ko reset karna */
     .hero {
-        padding: 80px 20px 40px !important;
+        padding: 80px 15px 40px !important;
         min-height: auto !important;
+        display: block !important; /* Grid ki jagah block layout */
+        overflow: hidden;
     }
 
+    /* Content ko center aur stack karna */
     .hero-inner {
-        grid-template-columns: 1fr !important;
-        text-align: center;
-        gap: 2rem;
+        display: flex !important;
+        flex-direction: column !important;
+        text-align: center !important;
+        gap: 1.5rem !important;
+        width: 100% !important;
     }
 
-    .hero-stats {
-        justify-content: center;
-        gap: 1.5rem;
+    /* Heading ko screen ke hisaab se chota karna */
+    .hero h1 {
+        font-size: 2.2rem !important; /* Taki text crop na ho */
+        margin-top: 10px;
+        line-height: 1.2;
     }
 
-    .hero-ctas {
-        justify-content: center;
+    /* Stats aur buttons ko center mein align karna */
+    .hero-stats, .hero-ctas {
+        justify-content: center !important;
+        width: 100% !important;
+    }
+
+    /* Blobs ko hide karna taki screen right side na bhage */
+    .hero-blob-1, .hero-blob-2 {
+        display: none !important;
+    }
+
+    /* IC Card (Badge) ko adjust karna */
+    .ic-card {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.8rem;
     }
 }
-</style>
+ </style>
 </head>
 <body>
 
