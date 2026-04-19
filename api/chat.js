@@ -130,11 +130,12 @@ STOP HERE.
     };
 
     const apiMessages = [
-            systemPrompt,
-            ...chatHistory, // Safe spread
-            { role: "user", content: message }
-        ];
+        systemPrompt,
+        ...chatHistory, 
+        { role: "user", content: message }
+    ];
 
+    try {
         const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
             method: 'POST',
             headers: {
@@ -156,20 +157,31 @@ STOP HERE.
 
         let reply = data.choices?.[0]?.message?.content || "Thinking...";
 
-        // Lead Extraction Logic (Same as yours)
+        // --- LEAD EXTRACTION & GOOGLE SHEET SYNC ---
         const leadMatch = reply.match(/\|\|\s*LEAD:\s*(.*?)\s*\|\|/i);
+        
         if (leadMatch) { 
             const leadData = leadMatch[1].split('|').map(s => s.trim());
-            await fetch(GOOGLE_SHEET_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' }, // Header added
-                body: JSON.stringify({ 
-                    name: leadData[0], phone: leadData[1], city: leadData[2], plan: leadData[3], budget: leadData[4]
-                })
-            }).catch(e => console.error("Sheet Error:", e));
+            
+            // Safety: Sirf tabhi save karega jab minimum Name aur Phone mil jaye
+            if (leadData.length >= 2) {
+                await fetch(GOOGLE_SHEET_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        name:   leadData[0] || "Unknown", 
+                        phone:  leadData[1] || "Unknown", 
+                        city:   leadData[2] || "Not Provided", 
+                        plan:   leadData[3] || "Not Provided", 
+                        budget: leadData[4] || "Not Provided"
+                    })
+                }).catch(e => console.error("Sheet Sync Error:", e.message));
+            }
         }
 
+        // --- CLEANUP: Customer ko secret tag nahi dikhna chahiye ---
         reply = reply.replace(/\|\|[\s\S]*?\|\|/g, '').trim();
+        
         return res.status(200).json({ reply });
 
     } catch (e) {
