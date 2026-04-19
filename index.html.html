@@ -327,36 +327,32 @@ footer{background:#0d1117;color:rgba(255,255,255,0.55);padding:50px 4%;text-alig
   .hero-stats{gap:1.2rem;}
   nav{padding:0 3.5%;}
 }
-  /* --- MOBILE RESPONSIVENESS FIX (Final Version) --- */
-@media (max-width: 768px) {
-    /* 1. Heading ko screen ke andar rakhne ke liye size aur wrapping */
+ 
     .hero h1 {
         font-size: 2.2rem !important; /* Size chota kiya */
         line-height: 1.2 !important;
         word-wrap: break-word !important;
         overflow-wrap: break-word !important;
         width: 100% !important;
-        white-space: normal !important; /* Text ko niche ki line mein bhejega */
+        white-space: normal !important; /* yahan aur Bakchodi nai  */
     }
-
-    /* 2. Stats (99.29%, 5+) ko 2-2 ke group mein todna taki wo kat-te na rahein */
     .hero-stats {
-        flex-wrap: wrap !important; /* Sabse zaroori: stats ko wrap karega */
+        flex-wrap: wrap !important; 
         gap: 1.5rem !important;
         justify-content: center !important;
     }
 
-    /* 3. IC Code Card ko mobile ke liye adjust karna */
+    /* 3. Lawde yaha bhi bkchodi nai */
     .ic-card {
         display: flex !important;
-        flex-direction: column !important; /* Left-Right ki jagah Up-Down */
+        flex-direction: column !important; /* Left-Right ka jagah m Up-Down */
         align-items: center !important;
         text-align: center !important;
         width: 100% !important;
         gap: 15px !important;
     }
 
-    /* 4. Background circles ko hide karna (Ye screen stretch kar dete hain) */
+  
     .hero-blob-1, .hero-blob-2 {
         display: none !important;
     }
