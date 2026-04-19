@@ -329,46 +329,36 @@ footer{background:#0d1117;color:rgba(255,255,255,0.55);padding:50px 4%;text-alig
 }
   /* --- MOBILE RESPONSIVENESS FIX (Final Version) --- */
 @media (max-width: 768px) {
-    /* Pure container ko reset karna */
-    .hero {
-        padding: 80px 15px 40px !important;
-        min-height: auto !important;
-        display: block !important; /* Grid ki jagah block layout */
-        overflow: hidden;
-    }
-
-    /* Content ko center aur stack karna */
-    .hero-inner {
-        display: flex !important;
-        flex-direction: column !important;
-        text-align: center !important;
-        gap: 1.5rem !important;
-        width: 100% !important;
-    }
-
-    /* Heading ko screen ke hisaab se chota karna */
+    /* 1. Heading ko screen ke andar rakhne ke liye size aur wrapping */
     .hero h1 {
-        font-size: 2.2rem !important; /* Taki text crop na ho */
-        margin-top: 10px;
-        line-height: 1.2;
-    }
-
-    /* Stats aur buttons ko center mein align karna */
-    .hero-stats, .hero-ctas {
-        justify-content: center !important;
+        font-size: 2.2rem !important; /* Size chota kiya */
+        line-height: 1.2 !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
         width: 100% !important;
+        white-space: normal !important; /* Text ko niche ki line mein bhejega */
     }
 
-    /* Blobs ko hide karna taki screen right side na bhage */
+    /* 2. Stats (99.29%, 5+) ko 2-2 ke group mein todna taki wo kat-te na rahein */
+    .hero-stats {
+        flex-wrap: wrap !important; /* Sabse zaroori: stats ko wrap karega */
+        gap: 1.5rem !important;
+        justify-content: center !important;
+    }
+
+    /* 3. IC Code Card ko mobile ke liye adjust karna */
+    .ic-card {
+        display: flex !important;
+        flex-direction: column !important; /* Left-Right ki jagah Up-Down */
+        align-items: center !important;
+        text-align: center !important;
+        width: 100% !important;
+        gap: 15px !important;
+    }
+
+    /* 4. Background circles ko hide karna (Ye screen stretch kar dete hain) */
     .hero-blob-1, .hero-blob-2 {
         display: none !important;
-    }
-
-    /* IC Card (Badge) ko adjust karna */
-    .ic-card {
-        flex-direction: column;
-        gap: 0.5rem;
-        padding: 0.8rem;
     }
 }
  </style>
