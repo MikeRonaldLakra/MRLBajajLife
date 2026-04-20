@@ -8,7 +8,6 @@
 
 const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbzCg9jC2Ybe67f5Up59ZEQzab-_vBqMgLiEV9-9hGbjn4nbJ-9SSySZZh8QhxktPPa6eA/exec";
 
-// NOTE: Agar 'export default' se Vercel crash hota hai, toh is line ko wapas 'module.exports = async function' kar dijiyega.
 module.exports = async function (req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -16,12 +15,12 @@ module.exports = async function (req, res) {
 
     if (req.method === 'OPTIONS') return res.status(200).end();
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-    
-    // ... baki ka pura try-catch code same rahega ...
 
     try {
         const { message, history } = req.body;
-        const chatHistory = Array.isArray(history) ? history : [];
+        
+        // 🛠️ TOKEN SAVER: Sirf pichle 6 messages yaad rakhega (Limit kabhi khatam nahi hogi)
+        const chatHistory = Array.isArray(history) ? history.slice(-6) : [];
 
         const keysString = process.env.GROQ_API_KEYS;
         if (!keysString) return res.status(200).json({ reply: "SYSTEM ERROR: API Keys missing!" });
@@ -29,9 +28,9 @@ module.exports = async function (req, res) {
         const apiKeysArray = keysString.split(',').map(key => key.trim());
         const ACTIVE_KEY = apiKeysArray[Math.floor(Math.random() * apiKeysArray.length)];
 
-    const systemPrompt = { 
-        role: "system", 
-        content: `You are Emma, a female virtual assistant for Mike Ronald Lakra, a Financial Advisor at Bajaj Allianz Life Insurance, Kolkata.
+        const systemPrompt = { 
+            role: "system", 
+            content: `You are Emma, a female virtual assistant for Mike Ronald Lakra, a Financial Advisor at Bajaj Allianz Life Insurance.Kolkata
 
     ================================================================================
   BAJAJ ALLIANZ LIFE — AI SALES CONSULTANT SYSTEM PROMPT
@@ -208,9 +207,9 @@ RULE: DO NOT generate the LEAD tag until the user provides their 10-digit phone 
   "Thank you!
    You can also reach Mike Ronald Lakra directly at +91 93821 81126. 😊"
 
-Then append EXACTLY this tag at the very end (one line, exact format):
+TSECTION 4: LEAD TAG
+ONLY when Phone is provided, append exactly:
 ||LEAD: [Name] | [Phone] | [City] | [Plan] | [Budget]||
-
 (Write "Not Provided" for any missing field EXCEPT Phone — Phone must always be present.)
 
 STOP.
@@ -253,9 +252,10 @@ Then give 2–3 genuinely helpful money management tips (budgeting, emergency fu
 
 ================================================================================
   END OF SYSTEM PROMPT — Mike Ronald Lakra | Bajaj Allianz Life AI Consultant
-================================================================================
-
-    const apiMessages = [systemPrompt, ...chatHistory, { role: "user", content: message }];
+================================================================================`
+ // 1. Pehle string band karein
+}; // 2. Phir object band karein
+        const apiMessages = [systemPrompt, ...chatHistory, { role: "user", content: message }];
 
         const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
             method: 'POST',
@@ -264,8 +264,7 @@ Then give 2–3 genuinely helpful money management tips (budgeting, emergency fu
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                // Is line ko dhoondhiye aur badal dijiye
-            model: "llama-3.1-8b-instant",
+                model: "llama-3.1-8b-instant", // High speed + High limit model
                 messages: apiMessages,
                 temperature: 0.7 
             })
@@ -273,17 +272,14 @@ Then give 2–3 genuinely helpful money management tips (budgeting, emergency fu
 
         const data = await response.json();
         
-        // 🛠️ FIX 1: Rate limit error handling yahan hogi (catch block mein nahi)
         if (!response.ok) {
             const errorMsg = (data.error?.message || "").toLowerCase();
-            if (errorMsg.includes("rate limit") || errorMsg.includes("tokens") || response.status === 429) {
+            if (errorMsg.includes("rate limit") || response.status === 429) {
                 return res.status(200).json({ 
-                    reply: "I am receiving a high volume of messages right now! 😅 Please wait about 1 to 2 minutes for the system to reset, and then ask your question again." 
+                    reply: "I am receiving a high volume of messages! 😅 Please wait 1 minute and try again." 
                 });
             }
-            return res.status(200).json({ 
-                reply: "Oops! I am facing a slight network delay. Please wait a moment and try again. 🙏" 
-            });
+            return res.status(200).json({ reply: "Oops! Network delay. Please try again in a moment. 🙏" });
         }
 
         let reply = data.choices?.[0]?.message?.content || "Thinking...";
@@ -292,30 +288,26 @@ Then give 2–3 genuinely helpful money management tips (budgeting, emergency fu
         const leadMatch = reply.match(/\|\|\s*LEAD:\s*(.*?)\s*\|\|/i);
         if (leadMatch) { 
             const leadData = leadMatch[1].split('|').map(s => s.trim());
-            
             if (leadData.length >= 2) {
                 await fetch(GOOGLE_SHEET_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
-                        name:   leadData[0] || "Unknown", 
-                        phone:  leadData[1] || "Unknown", 
-                        city:   leadData[2] || "Not Provided", 
-                        plan:   leadData[3] || "Not Provided", 
+                        name: leadData[0] || "Unknown", 
+                        phone: leadData[1] || "Unknown", 
+                        city: leadData[2] || "Not Provided", 
+                        plan: leadData[3] || "Not Provided", 
                         budget: leadData[4] || "Not Provided"
                     })
                 }).catch(e => console.error("Sheet Error:", e.message));
             }
         }
 
-        // Clean UI
         reply = reply.replace(/\|\|[\s\S]*?\|\|/g, '').trim();
         return res.status(200).json({ reply });
 
     } catch (error) {
-        console.error("API Error Details:", error);
-        return res.status(200).json({ 
-            reply: "Oops! Internal server error. Please wait a moment and try again. 🙏" 
-        });
+        console.error("API Error:", error);
+        return res.status(200).json({ reply: "Oops! Internal server error. Please try again. 🙏" });
     }
-}; // 🛠️ FIX 2: Ye aakhiri bracket missing tha! Iske bina puri file crash ho rahi thi.
+};
