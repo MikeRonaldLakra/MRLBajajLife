@@ -1293,7 +1293,14 @@ function addMsg(sender, html, id) {
   if (id) div.id = id;
   div.innerHTML = html;
   body.appendChild(div);
-  body.scrollTop = body.scrollHeight;
+
+  if (sender === 'user' || (id && id.startsWith('typ'))) {
+      body.scrollTop = body.scrollHeight;
+  } else if (sender === 'bot') {
+      setTimeout(function() {
+          div.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50); 
+  }
   return div;
 }
 
