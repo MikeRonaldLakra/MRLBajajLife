@@ -163,7 +163,8 @@ STOP HERE.
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: "llama-3.3-70b-versatile",
+                // Is line ko dhoondhiye aur badal dijiye
+            model: "llama-3.1-8b-instant",
                 messages: apiMessages,
                 temperature: 0.7 
             })
