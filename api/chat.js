@@ -161,7 +161,19 @@ STOP HERE.
         });
 
         const data = await response.json();
-        if (!response.ok) return res.status(200).json({ reply: `Emma is sleeping: ${data.error?.message}` });
+        
+        // 🛠️ FIX 1: Rate limit error handling yahan hogi (catch block mein nahi)
+        if (!response.ok) {
+            const errorMsg = (data.error?.message || "").toLowerCase();
+            if (errorMsg.includes("rate limit") || errorMsg.includes("tokens") || response.status === 429) {
+                return res.status(200).json({ 
+                    reply: "I am receiving a high volume of messages right now! 😅 Please wait about 1 to 2 minutes for the system to reset, and then ask your question again." 
+                });
+            }
+            return res.status(200).json({ 
+                reply: "Oops! I am facing a slight network delay. Please wait a moment and try again. 🙏" 
+            });
+        }
 
         let reply = data.choices?.[0]?.message?.content || "Thinking...";
 
@@ -171,7 +183,6 @@ STOP HERE.
             const leadData = leadMatch[1].split('|').map(s => s.trim());
             
             if (leadData.length >= 2) {
-                // Mapping matches the refined prompt order
                 await fetch(GOOGLE_SHEET_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -190,29 +201,10 @@ STOP HERE.
         reply = reply.replace(/\|\|[\s\S]*?\|\|/g, '').trim();
         return res.status(200).json({ reply });
 
-  } catch (error) {
+    } catch (error) {
         console.error("API Error Details:", error);
-        
-        // Convert the entire error object to a string to ensure we catch everything
-        const errorString = String(error).toLowerCase();
-        let errorDataString = "";
-        
-        // Sometimes the API error details are hidden inside error.response.data
-        if (error.response && error.response.data) {
-            errorDataString = JSON.stringify(error.response.data).toLowerCase();
-        }
-
-        // Check for Rate Limit or Token issues in both places
-        if (errorString.includes("rate limit") || errorString.includes("429") || errorString.includes("tokens") || 
-            errorDataString.includes("rate limit") || errorDataString.includes("429") || errorDataString.includes("tokens")) {
-            
-            return res.status(200).json({ 
-                reply: "I am receiving a high volume of messages right now! 😅 Please wait about 2 minutes for the system to reset, and then ask your question again." 
-            });
-        }
-
-        // Fallback for any other type of error
         return res.status(200).json({ 
-            reply: "Oops! I am facing a slight network delay. Please wait a moment and try again. 🙏" 
+            reply: "Oops! Internal server error. Please wait a moment and try again. 🙏" 
         });
     }
+}; // 🛠️ FIX 2: Ye aakhiri bracket missing tha! Iske bina puri file crash ho rahi thi.
