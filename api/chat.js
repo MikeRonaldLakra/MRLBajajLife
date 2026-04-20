@@ -190,7 +190,21 @@ STOP HERE.
         reply = reply.replace(/\|\|[\s\S]*?\|\|/g, '').trim();
         return res.status(200).json({ reply });
 
-    } catch (e) {
-        return res.status(200).json({ reply: `Emma is out of office (Crash): ${e.message}` });
+   } catch (error) {
+        console.error("API Error:", error);
+        
+        // Agar error message mein string mili, usko check karo
+        const errorMessage = (error.message || error.toString()).toLowerCase();
+
+        // Agar error Rate Limit (429) ya server overload ka hai
+        if (errorMessage.includes("rate limit") || errorMessage.includes("429") || errorMessage.includes("tokens")) {
+            return res.status(200).json({ 
+                reply: "I am receiving a high volume of messages right now! 😅 Please wait for 5 seconds and ask your question again." 
+            });
+        }
+
+        // Kisi aur technical error ke liye (Customer ko technical code nahi dikhega)
+        return res.status(200).json({ 
+            reply: "Oops! I am facing a slight network delay. Please wait 5 seconds and try again. 🙏" 
+        });
     }
-}
