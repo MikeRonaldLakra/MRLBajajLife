@@ -1294,13 +1294,19 @@ function addMsg(sender, html, id) {
   div.innerHTML = html;
   body.appendChild(div);
 
+  // --- SMART SCROLL LOGIC (Auto-scroll fix) ---
   if (sender === 'user' || (id && id.startsWith('typ'))) {
+      // Jab aap message bhejenge ya typing dots aayenge, tab niche scroll hoga
       body.scrollTop = body.scrollHeight;
   } else if (sender === 'bot') {
+      // Emma ka reply aane par wo naye message ke START (shuruat) par focus karega
+      // Isse screen achanak niche nahi bhagegi
       setTimeout(function() {
           div.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 50); 
   }
+  // --------------------------------------------
+
   return div;
 }
 
