@@ -1232,6 +1232,21 @@ document.addEventListener('DOMContentLoaded',function(){
 
 var chatHistory = [];
 var isTyping = false;
+  var chatHistory = [];
+var isTyping = false;
+
+// 👇 YAHAN SE NAYA CODE PASTE KIJIYE 👇
+document.addEventListener('DOMContentLoaded', function() {
+    // Thoda delay dete hain taaki page load hone ke baad smooth lage
+    setTimeout(function() {
+        // Pehla message
+        appendMessage("bot", "👋 Welcome! I'm Mike's Assistant. Please choose your language to start:");
+        
+        // Language Buttons
+        renderQuickReplies(["English", "Hindi", "Bengali", "Nepali"]);
+    }, 500); 
+});
+// 👆 NAYA CODE YAHAN KHATAM 👆
 
 var defaultQRs = [
   {l:" AWG vs FD", m:"AWG and Bank FD what is the difference between them?"},
