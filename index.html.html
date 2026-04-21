@@ -1254,14 +1254,13 @@ function renderQRs(qrs) {
     if (!c) return;
     c.innerHTML = '';
 
-    // 1. TOP ROW: Languages (Ye sirf chat ke start mein dikhega)
     if (typeof chatHistory !== 'undefined' && chatHistory.length <= 1) {
         var langDiv = document.createElement('div');
-        langDiv.style.marginBottom = '10px'; // Dono rows ke beech thoda gap
+        langDiv.style.marginBottom = '10px'; 
         languageQRs.forEach(function(q) {
             var b = document.createElement('button');
             b.className = 'qr-btn';
-            b.style.fontWeight = 'bold'; // Bhasha wale buttons thode dark dikhenge
+            b.style.fontWeight = 'bold'; 
             b.textContent = q.l;
             b.onclick = function() { sendQR(q.m); };
             langDiv.appendChild(b);
@@ -1328,18 +1327,16 @@ function addMsg(sender, html, id) {
   div.innerHTML = html;
   body.appendChild(div);
 
-  // --- SMART SCROLL LOGIC (Auto-scroll fix) ---
   if (sender === 'user' || (id && id.startsWith('typ'))) {
-      // Jab aap message bhejenge ya typing dots aayenge, tab niche scroll hoga
+      
       body.scrollTop = body.scrollHeight;
   } else if (sender === 'bot') {
-      // Emma ka reply aane par wo naye message ke START (shuruat) par focus karega
-      // Isse screen achanak niche nahi bhagegi
+     
       setTimeout(function() {
           div.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 50); 
   }
-  // --------------------------------------------
+  
 
   return div;
 }
@@ -1401,11 +1398,10 @@ function processAIQuery() {
     removeTyping(typId);
     var reply = data.reply || "I am analyzing the data, please contact Mike directly.";
         
-        // --- YE RAHA MAGIC CODE ---
+      
         if (reply.includes("||LEAD:")) {
             reply = reply.split("||LEAD:")[0].trim(); 
         }
-        // --------------------------
 
         chatHistory.push({ role: "user", content: text });
         chatHistory.push({ role: "assistant", content: reply });
