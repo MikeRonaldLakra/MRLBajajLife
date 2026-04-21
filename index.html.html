@@ -1235,24 +1235,50 @@ var isTyping = false;
   var chatHistory = [];
 var isTyping = false;
 
+var languageQRs = [
+    {l: "English", m: "English"},
+    {l: "Hindi", m: "Hindi"},
+    {l: "Bengali", m: "Bengali"},
+    {l: "Nepali", m: "Nepali"}
+];
+
 var defaultQRs = [
-  {l:" AWG vs FD", m:"AWG and Bank FD what is the difference between them?"},
-  {l:" Term Quote", m:"quote of ₹1 Crore term plan"},
-  {l:" Retirement", m:"Retirement ke liye best plan kaunsa hai?"},
-  {l:" Women Plan", m:"Women ke liye best plan kaunsa hai?"},
+    {l: "AWG vs FD", m: "AWG and Bank FD what is the difference between them?"},
+    {l: "Term Quote", m: "quote of ₹1 Crore term plan"},
+    {l: "Retirement", m: "Retirement ke liye best plan kaunsa hai?"},
+    {l: "Women Plan", m: "Women ke liye best plan kaunsa hai?"}
 ];
 
 function renderQRs(qrs) {
-  var c = document.getElementById('aiQuickReplies');
-  if (!c) return;
-  c.innerHTML = '';
-  (qrs||defaultQRs).slice(0,5).forEach(function(q) {
-    var b = document.createElement('button');
-    b.className = 'qr-btn';
-    b.textContent = q.l;
-    b.onclick = function() { sendQR(q.m); };
-    c.appendChild(b);
-  });
+    var c = document.getElementById('aiQuickReplies');
+    if (!c) return;
+    c.innerHTML = '';
+
+    // 1. TOP ROW: Languages (Ye sirf chat ke start mein dikhega)
+    if (typeof chatHistory !== 'undefined' && chatHistory.length <= 1) {
+        var langDiv = document.createElement('div');
+        langDiv.style.marginBottom = '10px'; // Dono rows ke beech thoda gap
+        languageQRs.forEach(function(q) {
+            var b = document.createElement('button');
+            b.className = 'qr-btn';
+            b.style.fontWeight = 'bold'; // Bhasha wale buttons thode dark dikhenge
+            b.textContent = q.l;
+            b.onclick = function() { sendQR(q.m); };
+            langDiv.appendChild(b);
+        });
+        c.appendChild(langDiv);
+    }
+
+    // 2. BOTTOM ROW: Plans (Ye hamesha dikhega)
+    var planDiv = document.createElement('div');
+    (qrs || defaultQRs).slice(0, 5).forEach(function(q) {
+        var b = document.createElement('button');
+        b.className = 'qr-btn';
+        b.textContent = q.l;
+        b.onclick = function() { sendQR(q.m); };
+        planDiv.appendChild(b);
+    });
+    c.appendChild(planDiv);
 }
 
 function sendQR(text) {
