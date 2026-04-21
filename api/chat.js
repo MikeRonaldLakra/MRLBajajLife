@@ -590,12 +590,24 @@ Always close with a zero-pressure warm offer:
 
         if (!response.ok) {
             const errorMsg = (data.error?.message || "").toLowerCase();
-            if (errorMsg.includes("rate limit") || response.status === 429) {
+            // ALL errors → show wait message, never expose technical errors to user
+            if (
+                errorMsg.includes("rate limit") ||
+                errorMsg.includes("overloaded") ||
+                errorMsg.includes("capacity") ||
+                errorMsg.includes("timeout") ||
+                response.status === 429 ||
+                response.status === 503 ||
+                response.status === 500
+            ) {
                 return res.status(200).json({
-                    reply: "I am receiving a high volume of messages! 😅 Please wait 1 minute and try again."
+                    reply: "😅 I'm getting a lot of messages right now! Please wait 1 minute and try again. I'll be right here! 🙏"
                 });
             }
-            return res.status(200).json({ reply: "Oops! Network delay. Please try again in a moment. 🙏" });
+            // Any other API error → same wait message
+            return res.status(200).json({
+                reply: "😅 I'm getting a lot of messages right now! Please wait 1 minute and try again. I'll be right here! 🙏"
+            });
         }
 
         let reply = data.choices?.[0]?.message?.content || "Thinking...";
@@ -624,7 +636,10 @@ Always close with a zero-pressure warm offer:
         return res.status(200).json({ reply });
 
     } catch (error) {
-        console.error("API Error:", error);
-        return res.status(200).json({ reply: "Oops! Internal server error. Please try again. 🙏" });
+        console.error("API Error:", error.message);
+        // Network failure, DNS error, timeout — always show wait message to user
+        return res.status(200).json({
+            reply: "😅 I'm getting a lot of messages right now! Please wait 1 minute and try again. I'll be right here! 🙏"
+        });
     }
 };
