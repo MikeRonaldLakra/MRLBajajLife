@@ -1235,19 +1235,6 @@ var isTyping = false;
   var chatHistory = [];
 var isTyping = false;
 
-// 👇 YAHAN SE NAYA CODE PASTE KIJIYE 👇
-document.addEventListener('DOMContentLoaded', function() {
-    // Thoda delay dete hain taaki page load hone ke baad smooth lage
-    setTimeout(function() {
-        // Pehla message
-        appendMessage("bot", "👋 Welcome! I'm Mike's Assistant. Please choose your language to start:");
-        
-        // Language Buttons
-        renderQuickReplies(["English", "Hindi", "Bengali", "Nepali"]);
-    }, 500); 
-});
-// 👆 NAYA CODE YAHAN KHATAM 👆
-
 var defaultQRs = [
   {l:" AWG vs FD", m:"AWG and Bank FD what is the difference between them?"},
   {l:" Term Quote", m:"quote of ₹1 Crore term plan"},
@@ -1292,12 +1279,18 @@ function toggleAIChat() {
 }
 
 function initChat() {
-  var banner = document.getElementById('apiKeyBanner');
-  if (banner) banner.style.display = 'none';
-  var welcomeText = "🙏 <strong>Hello!</strong> I'm Mike's Assistant.<br><br>Aap mujhse kis language mein baat karna prefer karenge?";
-  addMsg('bot', welcomeText);
-  chatHistory.push({ role: "assistant", content: "Hello! I'm Mike's Assistant. Aap mujhse kis language mein baat karna prefer karenge?" });
-  renderQRs();
+    var banner = document.getElementById('apiKeyBanner');
+    if (banner) banner.style.display = 'none';
+
+    // 1. Naya English Welcome Message
+    var welcomeText = "👋 <strong>Welcome!</strong> I'm Mike's Assistant.<br><br>Please choose your language to start:";
+    addMsg('bot', welcomeText);
+
+    // 2. Chat History mein bhi naya message daalna zaroori hai (taaki Emma confuse na ho)
+    chatHistory.push({ role: "assistant", content: "Welcome! I'm Mike's Assistant. Please choose your language to start:" });
+
+    // 3. Language Buttons dikhane ke liye
+    renderQRs(); 
 }
 
 function addMsg(sender, html, id) {
