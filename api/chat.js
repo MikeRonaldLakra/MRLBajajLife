@@ -270,7 +270,7 @@ Then give 2–3 genuinely helpful money management tips (budgeting, emergency fu
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: "llama-3.1-8b-instant", // High speed + High limit model
+                model: "model: "llama-3.3-70b-versatile", // High speed + High limit model
                 messages: apiMessages,
                 temperature: 0.7 
             })
