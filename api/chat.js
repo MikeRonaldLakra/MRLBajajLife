@@ -2,7 +2,7 @@
  * ==================================================
  * Secure API Endpoint - Bajaj Allianz AI Assistant
  * Designed & Developed by: Mike Ronald Lakra
- * Version: 2.1.7 (X-Ray Debug Mode)
+ * Version: 2.2.0 (Llama 4 Scout Upgrade)
  * ==================================================
  */
 
@@ -18,9 +18,9 @@ module.exports = async function (req, res) {
 
     try {
         const { message, history } = req.body;
-        
-        // 🛠️ TOKEN SAVER: Sirf pichle 6 messages yaad rakhega (Limit kabhi khatam nahi hogi)
-        const chatHistory = Array.isArray(history) ? history.slice(-6) : [];
+
+        // 🛠️ TOKEN SAVER: Keep last 10 messages for better memory (was 6 — too low, caused re-asking issues)
+        const chatHistory = Array.isArray(history) ? history.slice(-10) : [];
 
         const keysString = process.env.GROQ_API_KEYS;
         if (!keysString) return res.status(200).json({ reply: "SYSTEM ERROR: API Keys missing!" });
@@ -28,13 +28,13 @@ module.exports = async function (req, res) {
         const apiKeysArray = keysString.split(',').map(key => key.trim());
         const ACTIVE_KEY = apiKeysArray[Math.floor(Math.random() * apiKeysArray.length)];
 
-        const systemPrompt = { 
-            role: "system", 
-            content: `You are Emma, a female virtual assistant for Mike Ronald Lakra, a Financial Advisor at Bajaj Allianz Life Insurance.Kolkata
+        const systemPrompt = {
+            role: "system",
+            content: `You are Emma, a female virtual assistant for Mike Ronald Lakra, a Financial Advisor at Bajaj Allianz Life Insurance. Kolkata.
 
-   ================================================================================
+================================================================================
   EMMA — BAJAJ ALLIANZ LIFE AI SALES CONSULTANT
-  Built by: Mike Ronald Lakra | Optimized for: LLaMA 3.3 70B
+  Built by: Mike Ronald Lakra | Optimized for: LLaMA 4 Scout
 ================================================================================
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -188,8 +188,7 @@ Then append this LEAD TAG at the very end of your message (exactly this format):
 → "Take your time! Just keep in mind — the earlier you lock in, the bigger your guaranteed corpus at the same premium. I'm here whenever you're ready."
 
 "I already have FD / Mutual Funds":
-→ "FDs give fixed returns but zero life cover. Mutual funds carry market risk.
-   AWG gives you guaranteed returns AND family protection — it's a completely different category."
+→ "FDs give fixed returns but zero life cover. Mutual funds carry market risk. AWG gives you guaranteed returns AND family protection — it's a completely different category."
 
 "It's too expensive":
 → "Plans start at very affordable premiums. And since returns are guaranteed, every rupee is working hard for you — not sitting idle."
@@ -218,8 +217,8 @@ End with a soft re-invite: "And if you ever want to explore AWG later, I'm alway
 ================================================================================
   END OF SYSTEM PROMPT — Emma | Built by Mike Ronald Lakra | Bajaj Allianz Life
 ================================================================================`
- // 1. Pehle string band karein
-}; // 2. Phir object band karein
+        };
+
         const apiMessages = [systemPrompt, ...chatHistory, { role: "user", content: message }];
 
         const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
@@ -229,19 +228,19 @@ End with a soft re-invite: "And if you ever want to explore AWG later, I'm alway
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: "llama-3.3-70b-versatile", // High speed + High limit model
+                model: "meta-llama/llama-4-scout-17b-16e-instruct", // ✅ Latest Llama 4 on Groq (2026)
                 messages: apiMessages,
-                temperature: 0.7 
+                temperature: 0.6  // Slightly lower = more consistent, less hallucination
             })
         });
 
         const data = await response.json();
-        
+
         if (!response.ok) {
             const errorMsg = (data.error?.message || "").toLowerCase();
             if (errorMsg.includes("rate limit") || response.status === 429) {
-                return res.status(200).json({ 
-                    reply: "I am receiving a high volume of messages! 😅 Please wait 1 minute and try again." 
+                return res.status(200).json({
+                    reply: "I am receiving a high volume of messages! 😅 Please wait 1 minute and try again."
                 });
             }
             return res.status(200).json({ reply: "Oops! Network delay. Please try again in a moment. 🙏" });
@@ -249,25 +248,26 @@ End with a soft re-invite: "And if you ever want to explore AWG later, I'm alway
 
         let reply = data.choices?.[0]?.message?.content || "Thinking...";
 
-        // --- DATA EXTRACTION ---
+        // --- LEAD DATA EXTRACTION & GOOGLE SHEET LOGGING ---
         const leadMatch = reply.match(/\|\|\s*LEAD:\s*(.*?)\s*\|\|/i);
-        if (leadMatch) { 
+        if (leadMatch) {
             const leadData = leadMatch[1].split('|').map(s => s.trim());
             if (leadData.length >= 2) {
                 await fetch(GOOGLE_SHEET_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        name: leadData[0] || "Unknown", 
-                        phone: leadData[1] || "Unknown", 
-                        city: leadData[2] || "Not Provided", 
-                        plan: leadData[3] || "Not Provided", 
+                    body: JSON.stringify({
+                        name: leadData[0] || "Unknown",
+                        phone: leadData[1] || "Unknown",
+                        city: leadData[2] || "Not Provided",
+                        plan: leadData[3] || "Not Provided",
                         budget: leadData[4] || "Not Provided"
                     })
                 }).catch(e => console.error("Sheet Error:", e.message));
             }
         }
 
+        // Strip the LEAD tag before sending reply to user
         reply = reply.replace(/\|\|[\s\S]*?\|\|/g, '').trim();
         return res.status(200).json({ reply });
 
