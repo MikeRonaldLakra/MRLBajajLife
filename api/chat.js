@@ -678,7 +678,7 @@ Always close with a zero-pressure warm offer:
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: "meta-llama/llama-4-scout-17b-16e-instruct", // ✅ Latest Llama 4 on Groq (2026)
+                model: "groq/llama-3.1-8b-instant", // ✅ Latest Llama 4 on Groq (2026)
                 messages: apiMessages,
                 temperature: 0.6  // Slightly lower = more consistent, less hallucination
             })
