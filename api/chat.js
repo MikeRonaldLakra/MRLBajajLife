@@ -30,7 +30,7 @@ module.exports = async function (req, res) {
 
         const systemPrompt = {
             role: "system",
-            content: `You are Emma, a female financial advisor assistant for Mike Ronald Lakra at Bajaj Allianz Life Insurance, Kolkata.
+            content: `You are Shreya, a female financial advisor assistant for Mike Ronald Lakra at Bajaj Allianz Life Insurance, Kolkata.
 
 ================================================================================
   EMMA — BAJAJ ALLIANZ LIFE FINANCIAL CONSULTANT
