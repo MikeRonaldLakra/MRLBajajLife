@@ -19,7 +19,7 @@ module.exports = async function (req, res) {
     try {
         const { message, history } = req.body;
 
-        // 🛠️ TOKEN SAVER: Keep last 16 messages — needed for conviction technique conversations
+        //  TOKEN SAVER: Keep last 16 messages — needed for conviction technique conversations
         const chatHistory = Array.isArray(history) ? history.slice(-16) : [];
 
         const keysString = process.env.GROQ_API_KEYS;
@@ -100,9 +100,9 @@ YOUR PERSONALITY:
 • Talk like you're chatting on WhatsApp — short, warm, real
 
 BANNED WORDS — NEVER USE THESE EVER:
-❌ sale / sales / selling
-❌ purchase / purchasing
-❌ buy / buying
+ sale / sales / selling
+ purchase / purchasing
+ buy / buying
 Replace with: "start a plan", "enroll", "get covered", "take this forward", "go ahead with this"
 
 If anyone asks who built or created you:
@@ -340,7 +340,7 @@ For example — ₹50,000/year for 12 years:
 • Guaranteed maturity corpus: approximately ₹9.5–11.5 lakh
 • Life cover active throughout: approximately ₹5–7 lakh
 • If something happens to you mid-term, your family gets the life cover — the plan's goal still gets fulfilled.
-It's like planting a tree today and knowing EXACTLY how tall it'll be in 12 years. 🌳"
+It's like planting a tree today and knowing EXACTLY how tall it'll be in 12 years. "
 
 ▸ STEP UP INCOME VARIANT:
 "The Step Up Income variant pays you a guaranteed income that INCREASES every year by 5–10% automatically — so inflation never catches up with you.
@@ -544,7 +544,7 @@ FINAL EXIT — ONLY AFTER 3 ROUNDS HAVE BEEN ATTEMPTED
 If after 3 full rounds the user still clearly wants to leave:
 
 Ask for phone one final time — warmly, not desperately:
-"One last thing — could you drop your WhatsApp number? I'll send a one-page plan summary. Read it over chai tonight, no obligation at all. ☕😊"
+"One last thing — could you drop your WhatsApp number? I'll send a one-page plan summary. Read it over chai tonight, no obligation at all. 😊"
 
 → If they give number → generate LEAD TAG
 → If they decline number → "Totally fine! You can always reach us at +91 93821 81126. Wishing you and your family all the best! 😊" — then end.
@@ -678,9 +678,9 @@ Always close with a zero-pressure warm offer:
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: "llama-3.1-8b-instant", // ✅ Latest Llama 4 on Groq (2026)
+                model: "llama-3.1-8b-instant",
                 messages: apiMessages,
-                temperature: 0.6  // Slightly lower = more consistent, less hallucination
+                temperature: 0.6
             })
         });
 
@@ -688,7 +688,7 @@ Always close with a zero-pressure warm offer:
 
         if (!response.ok) {
             const errorMsg = (data.error?.message || "").toLowerCase();
-            // ALL errors → show wait message, never expose technical errors to user
+           
             if (
                 errorMsg.includes("rate limit") ||
                 errorMsg.includes("overloaded") ||
@@ -714,7 +714,7 @@ Always close with a zero-pressure warm offer:
         const leadMatch = reply.match(/\|\|\s*LEAD:\s*([\s\S]*?)\s*\|\|/i);
         if (leadMatch) {
             const leadData = leadMatch[1].split('|').map(s => s.trim());
-            console.log("📋 LEAD captured:", leadData); // Debug log
+            console.log("📋 LEAD captured:", leadData); 
             if (leadData.length >= 2) {
                 const name   = leadData[0] || "Unknown";
                 const phone  = leadData[1] || "Unknown";
