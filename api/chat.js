@@ -678,7 +678,7 @@ Always close with a zero-pressure warm offer:
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: "llama-3.1-8b-instant",
+                model: "llama-3.3-70b-versatile",
                 messages: apiMessages,
                 temperature: 0.6
             })
