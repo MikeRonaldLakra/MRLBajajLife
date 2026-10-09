@@ -27,8 +27,10 @@ module.exports = async function (req, res) {
         const parseApiKeys = (value) => typeof value === "string"
             ? value.split(",").map((key) => key.trim()).filter(Boolean)
             : [];
-        const nvidiaKeys = parseApiKeys(process.env.NVIDIA_API_KEYS || process.env.NVIDIA_API_KEY);
-        const groqKeys = parseApiKeys(process.env.GROQ_API_KEYS || process.env.GROQ_API_KEY);
+        // Only enable NVIDIA when the singular NVIDIA_API_KEY is configured.
+        // Otherwise skip NVIDIA completely and select Groq immediately.
+        const nvidiaKeys = parseApiKeys(process.env.NVIDIA_API_KEY);
+        const groqKeys = parseApiKeys(process.env.GROQ_API_KEY || process.env.GROQ_API_KEYS);
         const pickKey = (keys) => keys[Math.floor(Math.random() * keys.length)];
 
         if (nvidiaKeys.length === 0 && groqKeys.length === 0) {
@@ -775,13 +777,20 @@ Always close with a zero-pressure warm offer:
 
         if (!response.ok) {
             const providerErrorMessage = data?.error?.message || data?.detail || data?.message || "Unknown provider error";
-            console.error("AI provider request failed:", {
-                provider: activeProvider,
-                model: activeProvider === "nvidia" ? NVIDIA_MODEL : GROQ_MODEL,
-                status: response.status,
-                statusText: response.statusText,
-                message: providerErrorMessage
-            });
+            if (activeProvider === "nvidia") {
+                console.error("NVIDIA API request failed:", {
+                    status: response.status,
+                    statusText: response.statusText,
+                    message: providerErrorMessage,
+                    model: NVIDIA_MODEL
+                });
+            } else {
+                // Log exact provider status and error text before returning the UI fallback.
+                console.error(`Groq API error: status=${response.status}; message=${providerErrorMessage}`, {
+                    statusText: response.statusText,
+                    model: GROQ_MODEL
+                });
+            }
 
             if (
                 providerErrorMessage.toLowerCase().includes("rate limit") ||
