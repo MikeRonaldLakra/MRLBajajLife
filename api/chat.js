@@ -22,10 +22,17 @@ module.exports = async function (req, res) {
         //  TOKEN SAVER: Keep last 16 messages — needed for conviction technique conversations
         const chatHistory = Array.isArray(history) ? history.slice(-16) : [];
 
-        const keysString = process.env.GROQ_API_KEYS;
-        if (!keysString) return res.status(200).json({ reply: "SYSTEM ERROR: API Keys missing!" });
+        // Support both the plural (comma-separated) and singular Vercel variables.
+        const keysString = process.env.GROQ_API_KEYS || process.env.GROQ_API_KEY;
+        const apiKeysArray = typeof keysString === "string"
+            ? keysString.split(",").map((key) => key.trim()).filter(Boolean)
+            : [];
 
-        const apiKeysArray = keysString.split(',').map(key => key.trim());
+        if (apiKeysArray.length === 0) {
+            console.error("Groq configuration error: GROQ_API_KEYS/GROQ_API_KEY is missing or empty.");
+            return res.status(500).json({ error: "AI service is not configured. Please try again later." });
+        }
+
         const ACTIVE_KEY = apiKeysArray[Math.floor(Math.random() * apiKeysArray.length)];
 
         const systemPrompt = {
@@ -684,10 +691,22 @@ Always close with a zero-pressure warm offer:
             })
         });
 
-        const data = await response.json();
+        let data;
+        try {
+            data = await response.json();
+        } catch (parseError) {
+            console.error("Groq API returned a non-JSON response:", parseError.message);
+            return res.status(502).json({ error: "The AI service returned an invalid response. Please try again." });
+        }
 
         if (!response.ok) {
-            const errorMsg = (data.error?.message || "").toLowerCase();
+            const groqErrorMessage = data?.error?.message || "Unknown Groq API error";
+            console.error("Groq API request failed:", {
+                status: response.status,
+                statusText: response.statusText,
+                message: groqErrorMessage
+            });
+            const errorMsg = groqErrorMessage.toLowerCase();
            
             if (
                 errorMsg.includes("rate limit") ||
@@ -734,10 +753,14 @@ Always close with a zero-pressure warm offer:
         return res.status(200).json({ reply });
 
     } catch (error) {
-        console.error("API Error:", error.message);
-        // Network failure, DNS error, timeout — always show wait message to user
-        return res.status(200).json({
-            reply: "😅 I'm getting a lot of messages right now! Please wait 1 minute and try again. I'll be right here! 🙏"
+        console.error("Unhandled /api/chat error:", {
+            name: error?.name || "Error",
+            message: error?.message || String(error),
+            stack: error?.stack
+        });
+        // Keep internal details in server logs; return a generic message to clients.
+        return res.status(502).json({
+            error: "The AI service is temporarily unavailable. Please try again shortly."
         });
     }
 };
