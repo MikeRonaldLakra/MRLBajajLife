@@ -22,18 +22,28 @@ module.exports = async function (req, res) {
         //  TOKEN SAVER: Keep last 16 messages — needed for conviction technique conversations
         const chatHistory = Array.isArray(history) ? history.slice(-16) : [];
 
-        // Support both the plural (comma-separated) and singular Vercel variables.
-        const keysString = process.env.GROQ_API_KEYS || process.env.GROQ_API_KEY;
-        const apiKeysArray = typeof keysString === "string"
-            ? keysString.split(",").map((key) => key.trim()).filter(Boolean)
+        // NVIDIA is the primary provider. Groq remains a safe fallback until
+        // NVIDIA_API_KEY is configured in Vercel or if NVIDIA has a temporary outage.
+        const parseApiKeys = (value) => typeof value === "string"
+            ? value.split(",").map((key) => key.trim()).filter(Boolean)
             : [];
+        const nvidiaKeys = parseApiKeys(process.env.NVIDIA_API_KEYS || process.env.NVIDIA_API_KEY);
+        const groqKeys = parseApiKeys(process.env.GROQ_API_KEYS || process.env.GROQ_API_KEY);
+        const pickKey = (keys) => keys[Math.floor(Math.random() * keys.length)];
 
-        if (apiKeysArray.length === 0) {
-            console.error("Groq configuration error: GROQ_API_KEYS/GROQ_API_KEY is missing or empty.");
-            return res.status(200).json({ reply: "I'm sorry, the assistant is temporarily unavailable. Please contact Mike directly. 🙏" });
+        if (nvidiaKeys.length === 0 && groqKeys.length === 0) {
+            console.error("AI configuration error: NVIDIA_API_KEY and GROQ_API_KEY are both missing or empty.");
+            return res.status(200).json({
+                reply: "I'm sorry, the assistant is temporarily unavailable. Please contact Mike directly. 🙏"
+            });
         }
 
-        const ACTIVE_KEY = apiKeysArray[Math.floor(Math.random() * apiKeysArray.length)];
+        let activeProvider = nvidiaKeys.length > 0 ? "nvidia" : "groq-fallback";
+        let activeKey = activeProvider === "nvidia" ? pickKey(nvidiaKeys) : pickKey(groqKeys);
+
+        if (activeProvider === "groq-fallback") {
+            console.warn("NVIDIA_API_KEY is not configured; using Groq fallback. Add NVIDIA_API_KEY to enable Nemotron.");
+        }
 
         const systemPrompt = {
             role: "system",
@@ -677,50 +687,107 @@ Always close with a zero-pressure warm offer:
         };
 
         const apiMessages = [systemPrompt, ...chatHistory, { role: "user", content: message }];
+        const NVIDIA_MODEL = "nvidia/nemotron-3-super-120b-a12b";
+        const GROQ_MODEL = "openai/gpt-oss-120b";
 
-        const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${ACTIVE_KEY}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                model: "openai/gpt-oss-120b",
-                messages: apiMessages,
-                temperature: 0.6
-            })
-        });
+        const requestCompletion = (provider, key) => {
+            const useNvidia = provider === "nvidia";
+            return fetch(
+                useNvidia
+                    ? "https://integrate.api.nvidia.com/v1/chat/completions"
+                    : "https://api.groq.com/openai/v1/chat/completions",
+                {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${key}`,
+                        "Content-Type": "application/json",
+                        "Accept": "application/json"
+                    },
+                    body: JSON.stringify({
+                        model: useNvidia ? NVIDIA_MODEL : GROQ_MODEL,
+                        messages: apiMessages,
+                        ...(useNvidia
+                            ? { temperature: 1, top_p: 0.95, max_tokens: 4096, stream: false }
+                            : { temperature: 0.6 })
+                    })
+                }
+            );
+        };
+
+        let response;
+        try {
+            response = await requestCompletion(activeProvider === "nvidia" ? "nvidia" : "groq", activeKey);
+        } catch (requestError) {
+            console.error("AI provider network request failed:", {
+                provider: activeProvider,
+                model: activeProvider === "nvidia" ? NVIDIA_MODEL : GROQ_MODEL,
+                message: requestError?.message || String(requestError)
+            });
+
+            if (activeProvider === "nvidia" && groqKeys.length > 0) {
+                console.warn("NVIDIA network request failed; retrying through Groq fallback.");
+                activeProvider = "groq-fallback";
+                activeKey = pickKey(groqKeys);
+                response = await requestCompletion("groq", activeKey);
+            } else {
+                throw requestError;
+            }
+        }
+
+        // Fall back to Groq for transient NVIDIA errors, but not for auth/model
+        // configuration errors (which should remain visible in server logs).
+        if (
+            activeProvider === "nvidia" &&
+            groqKeys.length > 0 &&
+            [429, 500, 502, 503, 504].includes(response.status)
+        ) {
+            let nvidiaError = "No error details returned";
+            try {
+                const errorBody = await response.clone().json();
+                nvidiaError = errorBody?.error?.message || errorBody?.detail || errorBody?.message || nvidiaError;
+            } catch (_) {
+                // Preserve the HTTP status if the provider body isn't JSON.
+            }
+            console.error("NVIDIA inference failed; switching to Groq fallback:", {
+                status: response.status,
+                model: NVIDIA_MODEL,
+                message: nvidiaError
+            });
+            activeProvider = "groq-fallback";
+            activeKey = pickKey(groqKeys);
+            response = await requestCompletion("groq", activeKey);
+        }
 
         let data;
         try {
             data = await response.json();
         } catch (parseError) {
-            console.error("Groq API returned a non-JSON response:", {
+            console.error("AI provider returned a non-JSON response:", {
+                provider: activeProvider,
                 status: response.status,
                 statusText: response.statusText,
                 message: parseError?.message || String(parseError)
             });
-            // Keep a reply-shaped response for the existing chat frontend.
             return res.status(200).json({
                 reply: "I'm having trouble connecting to my AI service right now. Please try again shortly. 🙏"
             });
         }
 
         if (!response.ok) {
-            const groqErrorMessage = data?.error?.message || "Unknown Groq API error";
-            console.error("Groq API request failed:", {
-                model: "openai/gpt-oss-120b",
+            const providerErrorMessage = data?.error?.message || data?.detail || data?.message || "Unknown provider error";
+            console.error("AI provider request failed:", {
+                provider: activeProvider,
+                model: activeProvider === "nvidia" ? NVIDIA_MODEL : GROQ_MODEL,
                 status: response.status,
                 statusText: response.statusText,
-                message: groqErrorMessage
+                message: providerErrorMessage
             });
-            const errorMsg = groqErrorMessage.toLowerCase();
 
             if (
-                errorMsg.includes("rate limit") ||
-                errorMsg.includes("overloaded") ||
-                errorMsg.includes("capacity") ||
-                errorMsg.includes("timeout") ||
+                providerErrorMessage.toLowerCase().includes("rate limit") ||
+                providerErrorMessage.toLowerCase().includes("overloaded") ||
+                providerErrorMessage.toLowerCase().includes("capacity") ||
+                providerErrorMessage.toLowerCase().includes("timeout") ||
                 response.status === 429 ||
                 response.status === 503
             ) {
@@ -729,8 +796,7 @@ Always close with a zero-pressure warm offer:
                 });
             }
 
-            // Don't mislabel configuration/model/auth errors as high traffic.
-            // Details stay in server logs; the UI gets a clean, user-safe message.
+            // Provider details stay in server logs; do not expose internals to users.
             return res.status(200).json({
                 reply: "I'm sorry, I'm having trouble processing your message right now. Please try again shortly, or contact Mike directly. 🙏"
             });
