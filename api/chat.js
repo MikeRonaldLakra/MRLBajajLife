@@ -30,7 +30,7 @@ module.exports = async function (req, res) {
 
         if (apiKeysArray.length === 0) {
             console.error("Groq configuration error: GROQ_API_KEYS/GROQ_API_KEY is missing or empty.");
-            return res.status(500).json({ error: "AI service is not configured. Please try again later." });
+            return res.status(200).json({ reply: "I'm sorry, the assistant is temporarily unavailable. Please contact Mike directly. 🙏" });
         }
 
         const ACTIVE_KEY = apiKeysArray[Math.floor(Math.random() * apiKeysArray.length)];
@@ -685,7 +685,7 @@ Always close with a zero-pressure warm offer:
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: "llama-3.3-70b-versatile",
+                model: "openai/gpt-oss-120b",
                 messages: apiMessages,
                 temperature: 0.6
             })
@@ -695,35 +695,44 @@ Always close with a zero-pressure warm offer:
         try {
             data = await response.json();
         } catch (parseError) {
-            console.error("Groq API returned a non-JSON response:", parseError.message);
-            return res.status(502).json({ error: "The AI service returned an invalid response. Please try again." });
+            console.error("Groq API returned a non-JSON response:", {
+                status: response.status,
+                statusText: response.statusText,
+                message: parseError?.message || String(parseError)
+            });
+            // Keep a reply-shaped response for the existing chat frontend.
+            return res.status(200).json({
+                reply: "I'm having trouble connecting to my AI service right now. Please try again shortly. 🙏"
+            });
         }
 
         if (!response.ok) {
             const groqErrorMessage = data?.error?.message || "Unknown Groq API error";
             console.error("Groq API request failed:", {
+                model: "openai/gpt-oss-120b",
                 status: response.status,
                 statusText: response.statusText,
                 message: groqErrorMessage
             });
             const errorMsg = groqErrorMessage.toLowerCase();
-           
+
             if (
                 errorMsg.includes("rate limit") ||
                 errorMsg.includes("overloaded") ||
                 errorMsg.includes("capacity") ||
                 errorMsg.includes("timeout") ||
                 response.status === 429 ||
-                response.status === 503 ||
-                response.status === 500
+                response.status === 503
             ) {
                 return res.status(200).json({
-                    reply: "😅 I'm getting a lot of messages right now! Please wait 1 minute and try again. I'll be right here! 🙏"
+                    reply: "😅 I'm receiving too many requests right now. Please wait 1 minute and try again. I'll be right here! 🙏"
                 });
             }
-            // Any other API error → same wait message
+
+            // Don't mislabel configuration/model/auth errors as high traffic.
+            // Details stay in server logs; the UI gets a clean, user-safe message.
             return res.status(200).json({
-                reply: "😅 I'm getting a lot of messages right now! Please wait 1 minute and try again. I'll be right here! 🙏"
+                reply: "I'm sorry, I'm having trouble processing your message right now. Please try again shortly, or contact Mike directly. 🙏"
             });
         }
 
@@ -759,8 +768,8 @@ Always close with a zero-pressure warm offer:
             stack: error?.stack
         });
         // Keep internal details in server logs; return a generic message to clients.
-        return res.status(502).json({
-            error: "The AI service is temporarily unavailable. Please try again shortly."
+        return res.status(200).json({
+            reply: "I'm having trouble connecting to my AI service right now. Please try again shortly. 🙏"
         });
     }
 };
