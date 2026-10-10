@@ -32,7 +32,12 @@ module.exports = async function (req, res) {
         if (openRouterKeys.length === 0) {
             console.error("OpenRouter configuration error: OPENROUTER_API_KEY/OPENROUTER_API_KEYS is missing or empty.");
             return res.status(200).json({
-                reply: "I'm sorry, the assistant is temporarily unavailable. Please try again later or contact Mike. 🙏"
+                reply: "I'm sorry, the assistant is temporarily unavailable. Please try again later or contact Mike. 🙏",
+                debug: {
+                    version: "openrouter-diagnostics-2026-10-10",
+                    stage: "configuration",
+                    message: "OPENROUTER_API_KEY and OPENROUTER_API_KEYS are both missing or empty."
+                }
             });
         }
 
@@ -705,7 +710,15 @@ Always close with a zero-pressure warm offer:
                 model: OPENROUTER_MODEL
             });
             return res.status(200).json({
-                reply: "I'm having trouble connecting to my AI service right now. Please try again shortly. 🙏"
+                reply: "I'm having trouble connecting to my AI service right now. Please try again shortly. 🙏",
+                debug: {
+                    version: "openrouter-diagnostics-2026-10-10",
+                    stage: "network",
+                    provider: "OpenRouter",
+                    model: OPENROUTER_MODEL,
+                    name: requestError?.name || "Error",
+                    message: requestError?.message || String(requestError)
+                }
             });
         }
 
@@ -720,7 +733,16 @@ Always close with a zero-pressure warm offer:
                 model: OPENROUTER_MODEL
             });
             return res.status(200).json({
-                reply: "I'm sorry, I'm having trouble processing your message right now. Please try again shortly. 🙏"
+                reply: "I'm sorry, I'm having trouble processing your message right now. Please try again shortly. 🙏",
+                debug: {
+                    version: "openrouter-diagnostics-2026-10-10",
+                    stage: "response_parse",
+                    provider: "OpenRouter",
+                    model: OPENROUTER_MODEL,
+                    status: response.status,
+                    statusText: response.statusText,
+                    message: parseError?.message || String(parseError)
+                }
             });
         }
 
@@ -733,7 +755,16 @@ Always close with a zero-pressure warm offer:
                 error: data
             });
             return res.status(200).json({
-                reply: "I'm sorry, I'm having trouble processing your message right now. Please try again shortly, or contact Mike directly. 🙏"
+                reply: "I'm sorry, I'm having trouble processing your message right now. Please try again shortly, or contact Mike directly. 🙏",
+                debug: {
+                    version: "openrouter-diagnostics-2026-10-10",
+                    stage: "openrouter_http_error",
+                    provider: "OpenRouter",
+                    model: OPENROUTER_MODEL,
+                    status: response.status,
+                    statusText: response.statusText,
+                    error: data
+                }
             });
         }
 
@@ -748,7 +779,15 @@ Always close with a zero-pressure warm offer:
                 response: data
             });
             return res.status(200).json({
-                reply: "I'm sorry, I couldn't generate a response just now. Please try again shortly. 🙏"
+                reply: "I'm sorry, I couldn't generate a response just now. Please try again shortly. 🙏",
+                debug: {
+                    version: "openrouter-diagnostics-2026-10-10",
+                    stage: "empty_model_response",
+                    provider: "OpenRouter",
+                    model: OPENROUTER_MODEL,
+                    status: response.status,
+                    response: data
+                }
             });
         }
 
@@ -783,7 +822,13 @@ Always close with a zero-pressure warm offer:
         });
         // Keep internal details in server logs; return a generic message to clients.
         return res.status(200).json({
-            reply: "I'm having trouble connecting to my AI service right now. Please try again shortly. 🙏"
+            reply: "I'm having trouble connecting to my AI service right now. Please try again shortly. 🙏",
+            debug: {
+                version: "openrouter-diagnostics-2026-10-10",
+                stage: "unhandled_server_error",
+                name: error?.name || "Error",
+                message: error?.message || String(error)
+            }
         });
     }
 };
