@@ -12,6 +12,7 @@ module.exports = async function (req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('X-Chat-API-Version', 'openrouter-only-2026-10-10');
 
     if (req.method === 'OPTIONS') return res.status(200).end();
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
@@ -31,8 +32,9 @@ module.exports = async function (req, res) {
 
         if (openRouterKeys.length === 0) {
             console.error("OpenRouter configuration error: OPENROUTER_API_KEY/OPENROUTER_API_KEYS is missing or empty.");
-            return res.status(200).json({
-                reply: "I'm sorry, the assistant is temporarily unavailable. Please try again later or contact Mike. 🙏",
+            return res.status(503).json({
+                error: "OpenRouter is not configured.",
+                reply: "The assistant is temporarily unavailable. Please try again later.",
                 debug: {
                     version: "openrouter-diagnostics-2026-10-10",
                     stage: "configuration",
@@ -709,8 +711,9 @@ Always close with a zero-pressure warm offer:
                 message: requestError?.message || String(requestError),
                 model: OPENROUTER_MODEL
             });
-            return res.status(200).json({
-                reply: "I'm having trouble connecting to my AI service right now. Please try again shortly. 🙏",
+            return res.status(502).json({
+                error: "OpenRouter network request failed.",
+                reply: "The assistant is temporarily unavailable. Please try again shortly.",
                 debug: {
                     version: "openrouter-diagnostics-2026-10-10",
                     stage: "network",
@@ -732,8 +735,9 @@ Always close with a zero-pressure warm offer:
                 message: parseError?.message || String(parseError),
                 model: OPENROUTER_MODEL
             });
-            return res.status(200).json({
-                reply: "I'm sorry, I'm having trouble processing your message right now. Please try again shortly. 🙏",
+            return res.status(502).json({
+                error: "OpenRouter returned an invalid response.",
+                reply: "The assistant returned an invalid response. Please try again shortly.",
                 debug: {
                     version: "openrouter-diagnostics-2026-10-10",
                     stage: "response_parse",
@@ -754,8 +758,9 @@ Always close with a zero-pressure warm offer:
                 model: OPENROUTER_MODEL,
                 error: data
             });
-            return res.status(200).json({
-                reply: "I'm sorry, I'm having trouble processing your message right now. Please try again shortly, or contact Mike directly. 🙏",
+            return res.status([400, 401, 402, 403, 404, 408, 409, 422, 429].includes(response.status) ? response.status : 502).json({
+                error: "OpenRouter request failed.",
+                reply: "The assistant is temporarily unable to answer. Please try again shortly.",
                 debug: {
                     version: "openrouter-diagnostics-2026-10-10",
                     stage: "openrouter_http_error",
@@ -778,8 +783,9 @@ Always close with a zero-pressure warm offer:
                 model: OPENROUTER_MODEL,
                 response: data
             });
-            return res.status(200).json({
-                reply: "I'm sorry, I couldn't generate a response just now. Please try again shortly. 🙏",
+            return res.status(502).json({
+                error: "OpenRouter returned no assistant message.",
+                reply: "I couldn't generate a response just now. Please try again shortly.",
                 debug: {
                     version: "openrouter-diagnostics-2026-10-10",
                     stage: "empty_model_response",
@@ -821,8 +827,9 @@ Always close with a zero-pressure warm offer:
             stack: error?.stack
         });
         // Keep internal details in server logs; return a generic message to clients.
-        return res.status(200).json({
-            reply: "I'm having trouble connecting to my AI service right now. Please try again shortly. 🙏",
+        return res.status(500).json({
+            error: "Chat endpoint failed.",
+            reply: "The assistant encountered a temporary error. Please try again shortly.",
             debug: {
                 version: "openrouter-diagnostics-2026-10-10",
                 stage: "unhandled_server_error",
