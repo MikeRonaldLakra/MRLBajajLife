@@ -695,7 +695,7 @@ Always close with a zero-pressure warm offer:
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${activeKey}`,
-                    "HTTP-Referer": "https://mrlbajajlife.vercel.app",
+                    "HTTP-Referer": "https://mrlbajajlife-2zbg.vercel.app",
                     "X-Title": "Mike's Bajaj Life AI Assistant",
                     "Content-Type": "application/json"
                 },
