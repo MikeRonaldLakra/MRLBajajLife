@@ -680,7 +680,7 @@ Always close with a zero-pressure warm offer:
         };
 
         const apiMessages = [systemPrompt, ...chatHistory, { role: "user", content: message }];
-        const OPENROUTER_MODEL = "nvidia/llama-3.1-nemotron-70b-instruct";
+        const OPENROUTER_MODEL = "nvidia/nemotron-3-super-120b-a12b:free";
 
         let response;
         try {
