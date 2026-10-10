@@ -22,29 +22,27 @@ module.exports = async function (req, res) {
         //  TOKEN SAVER: Keep last 16 messages — needed for conviction technique conversations
         const chatHistory = Array.isArray(history) ? history.slice(-16) : [];
 
-        // NVIDIA is the primary provider. Groq remains a safe fallback until
-        // NVIDIA_API_KEY is configured in Vercel or if NVIDIA has a temporary outage.
+        // Use the OpenRouter-hosted free Nemotron model when OPENROUTER_API_KEY is set.
+        // If it is absent, bypass OpenRouter and route directly to Groq.
         const parseApiKeys = (value) => typeof value === "string"
             ? value.split(",").map((key) => key.trim()).filter(Boolean)
             : [];
-        // Only enable NVIDIA when the singular NVIDIA_API_KEY is configured.
-        // Otherwise skip NVIDIA completely and select Groq immediately.
-        const nvidiaKeys = parseApiKeys(process.env.NVIDIA_API_KEY);
+        const openRouterKeys = parseApiKeys(process.env.OPENROUTER_API_KEY || process.env.OPENROUTER_API_KEYS);
         const groqKeys = parseApiKeys(process.env.GROQ_API_KEY || process.env.GROQ_API_KEYS);
         const pickKey = (keys) => keys[Math.floor(Math.random() * keys.length)];
 
-        if (nvidiaKeys.length === 0 && groqKeys.length === 0) {
-            console.error("AI configuration error: NVIDIA_API_KEY and GROQ_API_KEY are both missing or empty.");
+        if (openRouterKeys.length === 0 && groqKeys.length === 0) {
+            console.error("AI configuration error: OPENROUTER_API_KEY and GROQ_API_KEY are both missing or empty.");
             return res.status(200).json({
                 reply: "I'm sorry, the assistant is temporarily unavailable. Please contact Mike directly. 🙏"
             });
         }
 
-        let activeProvider = nvidiaKeys.length > 0 ? "nvidia" : "groq-fallback";
-        let activeKey = activeProvider === "nvidia" ? pickKey(nvidiaKeys) : pickKey(groqKeys);
+        let activeProvider = openRouterKeys.length > 0 ? "openrouter" : "groq-fallback";
+        let activeKey = activeProvider === "openrouter" ? pickKey(openRouterKeys) : pickKey(groqKeys);
 
         if (activeProvider === "groq-fallback") {
-            console.warn("NVIDIA_API_KEY is not configured; using Groq fallback. Add NVIDIA_API_KEY to enable Nemotron.");
+            console.warn("OPENROUTER_API_KEY is not configured; using Groq fallback.");
         }
 
         const systemPrompt = {
@@ -689,26 +687,33 @@ Always close with a zero-pressure warm offer:
         };
 
         const apiMessages = [systemPrompt, ...chatHistory, { role: "user", content: message }];
-        const NVIDIA_MODEL = "nvidia/nemotron-3-super-120b-a12b";
+        const OPENROUTER_MODEL = "nvidia/nemotron-3-super-120b-a12b:free";
         const GROQ_MODEL = "openai/gpt-oss-120b";
 
         const requestCompletion = (provider, key) => {
-            const useNvidia = provider === "nvidia";
+            const useOpenRouter = provider === "openrouter";
+            const headers = {
+                "Authorization": `Bearer ${key}`,
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            };
+
+            if (useOpenRouter) {
+                headers["HTTP-Referer"] = "https://mrlbajajlife.vercel.app";
+                headers["X-OpenRouter-Title"] = "Mike's Bajaj Life AI Assistant";
+            }
+
             return fetch(
-                useNvidia
-                    ? "https://integrate.api.nvidia.com/v1/chat/completions"
+                useOpenRouter
+                    ? "https://openrouter.ai/api/v1/chat/completions"
                     : "https://api.groq.com/openai/v1/chat/completions",
                 {
                     method: "POST",
-                    headers: {
-                        "Authorization": `Bearer ${key}`,
-                        "Content-Type": "application/json",
-                        "Accept": "application/json"
-                    },
+                    headers,
                     body: JSON.stringify({
-                        model: useNvidia ? NVIDIA_MODEL : GROQ_MODEL,
+                        model: useOpenRouter ? OPENROUTER_MODEL : GROQ_MODEL,
                         messages: apiMessages,
-                        ...(useNvidia
+                        ...(useOpenRouter
                             ? { temperature: 1, top_p: 0.95, max_tokens: 4096, stream: false }
                             : { temperature: 0.6 })
                     })
@@ -718,16 +723,16 @@ Always close with a zero-pressure warm offer:
 
         let response;
         try {
-            response = await requestCompletion(activeProvider === "nvidia" ? "nvidia" : "groq", activeKey);
+            response = await requestCompletion(activeProvider === "openrouter" ? "openrouter" : "groq", activeKey);
         } catch (requestError) {
             console.error("AI provider network request failed:", {
                 provider: activeProvider,
-                model: activeProvider === "nvidia" ? NVIDIA_MODEL : GROQ_MODEL,
+                model: activeProvider === "openrouter" ? OPENROUTER_MODEL : GROQ_MODEL,
                 message: requestError?.message || String(requestError)
             });
 
-            if (activeProvider === "nvidia" && groqKeys.length > 0) {
-                console.warn("NVIDIA network request failed; retrying through Groq fallback.");
+            if (activeProvider === "openrouter" && groqKeys.length > 0) {
+                console.warn("OpenRouter network request failed; retrying through Groq fallback.");
                 activeProvider = "groq-fallback";
                 activeKey = pickKey(groqKeys);
                 response = await requestCompletion("groq", activeKey);
@@ -736,24 +741,23 @@ Always close with a zero-pressure warm offer:
             }
         }
 
-        // Fall back to Groq for transient NVIDIA errors, but not for auth/model
-        // configuration errors (which should remain visible in server logs).
+        // Use Groq for transient OpenRouter failures such as rate limits or provider outages.
         if (
-            activeProvider === "nvidia" &&
+            activeProvider === "openrouter" &&
             groqKeys.length > 0 &&
             [429, 500, 502, 503, 504].includes(response.status)
         ) {
-            let nvidiaError = "No error details returned";
+            let openRouterError = "No error details returned";
             try {
                 const errorBody = await response.clone().json();
-                nvidiaError = errorBody?.error?.message || errorBody?.detail || errorBody?.message || nvidiaError;
+                openRouterError = errorBody?.error?.message || errorBody?.detail || errorBody?.message || openRouterError;
             } catch (_) {
-                // Preserve the HTTP status if the provider body isn't JSON.
+                // Keep the HTTP status if the provider response isn't JSON.
             }
-            console.error("NVIDIA inference failed; switching to Groq fallback:", {
+            console.error("OpenRouter inference failed; switching to Groq fallback:", {
                 status: response.status,
-                model: NVIDIA_MODEL,
-                message: nvidiaError
+                model: OPENROUTER_MODEL,
+                message: openRouterError
             });
             activeProvider = "groq-fallback";
             activeKey = pickKey(groqKeys);
@@ -777,15 +781,13 @@ Always close with a zero-pressure warm offer:
 
         if (!response.ok) {
             const providerErrorMessage = data?.error?.message || data?.detail || data?.message || "Unknown provider error";
-            if (activeProvider === "nvidia") {
-                console.error("NVIDIA API request failed:", {
-                    status: response.status,
+            if (activeProvider === "openrouter") {
+                console.error(`OpenRouter API error: status=${response.status}; message=${providerErrorMessage}`, {
                     statusText: response.statusText,
-                    message: providerErrorMessage,
-                    model: NVIDIA_MODEL
+                    model: OPENROUTER_MODEL
                 });
             } else {
-                // Log exact provider status and error text before returning the UI fallback.
+                // Log exact Groq status and error message before the user fallback.
                 console.error(`Groq API error: status=${response.status}; message=${providerErrorMessage}`, {
                     statusText: response.statusText,
                     model: GROQ_MODEL
