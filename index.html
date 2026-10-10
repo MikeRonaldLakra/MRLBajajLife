@@ -1390,10 +1390,20 @@ function processAIQuery() {
   var typId = showTyping();
   fetch('https://mrlbajajlife.vercel.app/api/chat', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'X-Debug-Chat': '1' },
     body: JSON.stringify({ message: text, history: chatHistory })
   })
-  .then(function(r) { return r.json(); })
+  .then(function(r) {
+    return r.json().then(function(data) {
+      if (!r.ok) {
+        console.error('[Chat API] HTTP response:', r.status, r.statusText, data);
+      }
+      if (data && data.debug) {
+        console.error('[Chat API] OpenRouter diagnostic:', data.debug);
+      }
+      return data;
+    });
+  })
   .then(function(data) {
     removeTyping(typId);
     var reply = data.reply || "I am analyzing the data, please contact Mike directly.";
