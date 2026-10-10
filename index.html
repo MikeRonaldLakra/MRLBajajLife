@@ -1389,7 +1389,7 @@ function processAIQuery() {
   if (inp) inp.disabled = true;
   if (sendBtn) sendBtn.disabled = true;
   var typId = showTyping();
-  fetch('/api/chat', {
+  fetch('/api/assistant', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ message: text, history: chatHistory })
