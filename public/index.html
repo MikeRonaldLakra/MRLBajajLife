@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta name="chat-api-routing-version" content="public-assistant-20261010">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mike Ronald Lakra | Bajaj Life Insurance Advisor — Kolkata</title>
@@ -1388,15 +1389,50 @@ function processAIQuery() {
   if (inp) inp.disabled = true;
   if (sendBtn) sendBtn.disabled = true;
   var typId = showTyping();
-  fetch('https://mrlbajajlife.vercel.app/api/chat', {
+  fetch('/api/assistant', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ message: text, history: chatHistory })
   })
-  .then(function(r) { return r.json(); })
+  .then(function(r) {
+    return r.text().then(function(raw) {
+      var data;
+      try {
+        data = JSON.parse(raw);
+      } catch (parseError) {
+        console.error('[Chat API] Non-JSON response:', {
+          status: r.status,
+          statusText: r.statusText,
+          contentType: r.headers.get('content-type'),
+          responsePreview: raw.slice(0, 1200),
+          parseError: parseError.message
+        });
+        throw new Error('Chat API returned non-JSON (HTTP ' + r.status + '). See Console for details.');
+      }
+      if (!r.ok) {
+        console.error('[Chat API] HTTP error response:', {
+          status: r.status,
+          statusText: r.statusText,
+          apiVersion: r.headers.get('X-Chat-API-Version'),
+          assistantRouteVersion: r.headers.get('X-Assistant-Route-Version'),
+          data: data
+        });
+      }
+      if (data && data.debug) {
+        console.error('[Chat API] Provider diagnostic:', data.debug);
+      }
+      return data;
+    });
+  })
   .then(function(data) {
     removeTyping(typId);
     var reply = data.reply || "I am analyzing the data, please contact Mike directly.";
+
+    // Never show obsolete rate-limit boilerplate returned by an outdated API deployment.
+    if (/getting a lot of messages|receiving too many requests|too many messages right now/i.test(reply)) {
+      console.error('[Chat API] Legacy fallback detected from the backend:', data);
+      reply = "The assistant is temporarily unavailable. Please try again shortly.";
+    }
         
       
         if (reply.includes("||LEAD:")) {
