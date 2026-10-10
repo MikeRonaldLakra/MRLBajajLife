@@ -1428,13 +1428,14 @@ function processAIQuery() {
     removeTyping(typId);
     var reply = data.reply || "I am analyzing the data, please contact Mike directly.";
 
-    // Detect legacy rate-limit responses without embedding a specific obsolete reply.
-    if (/getting a lot of messages|too many requests right now/i.test(reply)) {
-      console.error('[Chat API] Legacy provider fallback returned; check the API deployment and OpenRouter diagnostic logs.', {
+    // Suppress generic rate-limit/busy placeholders returned by stale upstream deployments.
+    // Do not hardcode or display the provider's old canned wording in the UI.
+    if (/rate.?limit|too many requests|please wait.{0,40}minute|messages.{0,30}right now/i.test(reply)) {
+      console.error('[Chat API] Upstream returned a rate-limit/busy fallback instead of an AI answer.', {
         apiVersion: data && data.debug && data.debug.version ? data.debug.version : 'missing-or-outdated',
         response: data
       });
-      reply = "The chat service returned a legacy error response. Please retry shortly while the API deployment is updated.";
+      reply = "Sorry, I couldn't get an answer from the AI service just now. Please try again shortly.";
     }
         
       
