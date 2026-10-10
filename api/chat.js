@@ -22,28 +22,21 @@ module.exports = async function (req, res) {
         //  TOKEN SAVER: Keep last 16 messages — needed for conviction technique conversations
         const chatHistory = Array.isArray(history) ? history.slice(-16) : [];
 
-        // Use the OpenRouter-hosted free Nemotron model when OPENROUTER_API_KEY is set.
-        // If it is absent, bypass OpenRouter and route directly to Groq.
+        // OpenRouter is the only model provider for this endpoint.
         const parseApiKeys = (value) => typeof value === "string"
             ? value.split(",").map((key) => key.trim()).filter(Boolean)
             : [];
         const openRouterKeys = parseApiKeys(process.env.OPENROUTER_API_KEY || process.env.OPENROUTER_API_KEYS);
-        const groqKeys = parseApiKeys(process.env.GROQ_API_KEY || process.env.GROQ_API_KEYS);
         const pickKey = (keys) => keys[Math.floor(Math.random() * keys.length)];
 
-        if (openRouterKeys.length === 0 && groqKeys.length === 0) {
-            console.error("AI configuration error: OPENROUTER_API_KEY and GROQ_API_KEY are both missing or empty.");
+        if (openRouterKeys.length === 0) {
+            console.error("OpenRouter configuration error: OPENROUTER_API_KEY/OPENROUTER_API_KEYS is missing or empty.");
             return res.status(200).json({
-                reply: "I'm sorry, the assistant is temporarily unavailable. Please contact Mike directly. 🙏"
+                reply: "I'm sorry, the assistant is temporarily unavailable. Please try again later or contact Mike. 🙏"
             });
         }
 
-        let activeProvider = openRouterKeys.length > 0 ? "openrouter" : "groq-fallback";
-        let activeKey = activeProvider === "openrouter" ? pickKey(openRouterKeys) : pickKey(groqKeys);
-
-        if (activeProvider === "groq-fallback") {
-            console.warn("OPENROUTER_API_KEY is not configured; using Groq fallback.");
-        }
+        const activeKey = pickKey(openRouterKeys);
 
         const systemPrompt = {
             role: "system",
@@ -687,133 +680,77 @@ Always close with a zero-pressure warm offer:
         };
 
         const apiMessages = [systemPrompt, ...chatHistory, { role: "user", content: message }];
-        const OPENROUTER_MODEL = "nvidia/nemotron-3-super-120b-a12b:free";
-        const GROQ_MODEL = "openai/gpt-oss-120b";
-
-        const requestCompletion = (provider, key) => {
-            const useOpenRouter = provider === "openrouter";
-            const headers = {
-                "Authorization": `Bearer ${key}`,
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            };
-
-            if (useOpenRouter) {
-                headers["HTTP-Referer"] = "https://mrlbajajlife.vercel.app";
-                headers["X-OpenRouter-Title"] = "Mike's Bajaj Life AI Assistant";
-            }
-
-            return fetch(
-                useOpenRouter
-                    ? "https://openrouter.ai/api/v1/chat/completions"
-                    : "https://api.groq.com/openai/v1/chat/completions",
-                {
-                    method: "POST",
-                    headers,
-                    body: JSON.stringify({
-                        model: useOpenRouter ? OPENROUTER_MODEL : GROQ_MODEL,
-                        messages: apiMessages,
-                        ...(useOpenRouter
-                            ? { temperature: 1, top_p: 0.95, max_tokens: 4096, stream: false }
-                            : { temperature: 0.6 })
-                    })
-                }
-            );
-        };
+        const OPENROUTER_MODEL = "nvidia/llama-3.1-nemotron-70b-instruct";
 
         let response;
         try {
-            response = await requestCompletion(activeProvider === "openrouter" ? "openrouter" : "groq", activeKey);
+            response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${activeKey}`,
+                    "HTTP-Referer": "https://mrlbajajlife.vercel.app",
+                    "X-Title": "Mike's Bajaj Life AI Assistant",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    model: OPENROUTER_MODEL,
+                    messages: apiMessages,
+                    temperature: 0.7,
+                    max_tokens: 2048
+                })
+            });
         } catch (requestError) {
-            console.error("AI provider network request failed:", {
-                provider: activeProvider,
-                model: activeProvider === "openrouter" ? OPENROUTER_MODEL : GROQ_MODEL,
-                message: requestError?.message || String(requestError)
-            });
-
-            if (activeProvider === "openrouter" && groqKeys.length > 0) {
-                console.warn("OpenRouter network request failed; retrying through Groq fallback.");
-                activeProvider = "groq-fallback";
-                activeKey = pickKey(groqKeys);
-                response = await requestCompletion("groq", activeKey);
-            } else {
-                throw requestError;
-            }
-        }
-
-        // Use Groq for transient OpenRouter failures such as rate limits or provider outages.
-        if (
-            activeProvider === "openrouter" &&
-            groqKeys.length > 0 &&
-            [429, 500, 502, 503, 504].includes(response.status)
-        ) {
-            let openRouterError = "No error details returned";
-            try {
-                const errorBody = await response.clone().json();
-                openRouterError = errorBody?.error?.message || errorBody?.detail || errorBody?.message || openRouterError;
-            } catch (_) {
-                // Keep the HTTP status if the provider response isn't JSON.
-            }
-            console.error("OpenRouter inference failed; switching to Groq fallback:", {
-                status: response.status,
-                model: OPENROUTER_MODEL,
-                message: openRouterError
-            });
-            activeProvider = "groq-fallback";
-            activeKey = pickKey(groqKeys);
-            response = await requestCompletion("groq", activeKey);
-        }
-
-        let data;
-        try {
-            data = await response.json();
-        } catch (parseError) {
-            console.error("AI provider returned a non-JSON response:", {
-                provider: activeProvider,
-                status: response.status,
-                statusText: response.statusText,
-                message: parseError?.message || String(parseError)
+            console.error("OpenRouter network request failed:", {
+                message: requestError?.message || String(requestError),
+                model: OPENROUTER_MODEL
             });
             return res.status(200).json({
                 reply: "I'm having trouble connecting to my AI service right now. Please try again shortly. 🙏"
             });
         }
 
+        let data;
+        try {
+            data = await response.json();
+        } catch (parseError) {
+            console.error("OpenRouter returned a non-JSON response:", {
+                status: response.status,
+                statusText: response.statusText,
+                message: parseError?.message || String(parseError),
+                model: OPENROUTER_MODEL
+            });
+            return res.status(200).json({
+                reply: "I'm sorry, I'm having trouble processing your message right now. Please try again shortly. 🙏"
+            });
+        }
+
         if (!response.ok) {
-            const providerErrorMessage = data?.error?.message || data?.detail || data?.message || "Unknown provider error";
-            if (activeProvider === "openrouter") {
-                console.error(`OpenRouter API error: status=${response.status}; message=${providerErrorMessage}`, {
-                    statusText: response.statusText,
-                    model: OPENROUTER_MODEL
-                });
-            } else {
-                // Log exact Groq status and error message before the user fallback.
-                console.error(`Groq API error: status=${response.status}; message=${providerErrorMessage}`, {
-                    statusText: response.statusText,
-                    model: GROQ_MODEL
-                });
-            }
-
-            if (
-                providerErrorMessage.toLowerCase().includes("rate limit") ||
-                providerErrorMessage.toLowerCase().includes("overloaded") ||
-                providerErrorMessage.toLowerCase().includes("capacity") ||
-                providerErrorMessage.toLowerCase().includes("timeout") ||
-                response.status === 429 ||
-                response.status === 503
-            ) {
-                return res.status(200).json({
-                    reply: "😅 I'm receiving too many requests right now. Please wait 1 minute and try again. I'll be right here! 🙏"
-                });
-            }
-
-            // Provider details stay in server logs; do not expose internals to users.
+            // Log the exact HTTP status and the full JSON error body before returning a safe fallback.
+            console.error("OpenRouter API request failed:", {
+                status: response.status,
+                statusText: response.statusText,
+                model: OPENROUTER_MODEL,
+                error: data
+            });
             return res.status(200).json({
                 reply: "I'm sorry, I'm having trouble processing your message right now. Please try again shortly, or contact Mike directly. 🙏"
             });
         }
 
-        let reply = data.choices?.[0]?.message?.content || "Thinking...";
+        const messageContent = data?.choices?.[0]?.message?.content;
+        let reply;
+        if (typeof messageContent === "string" && messageContent.trim()) {
+            reply = messageContent.trim();
+        } else {
+            console.error("OpenRouter returned no assistant message content:", {
+                status: response.status,
+                model: OPENROUTER_MODEL,
+                response: data
+            });
+            return res.status(200).json({
+                reply: "I'm sorry, I couldn't generate a response just now. Please try again shortly. 🙏"
+            });
+        }
 
         // --- LEAD DATA EXTRACTION & GOOGLE SHEET LOGGING ---
         const leadMatch = reply.match(/\|\|\s*LEAD:\s*([\s\S]*?)\s*\|\|/i);
