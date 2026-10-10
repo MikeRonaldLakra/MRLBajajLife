@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta name="chat-api-routing-version" content="relative-api-20261010-1800">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mike Ronald Lakra | Bajaj Life Insurance Advisor — Kolkata</title>
@@ -1427,14 +1428,13 @@ function processAIQuery() {
     removeTyping(typId);
     var reply = data.reply || "I am analyzing the data, please contact Mike directly.";
 
-    // Detect a stale API deployment instead of showing its obsolete rate-limit fallback.
-    if (reply.indexOf("I'm getting a lot of messages right now") !== -1 ||
-        reply.indexOf("I'm receiving too many requests right now") !== -1) {
-      console.error('[Chat API] Stale deployment detected: legacy rate-limit fallback returned.', {
-        apiVersion: 'missing-or-outdated',
+    // Detect legacy rate-limit responses without embedding a specific obsolete reply.
+    if (/getting a lot of messages|too many requests right now/i.test(reply)) {
+      console.error('[Chat API] Legacy provider fallback returned; check the API deployment and OpenRouter diagnostic logs.', {
+        apiVersion: data && data.debug && data.debug.version ? data.debug.version : 'missing-or-outdated',
         response: data
       });
-      reply = "The chat service is running an outdated deployment. Please refresh shortly or contact Mike directly.";
+      reply = "The chat service returned a legacy error response. Please retry shortly while the API deployment is updated.";
     }
         
       
