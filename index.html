@@ -1426,6 +1426,16 @@ function processAIQuery() {
   .then(function(data) {
     removeTyping(typId);
     var reply = data.reply || "I am analyzing the data, please contact Mike directly.";
+
+    // Detect a stale API deployment instead of showing its obsolete rate-limit fallback.
+    if (reply.indexOf("I'm getting a lot of messages right now") !== -1 ||
+        reply.indexOf("I'm receiving too many requests right now") !== -1) {
+      console.error('[Chat API] Stale deployment detected: legacy rate-limit fallback returned.', {
+        apiVersion: 'missing-or-outdated',
+        response: data
+      });
+      reply = "The chat service is running an outdated deployment. Please refresh shortly or contact Mike directly.";
+    }
         
       
         if (reply.includes("||LEAD:")) {
